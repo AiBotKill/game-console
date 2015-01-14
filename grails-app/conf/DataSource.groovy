@@ -30,8 +30,11 @@ environments {
     }
     production {
         dataSource {
+            username = "aigameconsole"
+            password = "intiaanit ampuu jouskareilla hyvin"
+            driverClassName = "com.mysql.jdbc.Driver"
             dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            url = "jdbc:mysql://127.0.0.1/aigameconsole"
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                jmxEnabled = true

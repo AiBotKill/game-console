@@ -1,3 +1,5 @@
+import org.apache.log4j.DailyRollingFileAppender
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -85,33 +87,74 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+grails.plugins.twitterbootstrap.fixtaglib = true
+
+grails.assets.less.compile = 'less4j'
+grails.assets.plugin."twitter-bootstrap".excludes = ["**/*.less"]
+grails.assets.plugin."twitter-bootstrap".includes = ["bootstrap.less"]
+
 environments {
     development {
         grails.logging.jul.usebridge = true
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://ai.hell.fi"
     }
 }
 
 // log4j configuration
-log4j.main = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+log4j = {
+    appenders {
+        environments {
+            development {
+                console name:'stdout', layout:pattern(conversionPattern: '%c{2} [%p] - %m%n')
+            }
+            test {
+                console name:'stdout', layout:pattern(conversionPattern: '%c{2} [%p] - %m%n')
+            }
+            production {
+                appender new DailyRollingFileAppender(
+                        name: "rollingLogger",
+                        file: log4jFileName,
+                        datePattern: "'.'yyyy-MM-dd",
+                        layout: pattern(
+                                conversionPattern: "%d{yyyy-MM-dd HH:mm:ss} [%t] %x %-5p %c{2} - %m%n"
+                        )
+                )
+            }
+        }
+    }
+    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+            'org.codehaus.groovy.grails.web.pages', //  GSP
+            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping', // URL mapping
+            'org.codehaus.groovy.grails.commons', // core / classloading
+            'org.codehaus.groovy.grails.plugins', // plugins
+            'org.codehaus.groovy.grails.orm.hibernate', // hibernate
+            'org.springframework',
+            'org.hibernate.cache',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate'
+            'grails'
+            'groovyx.net.http'
 
-    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-           'org.codehaus.groovy.grails.web.pages',          // GSP
-           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-           'org.codehaus.groovy.grails.commons',            // core / classloading
-           'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+    warn 'org.springframework',
+        'org.hibernate',
+        'grails.plugins.springsecurity',
+        'groovyx.net.http'
+
+    debug 'grails.plugins.springsecurity',
+        'grails.plugin.springcache',
+        'botkill.gameconsole',
+        'org.apache.http.headers',
+        'grails.app.services',
+        'grails.app.domain',
+        'grails.app.controllers'
+
+    root {
+        error 'rollingLogger', 'stdout'
+        additivity = true
+    }
 }
