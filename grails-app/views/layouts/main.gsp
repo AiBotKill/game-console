@@ -17,7 +17,26 @@
 		<g:layoutHead/>
 	</head>
 	<body>
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><asset:image src="grails_logo.png" alt="Grails"/></a></div>
+		<div id="header">
+			<div id="logo" role="banner">
+				<a href=""><asset:image src="logo.png" alt="AI Game Console"/></a>
+			</div>
+			<nav id="nav">
+				<ul>
+					<li class="current"><a href="#teams">Teams</a></li>
+					<li><a href="#tournaments">Tournaments</a></li>
+					<li><a href="#games">Games</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div id="hero">
+			<div id="titlebanner">
+				<div id="herobackground"></div>
+				<div class="title">
+					<h1>${request.title}</h1>
+				</div>
+			</div>
+		</div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>

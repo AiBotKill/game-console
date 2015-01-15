@@ -19,7 +19,9 @@ class TeamController {
     }
 
     def create() {
-        respond new Team(params)
+        def team = new Team(params);
+        team.players = [];
+        respond team
     }
 
     @Transactional

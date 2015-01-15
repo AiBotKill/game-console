@@ -18,8 +18,11 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            username = "aigameconsole"
+            password = "intiaanit ampuu jouskareilla hyvin"
+            driverClassName = "com.mysql.jdbc.Driver"
+            dbCreate = "update"
+            url = "jdbc:mysql://127.0.0.1/ai_game_console?useUnicode=yes&characterEncoding=UTF-8"
         }
     }
     test {
@@ -34,7 +37,7 @@ environments {
             password = "intiaanit ampuu jouskareilla hyvin"
             driverClassName = "com.mysql.jdbc.Driver"
             dbCreate = "update"
-            url = "jdbc:mysql://127.0.0.1/aigameconsole"
+            url = "jdbc:mysql://127.0.0.1/ai_game_console?useUnicode=yes&characterEncoding=UTF-8"
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                jmxEnabled = true

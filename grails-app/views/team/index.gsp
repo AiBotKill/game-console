@@ -8,24 +8,23 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#list-team" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
+		<g:set var="title" value="${message(code: 'default.list.label', args: [entityName])}" scope="request" />
+		<div id="subnav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="list-team" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
+			<table class="table">
 			<thead>
 					<tr>
 					
 						<g:sortableColumn property="name" title="${message(code: 'team.name.label', default: 'Name')}" />
-					
+						<th>Player #1</th>
+						<th>Player #2</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -33,7 +32,8 @@
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
 						<td><g:link action="show" id="${teamInstance.id}">${fieldValue(bean: teamInstance, field: "name")}</g:link></td>
-					
+						<td>${teamInstance.players[0].name}</td>
+						<td>${teamInstance.players[1]?.name}</td>
 					</tr>
 				</g:each>
 				</tbody>
