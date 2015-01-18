@@ -8,26 +8,27 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#list-tournament" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
+		<g:set var="title" value="${message(code: 'default.list.label', args: [entityName])}" scope="request" />
+		<div id="subnav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="list-tournament" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
+			<table class="table">
 			<thead>
 					<tr>
 					
 						<g:sortableColumn property="name" title="${message(code: 'tournament.name.label', default: 'Name')}" />
+
+						<g:sortableColumn property="dateCreated" title="${message(code: 'tournament.dateCreated.label', default: 'Date Created')}" />
 					
 						<g:sortableColumn property="state" title="${message(code: 'tournament.state.label', default: 'State')}" />
-					
+
+						<th><g:message code="default.action.label" default="Action" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,9 +36,28 @@
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
 						<td><g:link action="show" id="${tournamentInstance.id}">${fieldValue(bean: tournamentInstance, field: "name")}</g:link></td>
-					
+
+						<td><g:formatDate date="${tournamentInstance.dateCreated}" /></td>
+
 						<td>${fieldValue(bean: tournamentInstance, field: "state")}</td>
-					
+
+						<td>
+							<g:if test="${tournamentInstance.state == botkill.gameconsole.enums.GameState.CREATED}">
+								<a href="${g.createLink(controller: 'tournament', action: 'start', id: tournamentInstance.id)}">
+									<button class="btn btn-success"><g:message code="tournament.start.label" default="Start tournament" /></button>
+								</a>
+							</g:if>
+							<g:elseif test="${tournamentInstance.state == botkill.gameconsole.enums.GameState.STARTED}">
+								<a href="#TODO">
+									<button class="btn btn-success"><g:message code="tournament.view.label" default="View tournament" /></button>
+								</a>
+							</g:elseif>
+							<g:elseif test="${tournamentInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">
+								<a href="#TODO">
+									<button class="btn btn-success"><g:message code="tournament.view.label" default="View tournament" /></button>
+								</a>
+							</g:elseif>
+						</td>
 					</tr>
 				</g:each>
 				</tbody>

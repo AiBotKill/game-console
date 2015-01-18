@@ -31,6 +31,15 @@ class TeamController {
             return
         }
 
+        teamInstance.players = [];
+        params.list("playerName").each { name ->
+            if (!name.equals("")) {
+                Player p = new Player();
+                p.name = name;
+                teamInstance.addToPlayers(p);
+            }
+        }
+
         if (teamInstance.hasErrors()) {
             respond teamInstance.errors, view: 'create'
             return
@@ -41,7 +50,7 @@ class TeamController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'team.label', default: 'Team'), teamInstance.id])
-                redirect teamInstance
+                redirect controller: "team"
             }
             '*' { respond teamInstance, [status: CREATED] }
         }
@@ -58,6 +67,15 @@ class TeamController {
             return
         }
 
+        teamInstance.players = [];
+        params.list("playerName").each { name ->
+            if (!name.equals("")) {
+                Player p = new Player();
+                p.name = name;
+                teamInstance.addToPlayers(p);
+            }
+        }
+
         if (teamInstance.hasErrors()) {
             respond teamInstance.errors, view: 'edit'
             return
@@ -68,10 +86,22 @@ class TeamController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Team.label', default: 'Team'), teamInstance.id])
-                redirect teamInstance
+                redirect controller: "team"
             }
             '*' { respond teamInstance, [status: OK] }
         }
+    }
+
+    @Transactional
+    def removePlayer(Team teamInstance) {
+        def playerInstance = teamInstance.players.find { it.id == params.playerId as Long }
+
+        if (playerInstance) {
+            teamInstance.removeFromPlayers(playerInstance)
+            playerInstance.delete()
+        }
+
+        redirect controller: "team", action: "edit", id: teamInstance.id
     }
 
     @Transactional

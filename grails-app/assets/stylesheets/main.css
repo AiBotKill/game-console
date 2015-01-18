@@ -35,16 +35,37 @@ body {
 	background: #ffffff;
 	color: #333333;
 	margin: 0;
-	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
-	   -moz-box-shadow: 0 0 0.3em #000000;
-	-webkit-box-shadow: 0 0 0.3em #000000;
-	        box-shadow: 0 0 0.3em #000000;
+	height: 100%;
+}
+
+#wrapper {
+	min-height: 100%;
+	margin: 0 auto -47px;
 }
 
 #header {
 	background-color: black;
 	border-bottom: 4px solid #FFD34E;
 	padding-left: 10%;
+}
+
+#footer, #push {
+	height: 30px; /* .push must be the same height as .footer */
+}
+
+#footer {
+	position: absolute;
+	width: 100%;
+	background: #000;
+	color: #fff;
+	clear: both;
+	font-size: 0.8em;
+	margin-top: 1.5em;
+	padding: 10px;
+}
+
+#footer a {
+	color: #FFFFFF;
 }
 
 #logo {
@@ -54,7 +75,7 @@ body {
 #hero {
 	position: relative;
 	width: 100%;
-	height: 300px;
+	height: 220px;
 	overflow: hidden;
 }
 
@@ -68,7 +89,12 @@ body {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	background: url(../images/hero.png) no-repeat fixed 50% 7px;
+}
+
+#titlebanner #herobackground img {
+	width: 100%;
+	min-height: 220px;
+	min-width: 704px;
 }
 
 /* replace with .no-boxshadow body if you have modernizr available */
@@ -136,23 +162,6 @@ img {
 	border: none;
 }
 
-.footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	background: #000;
-	color: #fff;
-	clear: both;
-	font-size: 0.8em;
-	margin-top: 1.5em;
-	padding: 1em;
-	min-height: 1em;
-}
-
-.footer a {
-	color: #FFFFFF;
-}
-
 .spinner {
 	background: url(../images/spinner.gif) 50% 50% no-repeat transparent;
 	height: 16px;
@@ -182,7 +191,7 @@ img {
 	position: relative;
 	display: inline-block;
 	margin: 0;
-	padding: 0 18px;
+	padding: 0 15px;
 }
 
 #nav ul li a {
@@ -440,4 +449,8 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 	   -moz-box-shadow: 0 0 0.5em #ffaaaa;
 	-webkit-box-shadow: 0 0 0.5em #ffaaaa;
 	        box-shadow: 0 0 0.5em #ffaaaa;
+}
+
+.teamSelect {
+	display: inline;
 }

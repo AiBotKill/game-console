@@ -23,29 +23,6 @@ class PlayerController {
         respond new Player(params)
     }
 
-    @Transactional
-    def save(Player playerInstance) {
-        if (playerInstance == null) {
-            notFound()
-            return
-        }
-
-        if (playerInstance.hasErrors()) {
-            respond playerInstance.errors, view:'create'
-            return
-        }
-
-        playerInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'player.label', default: 'Player'), playerInstance.id])
-                redirect playerInstance
-            }
-            '*' { respond playerInstance, [status: CREATED] }
-        }
-    }
-
     def edit(Player playerInstance) {
         respond playerInstance
     }
@@ -57,7 +34,12 @@ class PlayerController {
             return
         }
 
+        if (playerInstance.team.players.size() >= Team.constraints.players.getAppliedConstraint("maxSize").maxSize) {
+            playerInstance.errors.rejectValue("team", "team.players.maxSize.exceeded", "Selected team already has maximum amount of players.")
+        }
+
         if (playerInstance.hasErrors()) {
+            playerInstance.discard()
             respond playerInstance.errors, view:'edit'
             return
         }

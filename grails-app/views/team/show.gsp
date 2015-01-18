@@ -29,6 +29,15 @@
 					
 				</li>
 				</g:if>
+
+				<g:if test="${teamInstance?.programmingLanguage}">
+					<li class="fieldcontain">
+						<span id="programmingLanguage-label" class="property-label"><g:message code="team.programmingLanguage.label" default="Programming language" /></span>
+
+						<span class="property-value" aria-labelledby="programmingLanguage-label"><g:fieldValue bean="${teamInstance}" field="programmingLanguage"/></span>
+
+					</li>
+				</g:if>
 			
 				<g:if test="${teamInstance?.players}">
 				<li class="fieldcontain">

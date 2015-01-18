@@ -17,28 +17,35 @@
 		<g:layoutHead/>
 	</head>
 	<body>
-		<div id="header">
-			<div id="logo" role="banner">
-				<a href=""><asset:image src="logo.png" alt="AI Game Console"/></a>
+		<div id="wrapper">
+			<div id="header">
+				<div id="logo" role="banner">
+					<a href="${g.createLink(controller:'team')}"><asset:image src="logo.png" alt="AI Game Console"/></a>
+				</div>
+				<nav id="nav">
+					<ul>
+						<li ${params.controller == 'team' ? 'class=current' : ''}><a href="${g.createLink(controller:'team')}">Teams</a></li>
+						<li ${params.controller == 'tournament' ? 'class=current' : ''}><a href="${g.createLink(controller:'tournament')}">Tournaments</a></li>
+						<li ${params.controller == 'game' ? 'class=current' : ''}><a href="${g.createLink(controller:'game')}">Games</a></li>
+					</ul>
+				</nav>
 			</div>
-			<nav id="nav">
-				<ul>
-					<li class="current"><a href="#teams">Teams</a></li>
-					<li><a href="#tournaments">Tournaments</a></li>
-					<li><a href="#games">Games</a></li>
-				</ul>
-			</nav>
-		</div>
-		<div id="hero">
-			<div id="titlebanner">
-				<div id="herobackground"></div>
-				<div class="title">
-					<h1>${request.title}</h1>
+			<div id="hero">
+				<div id="titlebanner">
+					<div id="herobackground">
+						<asset:image src="hero.png" alt="AI Game Console"/>
+					</div>
+					<div class="title">
+						<h1>${request.title}</h1>
+					</div>
 				</div>
 			</div>
+
+			<g:layoutBody/>
+			<div id="push"></div>
 		</div>
-		<g:layoutBody/>
-		<div class="footer" role="contentinfo"></div>
+
+		<div id="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 	</body>
 </html>

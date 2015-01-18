@@ -21,19 +21,24 @@
 			<table class="table">
 			<thead>
 					<tr>
-					
+						<g:sortableColumn property="id" title="${message(code: 'team.id.label', default: 'Id')}" />
 						<g:sortableColumn property="name" title="${message(code: 'team.name.label', default: 'Name')}" />
-						<th>Player #1</th>
-						<th>Player #2</th>
+						<g:sortableColumn property="programmingLanguage" title="${message(code: 'team.programmingLanguage.label', default: 'Programming language')}" />
+						<g:each var="i" in="${1..(Team.constraints.players.getAppliedConstraint('maxSize').maxSize)}">
+						<th>Player #${i}</th>
+						</g:each>
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${teamInstanceList}" status="i" var="teamInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
+
+						<td><g:fieldValue field="id" bean="${teamInstance}" /></td>
 						<td><g:link action="show" id="${teamInstance.id}">${fieldValue(bean: teamInstance, field: "name")}</g:link></td>
-						<td>${teamInstance.players[0].name}</td>
-						<td>${teamInstance.players[1]?.name}</td>
+						<td><g:fieldValue field="programmingLanguage" bean="${teamInstance}" /></td>
+						<g:each var="j" in="${0..(Team.constraints.players.getAppliedConstraint('maxSize').maxSize-1)}">
+						<td>${teamInstance.players[j]?.name}</td>
+						</g:each>
 					</tr>
 				</g:each>
 				</tbody>

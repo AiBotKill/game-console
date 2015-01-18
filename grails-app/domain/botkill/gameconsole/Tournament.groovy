@@ -7,6 +7,9 @@ class Tournament {
     // Tournament has many games to be played and teams that participate in this tournament
     static hasMany = ["games":Game, "teams":Team]
 
+    Date dateCreated
+    Date lastUpdated
+
     String name
     GameState state = GameState.CREATED
 

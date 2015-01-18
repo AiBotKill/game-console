@@ -8,52 +8,64 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#list-game" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
+		<g:set var="title" value="${message(code: 'default.list.label', args: [entityName])}" scope="request" />
+		<div id="subnav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="list-game" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
+			<table class="table">
 			<thead>
 					<tr>
-					
-						<g:sortableColumn property="darkness" title="${message(code: 'game.darkness.label', default: 'Darkness')}" />
-					
-						<g:sortableColumn property="rain" title="${message(code: 'game.rain.label', default: 'Rain')}" />
-					
-						<g:sortableColumn property="rounds" title="${message(code: 'game.rounds.label', default: 'Rounds')}" />
-					
-						<g:sortableColumn property="roundTime" title="${message(code: 'game.roundTime.label', default: 'Round Time')}" />
-					
-						<g:sortableColumn property="environment" title="${message(code: 'game.environment.label', default: 'Environment')}" />
-					
-						<g:sortableColumn property="mode" title="${message(code: 'game.mode.label', default: 'Mode')}" />
-					
+						<g:sortableColumn property="id" title="${message(code: 'game.id.label', default: 'Id')}" />
+
+						<g:sortableColumn property="gameTeams" title="${message(code: 'game.gameTeams.label', default: 'Game Teams')}" />
+
+						<g:sortableColumn property="dateCreated" title="${message(code: 'game.dateCreated.label', default: 'Date created')}" />
+
+						<g:sortableColumn property="state" title="${message(code: 'game.state.label', default: 'State')}" />
+
+						<th><g:message code="default.action.label" default="Action" /></th>
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${gameInstanceList}" status="i" var="gameInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${gameInstance.id}">${fieldValue(bean: gameInstance, field: "darkness")}</g:link></td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "rain")}</td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "rounds")}</td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "roundTime")}</td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "environment")}</td>
-					
-						<td>${fieldValue(bean: gameInstance, field: "mode")}</td>
-					
+						<td><g:link action="show" id="${gameInstance.id}">${fieldValue(bean: gameInstance, field: "id")}</g:link></td>
+
+						<td>
+							<ul>
+							<g:each in="${gameInstance.gameTeams}">
+								<li>${it}</li>
+							</g:each>
+							</ul>
+						</td>
+
+						<td><g:formatDate date="${gameInstance.dateCreated}" /></td>
+
+						<td>${fieldValue(bean: gameInstance, field: "state")}</td>
+
+						<td>
+							<g:if test="${gameInstance.state == botkill.gameconsole.enums.GameState.CREATED}">
+								<a href="${g.createLink(controller: 'game', action: 'start', id: gameInstance.id)}">
+									<button class="btn btn-success"><g:message code="default.start.label" default="Start game" /></button>
+								</a>
+							</g:if>
+							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.STARTED}">
+								<a href="#TODO">
+									<button class="btn btn-success"><g:message code="default.view.label" default="View game" /></button>
+								</a>
+							</g:elseif>
+							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">
+								<a href="#TODO">
+									<button class="btn btn-success"><g:message code="default.view.label" default="View game" /></button>
+								</a>
+							</g:elseif>
+						</td>
 					</tr>
 				</g:each>
 				</tbody>

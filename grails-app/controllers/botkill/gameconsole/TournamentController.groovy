@@ -1,5 +1,6 @@
 package botkill.gameconsole
 
+import botkill.gameconsole.enums.GameState
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -20,6 +21,21 @@ class TournamentController {
 
     def create() {
         respond new Tournament(params)
+    }
+
+    @Transactional
+    def start(Tournament tournamentInstance) {
+        if (tournamentInstance == null) {
+            notFound()
+            return
+        }
+
+        tournamentInstance.state = GameState.STARTED
+        tournamentInstance.save flush:true
+
+        // TODO: Generate games and start them one at a time
+
+        redirect controller: "tournament", action: "index"
     }
 
     @Transactional
