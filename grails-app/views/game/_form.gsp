@@ -5,7 +5,7 @@
 		<g:message code="game.darkness.label" default="Darkness" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field class="form-control" name="darkness" value="${fieldValue(bean: gameInstance, field: 'darkness')}" required=""/>
+	<g:field class="form-control" name="darkness" type="number" min="0" max="100" value="${fieldValue(bean: gameInstance, field: 'darkness')}" required=""/>
 </div>
 
 <div class="form-group ${hasErrors(bean: gameInstance, field: 'rain', 'error')} required">
@@ -13,7 +13,7 @@
 		<g:message code="game.rain.label" default="Rain" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field class="form-control" name="rain" value="${fieldValue(bean: gameInstance, field: 'rain')}" required=""/>
+	<g:field class="form-control" name="rain" type="number" min="0" max="100" value="${fieldValue(bean: gameInstance, field: 'rain')}" required=""/>
 </div>
 
 <div class="form-group ${hasErrors(bean: gameInstance, field: 'rounds', 'error')} required">
@@ -51,13 +51,29 @@
 <h2><g:message code="game.onlineais.label" default="AIs" /></h2>
 <g:each in="${botkill.gameconsole.Team.list()}" var="teamInstance">
 	<div class="${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
-		<input type="checkbox" class="participationCheckbox" name="teams" value="${teamInstance.id}" ${params?.list("teams")?.contains(teamInstance.id as String) ? 'checked="checked"' : ''} />
-		<select class="teamSelect img-rounded" name="teamAssignments" style="display: none">
+		<input
+				type="checkbox"
+				class="participationCheckbox"
+				name="teams"
+				${gameInstance.mode == botkill.gameconsole.enums.GameMode.TEAM ? "style=display:none" : ''}
+				value="${teamInstance.id}"
+				${gameInstance.gameTeams?.teams?.id?.flatten()?.contains(teamInstance.id) ? 'checked="checked"' : ''}
+				${params?.list("teams")?.contains(teamInstance.id as String) ? 'checked="checked"' : ''} />
+
+		<select
+				class="teamSelect img-rounded"
+				name="teamAssignments"
+				${!gameInstance.id || gameInstance.mode == botkill.gameconsole.enums.GameMode.DEATHMATCH ? "style=display:none" : ""}>
 			<option value=""><g:message code="game.notParticipating.label" default="Not participating" /></option>
 			<g:each in="${1..botkill.gameconsole.enums.TeamColor.values().length}">
-				<option value="${teamInstance.id}:${it}">Team ${it}</option>
+				<option
+						value="${teamInstance.id}:${it}"
+						${gameInstance.gameTeams?.find{it.teams.contains(teamInstance)}?.color?.ordinal() == (it-1) ? 'selected="selected"' : ''}>
+					Team ${it}
+				</option>
 			</g:each>
 		</select>
+
 		${teamInstance.name}
 	</div>
 </g:each>

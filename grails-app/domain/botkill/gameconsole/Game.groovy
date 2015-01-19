@@ -12,19 +12,20 @@ class Game {
     Date dateCreated
     Date lastUpdated
 
+    Set gameTeams = new HashSet()
     GameMode mode
     GameState state = GameState.CREATED
     GameEnvironment environment
 
     int roundTime = 300 // in seconds
     int rounds = 3
-    float darkness
-    float rain
+    int darkness
+    int rain
 
     static constraints = {
-        gameTeams size: 2..12, minSize: 2, maxSize: 12 // MaxSize is the number of TeamColors
-        darkness min: 0f, max: 1f
-        rain min: 0f, max: 1f
+        gameTeams nullable: false, minSize: 2, maxSize: 12 // MaxSize is the number of TeamColors
+        darkness min: 0, max: 100
+        rain min: 0, max: 100
         rounds min: 1, max: 10
         roundTime min: 1, max: 600
     }
@@ -32,4 +33,13 @@ class Game {
     static mapping = {
         gameTeams sort: 'points', order: 'desc'
     }
+
+    String toString() {
+        def teamMembers = []
+        gameTeams.each {
+            teamMembers << it.teams.join(",")
+        }
+        mode.toString() + ": " + teamMembers.join(" vs ")
+    }
+
 }

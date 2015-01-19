@@ -10,12 +10,14 @@ class Tournament {
     Date dateCreated
     Date lastUpdated
 
+    Set games = new HashSet()
+    Set teams = new HashSet()
     String name
     GameState state = GameState.CREATED
 
     static constraints = {
         name blank: false, unique: true
-        teams minSize: 2
+        teams nullable: false, minSize: 2
     }
 
     String toString() {

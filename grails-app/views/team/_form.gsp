@@ -22,25 +22,25 @@
 
 <div class="form-group ${hasErrors(bean: teamInstance, field: 'players', 'error')} ">
 	<h2>
-		<g:message code="team.players.label" default="Players" />
+		<g:message code="team.players.label" default="Player names" />
 	</h2>
 
 	<g:each var="i" in="${0..(Team.constraints.players.getAppliedConstraint('maxSize').maxSize-1)}">
 		<div class="form-group ${hasErrors(bean: teamInstance, field: 'name', 'error')} required">
 			<label for="playerName">
-				# ${i}
+				# ${(i+1)}
 				<g:if test="${Team.constraints.players.getAppliedConstraint('minSize').minSize > i}">
 					<span class="required-indicator">*</span>
 				</g:if>
 			</label>
-			<g:if test="${teamInstance.players[i]}">
+			<g:if test="${teamInstance.id && teamInstance.players[i]}">
 				${teamInstance?.players[i]?.name}
 				<a href="${g.createLink(controller:"team", action:"removePlayer", id:teamInstance.id, params: [playerId:teamInstance.players[i].id])}" class="btn btn-danger">
 					<g:message code="default.button.remove.label" default="Remove" /></button>
 				</a>
 			</g:if>
 			<g:else>
-				<input type="text" class="form-control" name="playerName" ${Team.constraints.players.getAppliedConstraint('minSize').minSize > i ? 'required=""' : ''} value=""/>
+				<input type="text" class="form-control" name="playerName" ${Team.constraints.players.getAppliedConstraint('minSize').minSize > i ? 'required=""' : ''} value="${teamInstance?.players[i]?.name}" />
 			</g:else>
 
 		</div>

@@ -8,6 +8,8 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class TournamentController {
 
+    def tournamentService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -50,6 +52,11 @@ class TournamentController {
             return
         }
 
+        List<Game> games = tournamentService.generateGamesFor(tournamentInstance.teams)
+        games.each {
+            tournamentInstance.addToGames(it)
+        }
+
         tournamentInstance.save flush: true
 
         request.withFormat {
@@ -70,6 +77,12 @@ class TournamentController {
         if (tournamentInstance == null) {
             notFound()
             return
+        }
+
+        tournamentInstance.teams = []
+        params.list("teams").each {
+            def team = Team.findById(it as long)
+            tournamentInstance.addToTeams(team)
         }
 
         if (tournamentInstance.hasErrors()) {

@@ -33,13 +33,14 @@ class TeamController {
 
         teamInstance.players = [];
         params.list("playerName").each { name ->
-            if (!name.equals("")) {
+            if (!name.toString().trim().equals("")) {
                 Player p = new Player();
                 p.name = name;
                 teamInstance.addToPlayers(p);
             }
         }
 
+        teamInstance.validate()
         if (teamInstance.hasErrors()) {
             respond teamInstance.errors, view: 'create'
             return
@@ -69,13 +70,14 @@ class TeamController {
 
         teamInstance.players = [];
         params.list("playerName").each { name ->
-            if (!name.equals("")) {
+            if (!name.toString().trim().equals("")) {
                 Player p = new Player();
                 p.name = name;
                 teamInstance.addToPlayers(p);
             }
         }
 
+        teamInstance.validate()
         if (teamInstance.hasErrors()) {
             respond teamInstance.errors, view: 'edit'
             return
@@ -86,7 +88,7 @@ class TeamController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Team.label', default: 'Team'), teamInstance.id])
-                redirect controller: "team"
+                redirect controller: "team", action: "show", id: teamInstance.id
             }
             '*' { respond teamInstance, [status: OK] }
         }
@@ -95,6 +97,12 @@ class TeamController {
     @Transactional
     def removePlayer(Team teamInstance) {
         def playerInstance = teamInstance.players.find { it.id == params.playerId as Long }
+
+        if (teamInstance.id && teamInstance.players.size() == 1) {
+            teamInstance.errors.rejectValue("players", "team.players.minSize.notMet", "Team must have at least one player.")
+            respond teamInstance.errors, view: 'edit'
+            return
+        }
 
         if (playerInstance) {
             teamInstance.removeFromPlayers(playerInstance)

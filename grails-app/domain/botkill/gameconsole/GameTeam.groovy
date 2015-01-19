@@ -7,11 +7,12 @@ class GameTeam {
     static belongsTo = ["game":Game]
     static hasMany = ["teams":Team]
 
+    Set teams = new HashSet()
     TeamColor color
     int points
 
     static constraints = {
-        teams size: 1..10, minSize: 1, maxSize: 10
+        teams nullable: false, minSize: 1, maxSize: 10
     }
 
     static mapping = {

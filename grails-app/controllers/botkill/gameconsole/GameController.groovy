@@ -68,14 +68,11 @@ class GameController {
             }
         }
 
-        if (teams.size() <= 1) {
-            gameInstance.errors.rejectValue("gameTeams", "game.gameTeam.minSize.notMet", "Not enough teams for the game. Select at least 2 AIs.")
-        } else {
-            teams.each { teamNumber, gameTeam ->
-                gameInstance.addToGameTeams(gameTeam)
-            }
+        teams.each { teamNumber, gameTeam ->
+            gameInstance.addToGameTeams(gameTeam)
         }
 
+        gameInstance.validate()
         if (gameInstance.hasErrors()) {
             respond gameInstance.errors, view: 'create'
             return
@@ -108,6 +105,7 @@ class GameController {
     }
 
     def edit(Game gameInstance) {
+
         respond gameInstance
     }
 
@@ -116,6 +114,47 @@ class GameController {
         if (gameInstance == null) {
             notFound()
             return
+        }
+
+        GameTeam.deleteAll(gameInstance.gameTeams)
+        gameInstance.gameTeams = []
+
+        def teams = [:]
+        // If mode is TEAM, then parse which Team will go into what GameTeam
+        if (gameInstance.mode.equals(GameMode.TEAM)) {
+            params.list("teamAssignments").each {
+                if (!it.equals("")) {
+                    def aiIdAndTeamNumber = it.split(":")
+                    def aiId = aiIdAndTeamNumber[0]
+                    def team = (aiIdAndTeamNumber[1] as int) - 1
+                    // If team is not yet created
+                    if (!teams[team]) {
+                        GameTeam gameTeam = new GameTeam()
+                        gameTeam.color = TeamColor.values()[team]
+                        gameTeam.game = gameInstance
+                        gameTeam.addToTeams(Team.findById((aiId as long)))
+                        teams[team] = gameTeam
+                    }
+                    // Else, get the team and add ai to it
+                    else {
+                        GameTeam gameTeam = teams[team] as GameTeam
+                        gameTeam.addToTeams(Team.findById((aiId as long)))
+                    }
+                }
+            }
+        } else {
+            // Each AI will go to separate game team
+            params.list("teams").eachWithIndex { aiId, i ->
+                GameTeam gameTeam = new GameTeam()
+                gameTeam.color = TeamColor.values()[i]
+                gameTeam.game = gameInstance
+                gameTeam.addToTeams(Team.findById(aiId))
+                teams[i] = gameTeam
+            }
+        }
+
+        teams.each { teamNumber, gameTeam ->
+            gameInstance.addToGameTeams(gameTeam)
         }
 
         if (gameInstance.hasErrors()) {
