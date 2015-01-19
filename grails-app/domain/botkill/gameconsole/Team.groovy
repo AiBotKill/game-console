@@ -3,7 +3,6 @@ package botkill.gameconsole
 class Team {
 
     static hasMany = ["players":Player]
-    static belongsTo = [Tournament]
 
     Set players = new HashSet()
     String name
