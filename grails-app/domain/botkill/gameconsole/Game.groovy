@@ -8,6 +8,7 @@ class Game {
 
     // Game may have many teams to compete against each other. Team in the same GameTeam are on the same side.
     static hasMany = ["gameTeams":GameTeam]
+    static belongsTo = [Tournament]
 
     Date dateCreated
     Date lastUpdated
