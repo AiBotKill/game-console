@@ -11,7 +11,7 @@
 <h2><g:message code="tournament.teams.label" default="Teams" /></h2>
 <g:each in="${botkill.gameconsole.Team.list()}">
 	<div class="${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
-		<input type="checkbox" name="teams" value="${it.id}" ${tournamentInstance.teams?.id?.contains(it.id) ? 'checked=checked' : ''} />
+		<input type="checkbox" name="teamIds" value="${it.id}" ${tournamentInstance.teams?.id?.contains(it.id) ? 'checked=checked' : ''} />
 		${it.name}
 	</div>
 </g:each>

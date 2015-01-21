@@ -26,7 +26,7 @@
 					<span id="gameTeams-label" class="property-label"><g:message code="game.gameTeams.label" default="Game Teams" /></span>
 					
 						<g:each in="${gameInstance.gameTeams}" var="g">
-						<span class="property-value" aria-labelledby="gameTeams-label">${g?.encodeAsHTML()}</span>
+						<span class="property-value list-group-item" aria-labelledby="gameTeams-label">${g?.encodeAsHTML()}</span>
 						</g:each>
 					
 				</li>

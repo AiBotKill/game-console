@@ -7,18 +7,19 @@ import botkill.gameconsole.enums.GameState
 class Game {
 
     // Game may have many teams to compete against each other. Team in the same GameTeam are on the same side.
-    static hasMany = ["gameTeams":GameTeam]
+    static hasMany = ["gameTeams":GameTeam, "results": GameResult]
     static belongsTo = [Tournament]
 
     Date dateCreated
     Date lastUpdated
 
-    Set gameTeams = new HashSet()
+    List gameTeams = new ArrayList()
+    List results
     GameMode mode
     GameState state = GameState.CREATED
     GameEnvironment environment
 
-    int roundTime = 300 // in seconds
+    int roundTime = 60 // in seconds
     int rounds = 3
     int darkness
     int rain
@@ -31,8 +32,10 @@ class Game {
         roundTime min: 1, max: 600
     }
 
+    static transients = ['AICount']
+
     static mapping = {
-        gameTeams sort: 'points', order: 'desc'
+        gameTeams sort: 'id', order: 'asc'
     }
 
     String toString() {
@@ -43,4 +46,20 @@ class Game {
         mode.toString() + ": " + teamMembers.join(" vs ")
     }
 
+    int getAICount() {
+        return gameTeams.teams*.size().sum()
+    }
+
+    void start() {
+        state = GameState.STARTED
+        save flush:true
+
+        // TODO: Send "start game" -message to NATS
+    }
+
+    void end(List<GameResult> results) {
+        state = GameState.FINISHED
+        this.results = results
+        save flush:true
+    }
 }

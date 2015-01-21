@@ -35,7 +35,8 @@ class TournamentController {
         tournamentInstance.state = GameState.STARTED
         tournamentInstance.save flush:true
 
-        // TODO: Generate games and start them one at a time
+        // Start the first game. Nats will call us when this ends and the next game may be started.
+        tournamentInstance.startNextGame()
 
         redirect controller: "tournament", action: "index"
     }
@@ -47,6 +48,15 @@ class TournamentController {
             return
         }
 
+        tournamentInstance.teams = []
+        params.list("teamIds").each { teamId ->
+            TournamentTeam tt = new TournamentTeam()
+            tt.tournament = tournamentInstance
+            tt.team = Team.findById(teamId as long)
+            tournamentInstance.addToTeams(tt)
+        }
+
+        tournamentInstance.validate()
         if (tournamentInstance.hasErrors()) {
             respond tournamentInstance.errors, view: 'create'
             return
@@ -79,12 +89,17 @@ class TournamentController {
             return
         }
 
+        TournamentTeam.deleteAll(tournamentInstance.teams)
         tournamentInstance.teams = []
-        params.list("teams").each {
-            def team = Team.findById(it as long)
-            tournamentInstance.addToTeams(team)
+
+        params.list("teamIds").each { teamId ->
+            TournamentTeam tt = new TournamentTeam()
+            tt.tournament = tournamentInstance
+            tt.team = Team.findById(teamId as long)
+            tournamentInstance.addToTeams(tt)
         }
 
+        tournamentInstance.validate()
         if (tournamentInstance.hasErrors()) {
             respond tournamentInstance.errors, view: 'edit'
             return

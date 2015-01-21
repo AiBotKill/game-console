@@ -68,7 +68,6 @@ class TeamController {
             return
         }
 
-        teamInstance.players = [];
         params.list("playerName").each { name ->
             if (!name.toString().trim().equals("")) {
                 Player p = new Player();

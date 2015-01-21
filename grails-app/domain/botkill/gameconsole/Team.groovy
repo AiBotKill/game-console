@@ -4,14 +4,14 @@ class Team {
 
     static hasMany = ["players":Player]
 
-    Set players = new HashSet()
+    List players = new ArrayList()
     String name
     String programmingLanguage
 
     static constraints = {
         name blank: false, unique: true
         programmingLanguage blank: false
-        players nullable: false, maxSize: 2, minSize: 1
+        players nullable: false, maxSize: 3, minSize: 1
     }
 
     static mapping = {

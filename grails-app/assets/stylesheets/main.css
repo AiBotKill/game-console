@@ -47,6 +47,10 @@ body {
 	background-color: black;
 	border-bottom: 4px solid #FFD34E;
 	padding-left: 10%;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
 }
 
 #footer, #push {
@@ -77,6 +81,7 @@ body {
 	width: 100%;
 	height: 220px;
 	overflow: hidden;
+	margin-top: 75px;
 }
 
 #titlebanner #herobackground {
@@ -453,4 +458,47 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 
 .teamSelect {
 	display: inline;
+}
+
+.blinking {
+	-webkit-animation: blink 1s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-play-state: running;
+	-webkit-animation-direction: alternate;
+	animation: blink 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	animation-play-state: running;
+	animation-direction: alternate;
+}
+.rotating {
+	-webkit-animation: rotate 1s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-play-state: running;
+	animation: rotate 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	animation-play-state: running;
+}
+
+@-webkit-keyframes rotate {
+	100% { -webkit-transform: rotate(360deg); }
+}
+
+/* Standard syntax */
+@keyframes rotate {
+	100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); }
+}
+
+@-webkit-keyframes blink {
+	from { opacity: 0;}
+	to { opacity: 1;}
+}
+
+/* Standard syntax */
+@keyframes blink {
+	from { opacity: 0;}
+	to { opacity: 1;}
 }

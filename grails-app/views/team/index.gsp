@@ -37,7 +37,7 @@
 						<td><g:link action="show" id="${teamInstance.id}">${fieldValue(bean: teamInstance, field: "name")}</g:link></td>
 						<td><g:fieldValue field="programmingLanguage" bean="${teamInstance}" /></td>
 						<g:each var="j" in="${0..(Team.constraints.players.getAppliedConstraint('maxSize').maxSize-1)}">
-						<td>${teamInstance.players[j]?.name}</td>
+						<td>${teamInstance.players[j]}</td>
 						</g:each>
 					</tr>
 				</g:each>

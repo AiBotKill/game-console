@@ -39,9 +39,16 @@
 
 						<td>
 							<ul>
-							<g:each in="${gameInstance.gameTeams}">
-								<li>${it}</li>
-							</g:each>
+								<g:if test="${gameInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">
+									<g:each in="${gameInstance.results}">
+									<li>${it}</li>
+									</g:each>
+								</g:if>
+								<g:else>
+									<g:each in="${gameInstance.gameTeams}">
+										<li>${it}</li>
+									</g:each>
+								</g:else>
 							</ul>
 						</td>
 
@@ -58,6 +65,9 @@
 							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.STARTED}">
 								<a href="#TODO">
 									<button class="btn btn-success"><g:message code="default.view.label" default="View game" /></button>
+								</a>
+								<a href="${g.createLink(controller: 'game', action: 'end', id: gameInstance.id)}">
+									<button class="btn btn-danger"><g:message code="default.view.label" default="End game" /></button>
 								</a>
 							</g:elseif>
 							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">

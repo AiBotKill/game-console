@@ -29,13 +29,22 @@
 					
 				</li>
 				</g:if>
+
+				<g:if test="${tournamentInstance?.state}">
+					<li class="fieldcontain">
+						<span id="state-label" class="property-label"><g:message code="tournament.state.label" default="State" /></span>
+
+						<span class="property-value" aria-labelledby="state-label"><g:fieldValue bean="${tournamentInstance}" field="state"/></span>
+
+					</li>
+				</g:if>
 			
 				<g:if test="${tournamentInstance?.teams}">
 				<li class="fieldcontain">
 					<span id="teams-label" class="property-label"><g:message code="tournament.teams.label" default="Teams" /></span>
 					
 						<g:each in="${tournamentInstance.teams}" var="t">
-						<span class="property-value" aria-labelledby="teams-label"><g:link controller="team" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
+						<span class="property-value list-group-item" aria-labelledby="teams-label"><g:link controller="team" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					
 				</li>
@@ -46,17 +55,16 @@
 					<span id="games-label" class="property-label"><g:message code="tournament.games.label" default="Games" /></span>
 					
 						<g:each in="${tournamentInstance.games}" var="g">
-						<span class="property-value" aria-labelledby="games-label"><g:link controller="game" action="show" id="${g.id}">${g?.encodeAsHTML()}</g:link></span>
+						<span class="property-value list-group-item ${g.state == botkill.gameconsole.enums.GameState.FINISHED ? 'list-group-item-success' : ''}" aria-labelledby="games-label">
+							<g:link controller="game" action="show" id="${g.id}">${g?.encodeAsHTML()}</g:link>
+							<g:if test="${g.state == botkill.gameconsole.enums.GameState.FINISHED}">
+								<span class="glyphicon glyphicon-ok pull-right"></span>
+							</g:if>
+							<g:elseif test="${g.state == botkill.gameconsole.enums.GameState.STARTED}">
+								<span class="rotating glyphicon glyphicon-repeat pull-right"></span>
+							</g:elseif>
+						</span>
 						</g:each>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${tournamentInstance?.state}">
-				<li class="fieldcontain">
-					<span id="state-label" class="property-label"><g:message code="tournament.state.label" default="State" /></span>
-					
-						<span class="property-value" aria-labelledby="state-label"><g:fieldValue bean="${tournamentInstance}" field="state"/></span>
 					
 				</li>
 				</g:if>

@@ -96,10 +96,46 @@ class GameController {
             return
         }
 
-        gameInstance.state = GameState.STARTED
-        gameInstance.save flush:true
+        gameInstance.start()
 
-        // TODO: Send "start game" -message to NATS
+        redirect controller: "game", action: "index"
+    }
+
+    // TODO: Remove when tested
+    @Transactional
+    def end(Game gameInstance) {
+        if (gameInstance == null) {
+            notFound()
+            return
+        }
+
+        // Generate some results
+        Random random = new Random()
+        List<GameResult> results = new ArrayList<>()
+        int aisLeft = gameInstance.AICount
+        gameInstance.gameTeams.each { GameTeam gt ->
+            gt.teams.each { Team t ->
+                GameResult gr = new GameResult()
+                gr.team = t
+                gr.survived = random.nextInt(2) == 0
+                gr.kills = random.nextInt(Math.max(aisLeft - 1, 1))
+                aisLeft = gr.kills
+                gr.damageDone = random.nextInt(1000)
+                results.add(gr)
+            }
+        }
+
+        Tournament t = Tournament.createCriteria().get {
+            games {
+                eq('id', gameInstance.id)
+            }
+        }
+        if (t) {
+            t.endCurrentGame(results)
+            t.startNextGame()
+        } else {
+            gameInstance.end(results)
+        }
 
         redirect controller: "game", action: "index"
     }
