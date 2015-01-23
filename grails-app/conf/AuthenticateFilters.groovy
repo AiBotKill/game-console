@@ -18,7 +18,7 @@ class AuthenticateFilters {
                 Team loggedInUser = Team.getLoggedInUser();
 
                 boolean hasPermission = hasPermission(loggedInUser, controllerName, actionName, params.id)
-                if (Environment.current == Environment.DEVELOPMENT && !hasPermission) {
+                if (!hasPermission) {
                     ApplicationTagLib g = (ApplicationTagLib)grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib');
                     flash.message = g.message(code:"development.message.noAccess", default:"Login required");
                     redirect controller: "team", action: "loginForm"
@@ -45,7 +45,7 @@ class AuthenticateFilters {
      */
     boolean hasPermission(Team u, String controller, String action, String id) {
         // Allowed for all
-        def whitelist = ["team:create", "team:save", "team:show", "team:index", "team:login", "team:loginForm", "tournaments:index", "tournaments:show", "game:index", "game:show"]
+        def whitelist = ["visualize:*", "team:create", "team:save", "team:show", "team:index", "team:login", "team:loginForm", "tournaments:index", "tournaments:show", "game:index", "game:show"]
 
         for (String w : whitelist) {
             def whitelisted = w.split(":")
@@ -79,7 +79,7 @@ class AuthenticateFilters {
         }
 
         // Just be logged in ok?
-        if (u && controller.equals("game") && (action.equals("create") || action.equals("edit") || action.equals("delete"))) {
+        if (u && controller.equals("game") && (action.equals("create") || action.equals("start") || action.equals("end") || action.equals("save") || action.equals("update") || action.equals("edit") || action.equals("delete"))) {
             return true
         }
 
