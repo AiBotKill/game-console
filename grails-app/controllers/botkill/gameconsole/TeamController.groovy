@@ -7,11 +7,30 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class TeamController {
 
+    def authenticateService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Team.list(params), model: [teamInstanceCount: Team.count()]
+    }
+
+    def loginForm() {
+        render view: "login"
+    }
+
+    def login() {
+        Team loggedInUser = authenticateService.login(params.name, params.password);
+
+        if (loggedInUser) {
+            flash.message = "${g.message(code:'user.loggedIn', args:[loggedInUser.name], default:'Login succeeded! Welcome {0}!')}";
+            redirect(controller: "team", action: "index");
+            return
+        }
+
+        flash.error = "${g.message(code:'user.loginFailed', default:'Login failed!')}";
+        redirect action: "loginForm"
     }
 
     def show(Team teamInstance) {
@@ -31,6 +50,8 @@ class TeamController {
             return
         }
 
+        teamInstance.password = params.plainPassword
+
         teamInstance.players = [];
         params.list("playerName").each { name ->
             if (!name.toString().trim().equals("")) {
@@ -46,6 +67,7 @@ class TeamController {
             return
         }
 
+        teamInstance.password = PasswordService.encrypt(params.plainPassword);
         teamInstance.save flush: true
 
         request.withFormat {
@@ -74,6 +96,10 @@ class TeamController {
                 p.name = name;
                 teamInstance.addToPlayers(p);
             }
+        }
+
+        if (params.plainPassword?.size() > 0) {
+            teamInstance.password = params.plainPassword
         }
 
         teamInstance.validate()

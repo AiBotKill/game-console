@@ -11,6 +11,14 @@
 
 </div>
 
+<div class="form-group ${hasErrors(bean: teamInstance, field: 'password', 'error')}">
+	<label for="name">
+		<g:message code="team.password.label" default="Password" />
+	</label>
+	<g:passwordField class="form-control" name="plainPassword" value=""/>
+
+</div>
+
 <div class="form-group ${hasErrors(bean: teamInstance, field: 'programmingLanguage', 'error')} required">
 	<label for="programmingLanguage">
 		<g:message code="team.programmingLanguage.label" default="Programming language" />

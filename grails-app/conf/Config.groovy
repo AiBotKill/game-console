@@ -103,6 +103,15 @@ environments {
     }
 }
 
+utils {
+    cookie {
+        domain = ".hell.fi"
+        path = "/"
+        secure = false
+        age = 2592000
+    }
+}
+
 // log4j configuration
 log4j = {
     appenders {
