@@ -1,0 +1,9 @@
+@font-face{
+    font-family: 'Inconsolata'
+}
+
+#gameCanvas{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}

@@ -7,6 +7,9 @@ class UrlMappings {
             }
         }
 
+        "/visualize/2d/$id?" (controller: "visualize", action: "twodimensions")
+        "/visualize/3d/$id?" (controller: "visualize", action: "threedimensions")
+
         "/"(controller:"team")
         "500"(view:'/error')
 	}

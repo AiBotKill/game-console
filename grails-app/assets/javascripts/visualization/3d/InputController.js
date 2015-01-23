@@ -1,0 +1,96 @@
+var pressedKeys;
+var cooldown = 0;
+
+function checkInput() {
+    pressedKeys = KeyboardJS.activeKeys();
+    inputCooldown();
+    for (var i = 0; i < pressedKeys.length; i++) {
+        processInput(pressedKeys[i]);
+    }
+}
+
+function inputCooldown() {
+    if (cooldown > 0) {
+        cooldown--;
+    }
+}
+
+function processInput(key) {
+    if (cooldown === 0) {
+        if (key === '1') {
+            cooldown = 20;
+            camera.position.x = 17.79;
+            camera.position.y = 0.19;
+            camera.position.z = 4.570000000000018;
+            camera.rotation.x = 1.57;
+            camera.rotation.y = 1.53;
+            setStatusMessage("FPS CAMERA");
+            isHUDDrawn = true;
+        }
+        if (key === '2') {
+            cooldown = 20;
+            camera.position.x = 16;
+            camera.position.y = 10;
+            camera.rotation.x = 1.57;
+            camera.rotation.y = 2.7390000000000025;
+            setStatusMessage("EXTERNAL CAMERA");
+            isHUDDrawn = false;
+        }
+
+        if (key === KEY_LEFT) {
+            camera.rotation.y += 0.03;
+        }
+        if (key === KEY_RIGHT) {
+            camera.rotation.y -= 0.03;
+        }
+        if (key === "w") {
+            camera.translateZ(-1.5);
+        }
+        if (key === 's') {
+            camera.translateZ(1.5);
+        }
+        if (key === 'a') {
+            camera.translateX(-1.5);
+        }
+        if (key === 'd') {
+            camera.translateX(1.5);
+        }
+
+        if (key === 'y') {
+            camera.translateY(0.1);
+        }
+        if (key === 'u') {
+            camera.translateY(-0.1);
+
+        }
+        /*
+         if (key === 'n') {
+         testPlayer.rotation.y += 0.01;
+         console.log(testPlayer.rotation.y);
+         }
+         if (key === 'm') {
+         testPlayer.rotation.y -= 0.01;
+         console.log(testPlayer.rotation.y);
+         }
+         /*
+         if (key === 'h') {
+         if (isHUDDrawn) {
+         cooldown = 20;
+         isHUDDrawn = false;
+         }
+         else {
+         cooldown = 20;
+         isHUDDrawn = true;
+         }
+         }
+         */
+        /*
+         console.log(camera.position.x);
+         console.log(camera.position.y);
+         console.log("ROT X " + camera.rotation.x);
+         console.log("ROT Y " + camera.rotation.y);
+         */
+    }
+}
+
+

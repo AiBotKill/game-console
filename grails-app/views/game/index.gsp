@@ -63,8 +63,11 @@
 								</a>
 							</g:if>
 							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.STARTED}">
-								<a href="#TODO">
-									<button class="btn btn-success"><g:message code="default.view.label" default="View game" /></button>
+								<a href="${g.createLink(controller: 'visualize', action: '2d', id: gameInstance.id)}">
+									<button class="btn btn-success"><g:message code="default.view.label" default="View 2D game" /></button>
+								</a>
+								<a href="${g.createLink(controller: 'visualize', action: '3d', id: gameInstance.id)}">
+									<button class="btn btn-primary"><g:message code="default.view.label" default="View 3D game" /></button>
 								</a>
 								<a href="${g.createLink(controller: 'game', action: 'end', id: gameInstance.id)}">
 									<button class="btn btn-danger"><g:message code="default.view.label" default="End game" /></button>
@@ -72,7 +75,7 @@
 							</g:elseif>
 							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">
 								<a href="#TODO">
-									<button class="btn btn-success"><g:message code="default.view.label" default="View game" /></button>
+									<button class="btn btn-success"><g:message code="default.view.label" default="View 2D game" /></button>
 								</a>
 							</g:elseif>
 						</td>
