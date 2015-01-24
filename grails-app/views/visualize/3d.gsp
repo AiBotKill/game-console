@@ -3,13 +3,13 @@
     <title>${gameInstance}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <asset:stylesheet src="visualization/3d/styles.css"/>
+    <style rel="stylesheet" src="../../css/visualization/3d/main.css" ></style>
 </head>
 <body onload="initialization()">
 <div id="container">
     <canvas id="gameCanvas"></canvas>
 </div>
-<div id="assetsPath" style="display:none;">${assetPath(src:'visualization/3d/')}</div>
+<div id="assetsPath" style="display:none;">../../images/visualization/3d/</div>
 
 <g:javascript src="visualization/3d/keyboard.js"/>
 <g:javascript src="visualization/3d/three.min.js"/>
