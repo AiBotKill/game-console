@@ -10,7 +10,7 @@ define("config", [], function() {
         debugMode: true,
         tilesXCount: 21,
         tilesYCount: 13,
-        assetsPath: document.getElementById("assetsPath").innerHTML,
+        assetsPath: "../../images/visualization/2d/",
         getTileSize : function() {
             return window.innerHeight / (this.tilesYCount + 1); // Tiles on y-axis and +1 for hud controls
         }

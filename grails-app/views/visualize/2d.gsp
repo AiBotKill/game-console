@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>${gameInstance}</title>
-    <asset:stylesheet rel="stylesheet" src="visualization/2d/main.css" />
+    <style rel="stylesheet" src="../../css/visualization/2d/main.css" ></style>
 </head>
 <body>
 <div id="maskdiv">
@@ -18,7 +18,6 @@
         </div>
     </div>
 </div>
-<div id="assetsPath" style="display:none;">${assetPath(src:'visualization/2d/')}</div>
 
 <g:javascript data-main="../../js/visualization/2d/app" src="lib/require.js" />
 </body>
