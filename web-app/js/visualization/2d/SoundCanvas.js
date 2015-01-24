@@ -1,5 +1,5 @@
 
-define(function(require) {
+define(["require", "./HudCanvas", "./config"], function(require) {
     var hud = require("HudCanvas");
     var config = require("config");
     var TILE_SIZE = config.getTileSize();

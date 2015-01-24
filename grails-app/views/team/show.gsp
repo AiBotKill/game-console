@@ -30,6 +30,15 @@
 				</li>
 				</g:if>
 
+				<g:if test="${teamInstance?.botId && teamInstance.equals(Team.getLoggedInUser())}">
+					<li class="fieldcontain">
+						<span id="botId-label" class="property-label"><g:message code="team.botId.label" default="Bot ID" /></span>
+
+						<span class="property-value" aria-labelledby="botId-label"><g:fieldValue bean="${teamInstance}" field="botId"/></span>
+
+					</li>
+				</g:if>
+
 				<g:if test="${teamInstance?.programmingLanguage}">
 					<li class="fieldcontain">
 						<span id="programmingLanguage-label" class="property-label"><g:message code="team.programmingLanguage.label" default="Programming language" /></span>

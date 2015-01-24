@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 class VisualizeController {
 
     def twodimensions() {
-        Game gameInstance = Game.findById(params.id as long)
+        Game gameInstance = Game.findById(params.id)
         if (gameInstance == null) {
             notFound()
             return
@@ -14,7 +14,7 @@ class VisualizeController {
     }
 
     def threedimensions() {
-        Game gameInstance = Game.findById(params.id as long)
+        Game gameInstance = Game.findById(params.id)
         if (gameInstance == null) {
             notFound()
             return

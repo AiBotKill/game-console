@@ -1,4 +1,4 @@
-define(function(require) {
+define(["require", "./config"], function(require) {
         var config = require("config");
         var TILE_SIZE = config.getTileSize();
         var ctx = document.getElementById("hudcanvas").getContext("2d");

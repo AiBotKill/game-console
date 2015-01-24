@@ -13,7 +13,7 @@ import org.apache.log4j.DailyRollingFileAppender
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
-grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
+grails.project.groupId = botkill.gameconsole // change this to alter the default package name and Maven publishing destination
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
@@ -92,6 +92,7 @@ grails.plugins.twitterbootstrap.fixtaglib = true
 grails.assets.less.compile = 'less4j'
 grails.assets.plugin."twitter-bootstrap".excludes = ["**/*.less"]
 grails.assets.plugin."twitter-bootstrap".includes = ["bootstrap.less"]
+grails.assets.excludes = ["visualization/**"]
 
 environments {
     development {
@@ -115,6 +116,7 @@ utils {
 // log4j configuration
 log4j = {
     appenders {
+        String logDir = grails.util.Environment.warDeployed ? System.getProperty('catalina.base') + '/logs' : 'target'
         environments {
             development {
                 console name:'stdout', layout:pattern(conversionPattern: '%c{2} [%p] - %m%n')
@@ -125,7 +127,7 @@ log4j = {
             production {
                 appender new DailyRollingFileAppender(
                         name: "rollingLogger",
-                        file: log4jFileName,
+                        file: "$logDir/error.log",
                         datePattern: "'.'yyyy-MM-dd",
                         layout: pattern(
                                 conversionPattern: "%d{yyyy-MM-dd HH:mm:ss} [%t] %x %-5p %c{2} - %m%n"

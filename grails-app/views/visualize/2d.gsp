@@ -20,6 +20,6 @@
 </div>
 <div id="assetsPath" style="display:none;">${assetPath(src:'visualization/2d/')}</div>
 
-<asset:javascript data-main="${assetPath(src:'visualization/2d/app')}" src="lib/require.js" />
+<g:javascript data-main="../../js/visualization/2d/app" src="lib/require.js" />
 </body>
 </html>

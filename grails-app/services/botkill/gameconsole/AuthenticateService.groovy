@@ -81,15 +81,15 @@ class AuthenticateService {
         String username = cs.getCookie(USERNAME_COOKIE_VALUE);
         String ulcm = cs.getCookie(USER_LOGIN_COOKIE_MAC_VALUE); // User login cookie mac
 
-        try {
-            username = new String(username.decodeBase64());
-        } catch (RuntimeException e) {
-            Logger log = Logger.getLogger(AuthenticateService.class.getPackage().getName());
-            log.debug("Invalid username in cookie. Unable to base64 decode it. Exception: ${e.getMessage()}");
-            username = null;
-        }
+        if (username && !username.equals("")) {
+            try {
+                username = new String(username.decodeBase64());
+            } catch (RuntimeException e) {
+                Logger log = Logger.getLogger(AuthenticateService.class.getPackage().getName());
+                log.debug("Invalid username in cookie. Unable to base64 decode it. Exception: ${e.getMessage()}");
+                username = null;
+            }
 
-        if (username) {
             String neededMac = (Holders.grailsApplication.config.loginCookie.secretKey?.toString() + username).encodeAsSHA1();
             if (neededMac == ulcm) {
                 Team u = Team.findByName(username);
