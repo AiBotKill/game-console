@@ -5,7 +5,7 @@
  * Time: 1:13
  * To change this template use File | Settings | File Templates.
  */
-define(function(require) {
+define(["require", "./config", "./HudCanvas"], function(require) {
         var config = require("config");
         var TILE_SIZE = config.getTileSize();
         var hud = require("HudCanvas");

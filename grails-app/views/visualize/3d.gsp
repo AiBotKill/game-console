@@ -11,14 +11,14 @@
 </div>
 <div id="assetsPath" style="display:none;">${assetPath(src:'visualization/3d/')}</div>
 
-<asset:javascript src="visualization/3d/keyboard.js"/>
-<asset:javascript src="visualization/3d/three.min.js"/>
-<asset:javascript src="visualization/3d/GameConstants.js"/>
-<asset:javascript src="visualization/3d/ViewController.js"/>
-<asset:javascript src="visualization/3d/InputController.js"/>
-<asset:javascript src="visualization/3d/View.js"/>
-<asset:javascript src="visualization/3d/ViewClient.js"/>
-<asset:javascript src="visualization/3d/Util.js"/>
-<asset:javascript src="visualization/3d/Main.js"/>
+<g:javascript src="visualization/3d/keyboard.js"/>
+<g:javascript src="visualization/3d/three.min.js"/>
+<g:javascript src="visualization/3d/GameConstants.js"/>
+<g:javascript src="visualization/3d/ViewController.js"/>
+<g:javascript src="visualization/3d/InputController.js"/>
+<g:javascript src="visualization/3d/View.js"/>
+<g:javascript src="visualization/3d/ViewClient.js"/>
+<g:javascript src="visualization/3d/Util.js"/>
+<g:javascript src="visualization/3d/Main.js"/>
 </body>
 </html>

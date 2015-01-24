@@ -5,7 +5,7 @@
  * Time: 17:44
  * To change this template use File | Settings | File Templates.
  */
-define(function() {
+define("config", [], function() {
     return {
         debugMode: true,
         tilesXCount: 21,
