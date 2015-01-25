@@ -144,9 +144,11 @@ function renderHud(){
 }
 
 function generateSky(){
+    var path;
+    
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
         var skybox;
-        var path = assetsPath + "skybox/";
+        path = assetsPath + "skybox/";
         var textures = [];
 
         for (var i = 0; i < 6; i++) {
@@ -154,8 +156,8 @@ function generateSky(){
                 map: THREE.ImageUtils.loadTexture(path + "day" + i + ".png"),
                 side: THREE.BackSide
             }));
-        }
-        ;
+        };
+        
         var skyMaterial = new THREE.MeshFaceMaterial(textures);
 
         skybox = new THREE.Mesh(new THREE.BoxGeometry(8000, 8000, 8000), skyMaterial);
@@ -163,7 +165,21 @@ function generateSky(){
         scene.add(skybox);
     }
     else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
-        /* CREATE CEILING. */
+        path = assetsPath + "skybox/";
+        var ceilingType;
+        var ceiling;
+        ceilingType = "worldWall" + serverData.gamestate.environment + ".png";
+
+        var texture = THREE.ImageUtils.loadTexture(path + ceilingType);
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(80, 80);
+
+        var ceilingMaterial = new THREE.MeshBasicMaterial({map: texture});
+
+        ceiling = new THREE.Mesh(new THREE.PlaneBufferGeometry(GROUND_X, GROUND_Y), ceilingMaterial);
+        ceiling.position.x = 0;
+        ceiling.position.y = 0;
+        scene.add(ceiling);
     }
 }
 
