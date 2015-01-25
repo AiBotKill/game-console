@@ -165,7 +165,7 @@ function generateSky(){
         scene.add(skybox);
     }
     else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
-        path = assetsPath + "skybox/";
+        path = assetsPath + "env/";
         var ceilingType;
         var ceiling;
         ceilingType = "worldWall" + serverData.gamestate.environment + ".png";
@@ -311,7 +311,7 @@ function createWorldWall(width, height, depth, x, y, rotateY, wallMaterial){
     }
     scene.add(worldWall);
 }
-
+/*
 function createTree(path){
     var treeTexture = THREE.ImageUtils.loadTexture(path + "tree0.png");
 
@@ -344,7 +344,7 @@ function createTree(path){
     tree.rotation.y += Math.PI / 2;
     scene.add(tree);
 }
-
+*/
 function generateMap(){
     console.log("Generating map..");
     var path = assetsPath + "env/";
