@@ -10,6 +10,15 @@ var ground;
 var isHUDDrawn;
 var assetsPath = document.getElementById("assetsPath").innerHTML;
 
+/* Model trees. */
+var bulletTree = [];
+var playerTree = [{
+    "id":"testi",
+    "model":"", // Modelidata.
+}];
+var explosionTree = [];
+var decoTree = [];
+
 var hudStatusMessage;
 var showMessage;
 var messageDelay = 0;
@@ -29,8 +38,6 @@ var testPlayer;
 var testPlayerData = {
     "direction":0
 };
-
-var laserModel = ["", ""];
 
 /* LASER VARIABLES FOR TESTING. */
 var timeToFire = false;
@@ -78,7 +85,7 @@ function generateWorld(rounds, darkness, rain, indoor, tiles, items, players) {
     scene = new THREE.Scene();
     console.log("Lights, camera..");
     lightsCamera();
-    generateSkybox();
+    generateSky();
     generateMap();
     loadPlayerData();
     /* FOR TEST DEMOS. */
@@ -136,22 +143,45 @@ function renderHud(){
     }
 }
 
-function generateSkybox(){
-    var skybox;
-    var path = assetsPath + "skybox/";
-    var textures = [];
+function generateSky(){
+    var path;
+    
+    if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
+        var skybox;
+        path = assetsPath + "skybox/";
+        var textures = [];
 
-    for(var i = 0; i < 6; i ++){
-        textures.push(new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture(path + "day" + i + ".png"),
-            side: THREE.BackSide
-        }));
-    };
-    var skyMaterial = new THREE.MeshFaceMaterial(textures);
+        for (var i = 0; i < 6; i++) {
+            textures.push(new THREE.MeshBasicMaterial({
+                map: THREE.ImageUtils.loadTexture(path + "day" + i + ".png"),
+                side: THREE.BackSide
+            }));
+        };
+        
+        var skyMaterial = new THREE.MeshFaceMaterial(textures);
 
-    skybox = new THREE.Mesh(new THREE.BoxGeometry(8000, 8000, 8000), skyMaterial);
-    skybox.rotation.x += Math.PI / 2;
-    scene.add(skybox);
+        skybox = new THREE.Mesh(new THREE.BoxGeometry(8000, 8000, 8000), skyMaterial);
+        skybox.rotation.x += Math.PI / 2;
+        scene.add(skybox);
+    }
+    else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
+        path = assetsPath + "env/";
+        var ceilingType;
+        var ceiling;
+        ceilingType = "ground" + serverData.gamestate.environment + ".png";
+
+        var texture = THREE.ImageUtils.loadTexture(path + ceilingType);
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(80, 80);
+
+        var ceilingMaterial = new THREE.MeshBasicMaterial({map: texture, side: THREE.BackSide});
+
+        ceiling = new THREE.Mesh(new THREE.PlaneBufferGeometry(GROUND_X, GROUND_Y), ceilingMaterial);
+        ceiling.position.x = 0;
+        ceiling.position.y = 0;
+        ceiling.position.z = WORLD_WALL_HEIGHT / 2;
+        scene.add(ceiling);
+    }
 }
 
 function lightsCamera(){
@@ -175,12 +205,8 @@ function lightsCamera(){
 
 function createGround(path){
     var groundType;
-    if(indoor){
-        groundType = "ground0.png";
-    }
-    else{
-        groundType = "ground1.png";
-    }
+    groundType = "ground" + serverData.gamestate.environment + ".png";
+        
     var texture = THREE.ImageUtils.loadTexture(path + groundType);
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(80, 80);
@@ -214,28 +240,28 @@ function generateMapData(path){
     var y;
 
     var wallTextureName;
-
-    if (indoor) {
-        wallTextureName = "ground0.png";
-    }
-    else {
-        wallTextureName = "treeline.png";
-    }
+    wallTextureName = "worldWall" + serverData.gamestate.environment + ".png";
 
     /* Create world walls. */
     var wallTexture = THREE.ImageUtils.loadTexture(path + wallTextureName);
+    
+    if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
+        wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
+        wallTexture.repeat.set(4, 4);
+    }
 
     var wallMaterial = new THREE.MeshBasicMaterial({
         map: wallTexture,
         transparent: true,
         alphaTest: 0.5
     });
-
+/*
     var blockTexture = THREE.ImageUtils.loadTexture(path + "tree0.png");
 
     var blockMaterial = new THREE.MeshBasicMaterial({
         map: blockTexture
     });
+    */
 
     createWorldWall(wallWidth, 128, 0, GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallMaterial);
     createWorldWall(wallWidth, 128, 0, GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallMaterial);
@@ -245,7 +271,7 @@ function generateMapData(path){
     for(var i = 0; i < TEST_MAP.tiles.length; i ++){
         x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
         y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
-        createTileBlock(x, y, blockMaterial);
+        createTileBlock(x, y, wallMaterial);
     }
 }
 
@@ -286,7 +312,7 @@ function createWorldWall(width, height, depth, x, y, rotateY, wallMaterial){
     }
     scene.add(worldWall);
 }
-
+/*
 function createTree(path){
     var treeTexture = THREE.ImageUtils.loadTexture(path + "tree0.png");
 
@@ -319,7 +345,7 @@ function createTree(path){
     tree.rotation.y += Math.PI / 2;
     scene.add(tree);
 }
-
+*/
 function generateMap(){
     console.log("Generating map..");
     var path = assetsPath + "env/";
@@ -344,6 +370,10 @@ function loadPlayerData() {
     });
 }
 
+function addBullet(){
+    
+}
+
 function refreshPlayerData(){
     /*
      * Käydään gamestaten pelaajadataa lävitse ja vertaillaan sitä
@@ -351,8 +381,8 @@ function refreshPlayerData(){
      */
 }
 
-function refreshBullets(){
-
+function refreshBullets(bullet){
+    
 }
 
 function refreshViewState(){
