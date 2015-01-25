@@ -10,6 +10,5 @@ window.requestAnimFrame = (function () {
 })();
 
 function renderScreen(){
-    //renderHud();
     renderer.render(scene, camera);
 }

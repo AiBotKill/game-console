@@ -10,6 +10,15 @@ var ground;
 var isHUDDrawn;
 var assetsPath = document.getElementById("assetsPath").innerHTML;
 
+/* Model trees. */
+var bulletTree = [];
+var playerTree = [{
+    "id":"testi",
+    "model":"", // Modelidata.
+}];
+var explosionTree = [];
+var decoTree = [];
+
 var hudStatusMessage;
 var showMessage;
 var messageDelay = 0;
@@ -29,8 +38,6 @@ var testPlayer;
 var testPlayerData = {
     "direction":0
 };
-
-var laserModel = ["", ""];
 
 /* LASER VARIABLES FOR TESTING. */
 var timeToFire = false;
@@ -344,6 +351,10 @@ function loadPlayerData() {
     });
 }
 
+function addBullet(){
+    
+}
+
 function refreshPlayerData(){
     /*
      * Käydään gamestaten pelaajadataa lävitse ja vertaillaan sitä
@@ -351,8 +362,8 @@ function refreshPlayerData(){
      */
 }
 
-function refreshBullets(){
-
+function refreshBullets(bullet){
+    
 }
 
 function refreshViewState(){
