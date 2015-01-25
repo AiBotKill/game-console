@@ -245,8 +245,8 @@ function generateMapData(path){
     var wallTexture = THREE.ImageUtils.loadTexture(path + wallTextureName);
     
     if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(80, 80);
+        wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
+        wallTexture.repeat.set(80, 80);
     }
 
     var wallMaterial = new THREE.MeshBasicMaterial({
