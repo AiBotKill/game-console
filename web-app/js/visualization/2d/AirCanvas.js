@@ -14,15 +14,17 @@ define(["require", "./config"], function(require) {
         function drawItems(items) {
             console.log("Drawing items...");
 
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                var width = TILE_SIZE * item.size;
-                var height = TILE_SIZE * item.size;
-                ctx.shadowColor = '#101010';
-                ctx.shadowBlur = 10;
-                ctx.shadowOffsetX = 10;
-                ctx.shadowOffsetY = 10;
-                ctx.drawImage(textureMap[item.type], item.x*TILE_SIZE-width/2, item.y*TILE_SIZE-height/2, width, height);
+            if (items) {
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    var width = TILE_SIZE * item.size;
+                    var height = TILE_SIZE * item.size;
+                    ctx.shadowColor = '#101010';
+                    ctx.shadowBlur = 10;
+                    ctx.shadowOffsetX = 10;
+                    ctx.shadowOffsetY = 10;
+                    ctx.drawImage(textureMap[item.type], item.x * TILE_SIZE - width / 2, item.y * TILE_SIZE - height / 2, width, height);
+                }
             }
         }
 

@@ -14,11 +14,14 @@ class Tournament {
     List teams = new ArrayList()
     String name
     GameState state = GameState.CREATED
+    Game currentGame
 
     static constraints = {
         name blank: false, unique: true
         teams nullable: false, minSize: 4
     }
+
+    static transients = ['currentGame']
 
     static mapping = {
         teams sort: 'points', order: 'desc'
@@ -26,6 +29,12 @@ class Tournament {
 
     String toString() {
         name
+    }
+
+    Game getCurrentGame() {
+        games.find({ Game g ->
+            g.state.equals(GameState.STARTED)
+        }) as Game
     }
 
     boolean startNextGame() {
@@ -42,11 +51,7 @@ class Tournament {
     }
 
     void endCurrentGame(List<GameResult> results) {
-        Game game = games.find({ Game g ->
-            g.state.equals(GameState.STARTED)
-        }) as Game
-
-        game.end(results)
+        currentGame.end(results)
 
         // Calculate points
         results.each { GameResult gr ->

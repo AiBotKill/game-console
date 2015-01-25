@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>${gameInstance}</title>
-    <style rel="stylesheet" src="../../css/visualization/2d/main.css" ></style>
+    <link rel="stylesheet" href="../../css/visualization/2d/main.css" >
 </head>
 <body>
 <div id="maskdiv">

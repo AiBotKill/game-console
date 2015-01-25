@@ -1,5 +1,5 @@
 
-<%@ page import="botkill.gameconsole.Tournament" %>
+<%@ page import="botkill.gameconsole.enums.GameState; botkill.gameconsole.Tournament" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -42,17 +42,20 @@
 						<td>${fieldValue(bean: tournamentInstance, field: "state")}</td>
 
 						<td>
-							<g:if test="${tournamentInstance.state == botkill.gameconsole.enums.GameState.CREATED}">
+							<g:if test="${tournamentInstance.state == GameState.CREATED}">
 								<a href="${g.createLink(controller: 'tournament', action: 'start', id: tournamentInstance.id)}">
 									<button class="btn btn-success"><g:message code="tournament.start.label" default="Start tournament" /></button>
 								</a>
 							</g:if>
-							<g:elseif test="${tournamentInstance.state == botkill.gameconsole.enums.GameState.STARTED}">
-								<a href="#TODO">
-									<button class="btn btn-success"><g:message code="tournament.view.label" default="View tournament" /></button>
+							<g:elseif test="${tournamentInstance.state == GameState.STARTED}">
+								<a href="${g.createLink(controller: 'visualize', action: '2d', id: tournamentInstance.currentGame.id, params:['tournamentId':tournamentInstance.id])}">
+									<button class="btn btn-success"><g:message code="tournament.view.label" default="View 2D" /></button>
+								</a>
+								<a href="${g.createLink(controller: 'visualize', action: '3d', id: tournamentInstance.currentGame.id, params:['tournamentId':tournamentInstance.id])}">
+									<button class="btn btn-primary"><g:message code="tournament.view.label" default="View 3D" /></button>
 								</a>
 							</g:elseif>
-							<g:elseif test="${tournamentInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">
+							<g:elseif test="${tournamentInstance.state == GameState.FINISHED}">
 								<a href="#TODO">
 									<button class="btn btn-success"><g:message code="tournament.view.label" default="View tournament" /></button>
 								</a>

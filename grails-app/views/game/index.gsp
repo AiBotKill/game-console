@@ -1,5 +1,5 @@
 
-<%@ page import="botkill.gameconsole.Game" %>
+<%@ page import="botkill.gameconsole.enums.GameState; botkill.gameconsole.Game" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -39,7 +39,7 @@
 
 						<td>
 							<ul>
-								<g:if test="${gameInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">
+								<g:if test="${gameInstance.state == GameState.FINISHED}">
 									<g:each in="${gameInstance.results}">
 									<li>${it}</li>
 									</g:each>
@@ -57,25 +57,25 @@
 						<td>${fieldValue(bean: gameInstance, field: "state")}</td>
 
 						<td>
-							<g:if test="${gameInstance.state == botkill.gameconsole.enums.GameState.CREATED}">
+							<g:if test="${gameInstance.state == GameState.CREATED}">
 								<a href="${g.createLink(controller: 'game', action: 'start', id: gameInstance.id)}">
 									<button class="btn btn-success"><g:message code="default.start.label" default="Start game" /></button>
 								</a>
 							</g:if>
-							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.STARTED}">
+							<g:elseif test="${gameInstance.state == GameState.STARTED}">
 								<a href="${g.createLink(controller: 'visualize', action: '2d', id: gameInstance.id)}">
-									<button class="btn btn-success"><g:message code="default.view.label" default="View 2D game" /></button>
+									<button class="btn btn-success"><g:message code="default.view.label" default="View 2D" /></button>
 								</a>
 								<a href="${g.createLink(controller: 'visualize', action: '3d', id: gameInstance.id)}">
-									<button class="btn btn-primary"><g:message code="default.view.label" default="View 3D game" /></button>
+									<button class="btn btn-primary"><g:message code="default.view.label" default="View 3D" /></button>
 								</a>
 								<a href="${g.createLink(controller: 'game', action: 'end', id: gameInstance.id)}">
 									<button class="btn btn-danger"><g:message code="default.view.label" default="End game" /></button>
 								</a>
 							</g:elseif>
-							<g:elseif test="${gameInstance.state == botkill.gameconsole.enums.GameState.FINISHED}">
-								<a href="#TODO">
-									<button class="btn btn-success"><g:message code="default.view.label" default="View 2D game" /></button>
+							<g:elseif test="${gameInstance.state == GameState.FINISHED}">
+								<a href="${g.createLink(controller: 'visualize', action: '2d', id: gameInstance.id)}">
+									<button class="btn btn-success"><g:message code="default.view.label" default="View 2D" /></button>
 								</a>
 							</g:elseif>
 						</td>

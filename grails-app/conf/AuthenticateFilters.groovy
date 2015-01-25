@@ -47,6 +47,11 @@ class AuthenticateFilters {
         // Allowed for all
         def whitelist = ["visualize:*", "team:create", "team:save", "team:show", "team:index", "team:login", "team:loginForm", "tournaments:index", "tournaments:show", "game:index", "game:show"]
 
+        // Check if admin
+        if (u?.isAdmin) {
+            return true
+        }
+
         for (String w : whitelist) {
             def whitelisted = w.split(":")
             if (whitelisted[0] == "*" && whitelisted[1] == action) {
@@ -71,11 +76,6 @@ class AuthenticateFilters {
             if (editPlayer.team.equals(u)) {
                 return true
             }
-        }
-
-        // Check if needs admin
-        if (controller.equals("tournament") && u?.isAdmin) {
-            return true
         }
 
         // Just be logged in ok?

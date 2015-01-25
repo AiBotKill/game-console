@@ -8,11 +8,13 @@
 define("config", [], function() {
     return {
         debugMode: true,
-        tilesXCount: 21,
-        tilesYCount: 13,
+        tilesXCount: 79,
+        tilesYCount: 79,
         assetsPath: "../../images/visualization/2d/",
+        zoom: 6,
+        offset: [0,0],
         getTileSize : function() {
-            return window.innerHeight / (this.tilesYCount + 1); // Tiles on y-axis and +1 for hud controls
+            return window.innerHeight / (this.tilesYCount + 1) * this.zoom; // Tiles on y-axis and +1 for hud controls
         }
     }
 });

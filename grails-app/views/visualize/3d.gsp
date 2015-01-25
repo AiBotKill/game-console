@@ -3,7 +3,7 @@
     <title>${gameInstance}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style rel="stylesheet" src="../../css/visualization/3d/main.css" ></style>
+    <link rel="stylesheet" href="../../css/visualization/3d/styles.css" >
 </head>
 <body onload="initialization()">
 <div id="container">

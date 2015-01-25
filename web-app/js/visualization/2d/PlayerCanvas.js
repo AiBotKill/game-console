@@ -50,7 +50,7 @@ define(["require", "./HudCanvas", "./config"], function(require) {
 
         function drawName(player, x, y) {
             ctx.font = 'bold 15px Courier';
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = 'white';
             ctx.fillText(player.name, x - ctx.measureText(player.name).width/2, y - PLAYER_SIZE/2 - 20);
         }
 
