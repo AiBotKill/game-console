@@ -179,7 +179,7 @@ function generateSky(){
         ceiling = new THREE.Mesh(new THREE.PlaneBufferGeometry(GROUND_X, GROUND_Y), ceilingMaterial);
         ceiling.position.x = 0;
         ceiling.position.y = 0;
-        ceiling.position.z = WORLD_WALL_HEIGHT / 2;
+        ceiling.position.z = WALL_HEIGHT / 2;
         scene.add(ceiling);
     }
 }
