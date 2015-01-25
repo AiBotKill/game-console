@@ -2,7 +2,7 @@
     font-family: 'Inconsolata'
 }
 
-#container{
+#gameCanvas{
     position: absolute;
     left: 0px;
     top: 0px;
