@@ -199,7 +199,7 @@ function lightsCamera(){
 
     // The light that lights the whole world.
     var light = new THREE.PointLight("rgb(255, 255, 255)", 3, 20000);
-    light.position.set(500, 500, 500);
+    light.position.set(0, 0, 500);
     scene.add(light);
 }
 
@@ -211,7 +211,7 @@ function createGround(path){
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(80, 80);
 
-    var groundMaterial = new THREE.MeshBasicMaterial({map: texture});
+    var groundMaterial = new THREE.MeshLambertMaterial({map: texture});
 
     ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(GROUND_X, GROUND_Y), groundMaterial);
     ground.position.x = 0;
@@ -244,34 +244,29 @@ function generateMapData(path){
 
     /* Create world walls. */
     var wallTexture = THREE.ImageUtils.loadTexture(path + wallTextureName);
-    
-    if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
-        wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
-        wallTexture.repeat.set(4, 4);
-    }
+    wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
+    wallTexture.repeat.set(4, 1);
 
-    var wallMaterial = new THREE.MeshBasicMaterial({
+    var wallMaterial = new THREE.MeshLambertMaterial({
         map: wallTexture,
         transparent: true,
-        alphaTest: 0.5
+        alphaTest: 0.5,
+        side: THREE.DoubleSide
     });
-/*
-    var blockTexture = THREE.ImageUtils.loadTexture(path + "tree0.png");
 
-    var blockMaterial = new THREE.MeshBasicMaterial({
-        map: blockTexture
+    var blockMaterial = new THREE.MeshLambertMaterial({
+        map: wallTexture
     });
-    */
 
-    createWorldWall(wallWidth, 128, 0, GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallMaterial);
-    createWorldWall(wallWidth, 128, 0, GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallMaterial);
-    createWorldWall(wallWidth, 128, 0, GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
-    createWorldWall(wallWidth, 128, 0, -GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
+    createWorldWall(wallWidth, 128, GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallMaterial);
+    createWorldWall(wallWidth, 128, GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallMaterial);
+    createWorldWall(wallWidth, 128, GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
+    createWorldWall(wallWidth, 128, -GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
 
     for(var i = 0; i < TEST_MAP.tiles.length; i ++){
         x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
         y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
-        createTileBlock(x, y, wallMaterial);
+        createTileBlock(x, y, blockMaterial);
     }
 }
 
@@ -298,10 +293,10 @@ function createTileBlock(x, y, blockMaterial){
     scene.add(block);
 }
 
-function createWorldWall(width, height, depth, x, y, rotateY, wallMaterial){
+function createWorldWall(width, height, x, y, rotateY, wallMaterial){
     var worldWall;
 
-    worldWall = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), wallMaterial);
+    worldWall = new THREE.Mesh(new THREE.PlaneBufferGeometry(width, height), wallMaterial);
     worldWall.position.x = x;
     worldWall.position.y = y;
     worldWall.position.z = height / 2;

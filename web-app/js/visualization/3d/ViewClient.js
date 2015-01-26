@@ -7,7 +7,7 @@ function synchronizeState(){
             "rounds":"3",
             "currentRound":"0",
             "timeLeft":"300",
-            "environment": ENVIRONMENT_CAVERN,
+            "environment": TEST_ENV,
             "rain":"",
             "darkness":"",
             "bullets":[{
