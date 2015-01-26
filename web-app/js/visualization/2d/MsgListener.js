@@ -34,6 +34,10 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
             handle: function(msg) {
                 var data = JSON.parse(msg);
 
+                if (terrain.tiles.length == 0) {
+                    terrain.setTiles(data.tiles);
+                }
+
                 // Save for pause and playback
                 messageHistory.push(data);
                 if (!hud.isPaused()) {
@@ -47,7 +51,6 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                 console.log("Draw frame " + frame);
                 var data = messageHistory[frame-1];
                 if (data.tiles != undefined && data.tiles.length > 0) {
-					terrain.tiles = data.tiles;
                     terrain.draw();
                 }
                 players.draw(data.players);
@@ -66,7 +69,6 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
             },
 			redraw: function(frame) {
 				console.log("Redrawing tiles and all...");
-				terrain.draw();
 				this.draw(frame);
 			},
             resize: function() {

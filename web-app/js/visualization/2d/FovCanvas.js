@@ -140,8 +140,8 @@ define(["require", "./config", "./HudCanvas"], function(require) {
 
                 for (var i = 0; i < players.length; i++) {
                     var player = players[i];
-                    var x = player.x * TILE_SIZE;
-                    var y = player.y * TILE_SIZE;
+                    var x = player.x * TILE_SIZE + config.offset[0];
+                    var y = player.y * TILE_SIZE + config.offset[1];
 
                     drawPlayerFov(player, x, y);
                 }

@@ -11,24 +11,58 @@ define(["require", "./config", "./HudCanvas"], function(require) {
         var hud = require("HudCanvas");
         var ctx = document.getElementById("terraincanvas").getContext("2d");
         var textureMap = {};
+        var groundTextures = {};
+        var fullTiles = [];
+        var environments = ['forest','cave'];
+        var tileVariants = 4;
+        var environment;
 
         return {
 			tiles: [],
             init: function(callback) {
-                var tileTypes = [
-                    't0','t1','t2','t3','t4','grass'
-                ];
+                // Load textures
+                for (i = 0; i < environments.length; i++) {
+                    img = new Image();
+                    img.src = config.assetsPath + "tiles/"+ environments[i] + "_ground.png";
+                    groundTextures[environments[i]] = img;
 
-                for (var i = 0; i < tileTypes.length; i++) {
-                    var img = new Image();
-                    img.src = config.assetsPath + "tiles/"+ tileTypes[i] + ".png";
-                    textureMap[i] = img;
-                    if (i == tileTypes.length-1) {
-                        img.onload = callback;
+                }
+
+                for (var i = 0; i < environments.length; i++) {
+                    for (var j = 0; j < tileVariants; j++) {
+                        var img = new Image();
+                        img.src = config.assetsPath + "tiles/" + environments[i] + (j+1) + ".png";
+                        textureMap[i*(environments.length+tileVariants)+j] = img;
+                        if (i == environments.length-1 && j == tileVariants-1) {
+                            img.onload = callback;
+                        }
                     }
                 }
 
                 this.resize();
+            },
+            setTiles: function(data) {
+                //TODO: Check if forest or cavern
+                this.environment = "forest";
+
+                this.tiles = data;
+                var lastTile = this.tiles[this.tiles.length-1];
+
+                // Fill the whole map with ground
+                for (var y = 0; y <= lastTile.Y; y++) {
+                    for (var x = 0; x <= lastTile.X; x++) {
+                        var type = "ground";
+                        fullTiles[y * lastTile.Y + x] = {"Type": type, "X": x, "Y": y};
+                    }
+                }
+
+                // Place obstacles (trees, walls)
+                for (var i = 0; i < this.tiles.length; i++) {
+                    var tile = this.tiles[i];
+                    // Randomly use one of the 4 different obstacle types
+                    tile.Type = Math.floor((Math.random() * 4));
+                    fullTiles[tile.Y * lastTile.Y + tile.X] = tile;
+                }
             },
             draw: function() {
                 console.log("Drawing tiles...");
@@ -39,130 +73,64 @@ define(["require", "./config", "./HudCanvas"], function(require) {
                 ctx.fill();
 
                 if (this.tiles.length > 0) {
-                    var lastTile = this.tiles[this.tiles.length-1];
+                    var FILL_TREE_SIZE = 140;
 
-                    var fullTiles = [];
-                    // Fill tiles with ground
-                    for (var y = 0; y <= lastTile.Y; y++) {
-                        for (var x = 0; x <= lastTile.X; x++) {
-                            var tile = {"Type":5, "X":x, "Y":y};
-                            fullTiles[y*lastTile.Y+x] = tile;
-
-                            if (hud.isDebugMode()) {
-                                ctx.drawImage(textureMap[tile.Type], tile.X * TILE_SIZE + config.offset[0], tile.Y * TILE_SIZE + config.offset[1], TILE_SIZE - 1, TILE_SIZE - 1);
-                            } else {
-                                ctx.drawImage(textureMap[tile.Type], tile.X * TILE_SIZE, tile.Y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                            }
-                        }
-                    }
-
-                    // Place obstacles
-                    for (var i = 0; i < this.tiles.length; i++) {
-                        tile = this.tiles[i];
-                        fullTiles[tile.Y * lastTile.Y + tile.X] = tile;
-                    }
-
-                    // Bitmasks
-                    var TOP_LEFT = 1;
-                    var TOP = 2;
-                    var TOP_RIGHT = 4;
-                    var LEFT = 8;
-                    var RIGHT = 16;
-                    var BOTTOM_LEFT = 32;
-                    var BOTTOM = 64;
-                    var BOTTOM_RIGHT = 128;
-
-                    // Draw obstacles
+                    // Draw ground first
                     for (var i = 0; i < fullTiles.length; i++) {
-                        tile = fullTiles[i];
-
-                        var type = tile.Type;
-                        var rotate = 0;
-                        if (tile.Type == 1) {
-                            type = 4;
-                            var s = 0;
-
-                            //var topLeft = fullTiles[(tile.Y - 1) * lastTile.Y + (tile.X - 1)];
-                            //s = topLeft ? topLeft.Type == 1 ? TOP_LEFT : 0 : TOP_LEFT;
-                            var topCenter = fullTiles[(tile.Y - 1) * lastTile.Y + tile.X];
-                            s = topCenter ? topCenter.Type == 1 ? TOP : 0 : TOP;
-                            //var topRight = fullTiles[(tile.Y - 1) * lastTile.Y + (tile.X + 1)];
-                            //s |= topRight ? topRight.Type == 1 ? TOP_RIGHT : 0 : TOP_RIGHT;
-                            var left = fullTiles[tile.Y * lastTile.Y + (tile.X - 1)];
-                            s |= left ? left.Type == 1 ? LEFT : 0 : LEFT;
-                            var right = fullTiles[tile.Y * lastTile.Y + (tile.X + 1)];
-                            s |= right ? right.Type == 1 ? RIGHT : 0 : RIGHT;
-                            //var bottomLeft = fullTiles[(tile.Y + 1) * lastTile.Y + (tile.X - 1)];
-                            //s |= bottomLeft ? bottomLeft.Type == 1 ? BOTTOM_LEFT : 0 : BOTTOM_LEFT;
-                            var bottomCenter = fullTiles[(tile.Y + 1) * lastTile.Y + tile.X];
-                            s |= bottomCenter ? bottomCenter.Type == 1 ? BOTTOM : 0 : BOTTOM;
-                            //var bottomRight = fullTiles[(tile.Y + 1) * lastTile.Y + (tile.X + 1)];
-                            //s |= bottomRight ? bottomRight.Type == 1 ? BOTTOM_RIGHT : 0 : BOTTOM_RIGHT;
-
-                            // Fully surrounded
-                            if ((TOP | LEFT | RIGHT | BOTTOM) == s) {
-                                type = 0;
-                            }
-
-                            // Top open
-                            else if ((LEFT | RIGHT | BOTTOM) == s) {
-                                type = 1;
-                            }
-
-                            // Bottom open
-                            else if ((LEFT | RIGHT | TOP) == s) {
-                                type = 1;
-                                rotate = 180*Math.PI/180;
-                            }
-
-                            // Right open
-                            else if ((LEFT | BOTTOM | TOP) == s) {
-                                type = 1;
-                                rotate = 90*Math.PI/180;
-                            }
-
-                            // Left open
-                            else if ((RIGHT | BOTTOM | TOP) == s) {
-                                type = 1;
-                                rotate = 270*Math.PI/180;
-                            }
-
-                            // Left and bottom open
-                            else if ((RIGHT | TOP) == s) {
-                                type = 2;
-                                rotate = 270*Math.PI/180;
-                            }
-
-                            // Right and bottom open
-                            else if ((LEFT | TOP) == s) {
-                                type = 2;
-                                rotate = 180*Math.PI/180;
-                            }
-
-                            // Right and top open
-                            else if ((LEFT | BOTTOM) == s) {
-                                type = 2;
-                                rotate = 90*Math.PI/180;
-                            }
-
-                            // Left and top open
-                            else if ((RIGHT | BOTTOM) == s) {
-                                type = 2;
+                        var tile = fullTiles[i];
+                        if (tile.Type == 'ground') {
+                            if (hud.isDebugMode()) {
+                                ctx.drawImage(
+                                    groundTextures[this.environment],
+                                    tile.X * TILE_SIZE + config.offset[0],
+                                    tile.Y * TILE_SIZE + config.offset[1],
+                                    TILE_SIZE - 1,
+                                    TILE_SIZE - 1);
+                            } else {
+                                ctx.drawImage(
+                                    groundTextures[this.environment],
+                                    tile.X * TILE_SIZE + config.offset[0],
+                                    tile.Y * TILE_SIZE + config.offset[1],
+                                    TILE_SIZE,
+                                    TILE_SIZE);
                             }
                         }
+                    }
 
-                        if (hud.isDebugMode()) {
-                            ctx.save();
-                            ctx.translate(tile.X*TILE_SIZE + config.offset[0], tile.Y*TILE_SIZE + config.offset[1]);
-                            if (rotate > 0) {
-                                ctx.translate((TILE_SIZE-1)/2, (TILE_SIZE-1)/2);
-                                ctx.rotate(rotate);
-                                ctx.translate(-(TILE_SIZE-1)/2, -(TILE_SIZE-1)/2);
+                    // Then obstacles
+                    for (i = 0; i < fullTiles.length; i++) {
+                        tile = fullTiles[i];
+                        if (tile.Type != 'ground') {
+                            var tileType = (environments.length+tileVariants)*environments.indexOf(this.environment) + tile.Type;
+                            if (hud.isDebugMode()) {
+                                ctx.save();
+                                ctx.translate(tile.X * TILE_SIZE + config.offset[0], tile.Y * TILE_SIZE + config.offset[1]);
+                                ctx.drawImage(
+                                    textureMap[tileType],
+                                    0,
+                                    0,
+                                    FILL_TREE_SIZE,
+                                    FILL_TREE_SIZE,
+                                    0 - TILE_SIZE/4,
+                                    0 - TILE_SIZE/4,
+                                    TILE_SIZE*1.5,
+                                    TILE_SIZE*1.5);
+                                ctx.restore();
+                            } else {
+                                ctx.save();
+                                ctx.translate(tile.X * TILE_SIZE + config.offset[0], tile.Y * TILE_SIZE + config.offset[1]);
+                                ctx.drawImage(
+                                    textureMap[tileType],
+                                    0,
+                                    0,
+                                    FILL_TREE_SIZE,
+                                    FILL_TREE_SIZE,
+                                    0 - TILE_SIZE/4,
+                                    0 - TILE_SIZE/4,
+                                    TILE_SIZE*1.5,
+                                    TILE_SIZE*1.5);
+                                ctx.restore();
                             }
-                            ctx.drawImage(textureMap[type], 0, 0, TILE_SIZE-1, TILE_SIZE-1);
-                            ctx.restore();
-                        } else {
-                            ctx.drawImage(textureMap[type], tile.X * TILE_SIZE + config.offset[0], tile.Y * TILE_SIZE + config.offset[1], TILE_SIZE, TILE_SIZE);
                         }
                     }
                 }

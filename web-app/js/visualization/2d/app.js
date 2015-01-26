@@ -21,7 +21,9 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
 
             window.addEventListener("mousewheel", function(e) {
                 var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-                config.zoom += delta/10;
+                config.zoom += delta;
+                config.offset[0] += delta;
+                config.offset[1] += delta;
                 listener.resize();
                 listener.draw(hud.getCurrentFrame()); // TODO: Remove when server available
             }, false);
