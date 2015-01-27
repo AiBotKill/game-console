@@ -277,7 +277,7 @@ function generateMapData(path){
         side: THREE.DoubleSide
     });
     
-    var blockTexture = THREE.ImageUtils.loadTexture(path + blockTexture + serverData.gamestate.environment + ".png");
+    var blockTexture = THREE.ImageUtils.loadTexture(path + "blockTexture" + serverData.gamestate.environment + ".png");
     
     var blockMaterial = new THREE.MeshLambertMaterial({
         map: blockTexture,
