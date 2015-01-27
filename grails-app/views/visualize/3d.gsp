@@ -19,6 +19,7 @@
 <g:javascript src="visualization/3d/InputController.js"/>
 <g:javascript src="visualization/3d/View.js"/>
 <g:javascript src="visualization/3d/ViewClient.js"/>
+<g:javascript src="visualization/3d/ViewAssets.js"/>
 <g:javascript src="visualization/3d/Main.js"/>
 </body>
 </html>
