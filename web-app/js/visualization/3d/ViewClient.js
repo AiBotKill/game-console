@@ -9,7 +9,7 @@ function synchronizeState(){
             "timeLeft":"300",
             "environment": TEST_ENV,
             "rain":"",
-            "darkness":"",
+            "darkness":TEST_DARKNESS,
             "bullets":[{
                 "id":"0",
                 "x":"50",

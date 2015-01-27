@@ -8,6 +8,7 @@ var assetsPath = document.getElementById("assetsPath").innerHTML;
 function initialization() {
     KeyboardJS.enable();
     console.log("Initializing...");
+    loadTextures();
     initHud();
     canvas = document.getElementById("gameCanvas");
     renderer = new THREE.WebGLRenderer({antialiasing: false, canvas:canvas});

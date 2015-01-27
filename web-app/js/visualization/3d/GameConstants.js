@@ -1,18 +1,39 @@
+/* SCREEN CONSTANTS. */
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
 var AOR = WIDTH / HEIGHT;
-var FOV = 85;
+var FOV = 60;
 var FAR_DISTANCE = 8000;
 var NEAR_DISTANCE = 1;
+/*************************/
 
-var LASER_SPEED = 0.6;
-var LASER_Y_OFFSET = 0.015;
-var LASER_Z_OFFSET = 0.01;
-
+/* ENVIRONMENT CONSTANTS. */
 var ENVIRONMENT_CAVERN = 0;
 var ENVIRONMENT_FOREST = 1;
+/*****************************/
 
+/* LIGHT VALUE CONSTANTS*/
+var LIGHT_DAY = "rgb(255, 255, 255)";
+var LIGHT_EVENING = "rgb(245, 196, 61)";
+var LIGHT_NIGHT = "rgb(0, 200, 0)";
+
+var LIGHT_VALUE_DAY = 2;
+var LIGHT_VALUE_EVENING = 1;
+var LIGHT_VALUE_NIGHT = 1.80;
+
+var DARKNESS_DAY_MIN = 0;
+var DARKNESS_EVENING_MIN = 0.33;
+var DARKNESS_NIGHT_MIN = 0.66; 
+
+var LIGHT_RADIUS = 4000;
+
+/***********************************/
+
+
+/* TEST CONSTANTS FOR CONSOLE DEMOING. */
 var TEST_ENV = 1;
+var TEST_DARKNESS = 0.5;
+/***************************************/
 
 var HUD_STATUS_MESSAGE_DELAY = 100;
 

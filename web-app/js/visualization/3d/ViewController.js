@@ -1,9 +1,3 @@
-var rounds;               // How many rounds there will be
-var currentRound;           // What is the current round
-var timeLeft;               // How many seconds bots have time before round ends
-var indoor = false;             // Indoor contains more walls and rooms, outdoor has more openings
-var rain;                 // 0 - 1, 1 is total flood. Reduces hearing. 0.2 rain is 20% off from hearing.
-var darkness;             // 0 - 1, 1 is total darkness. Reduces sight. 0.2 darkness is 20% off from sight.
 var scene;
 var camera;
 var ground;
@@ -39,11 +33,8 @@ var testPlayerData = {
     "direction":0
 };
 
-/* LASER VARIABLES FOR TESTING. */
-var timeToFire = false;
-var fireCounter = 0;
-
-var targetBoard;
+var lightValue;
+var lightColor;
 
 /* Player data used for visualization.
  Sillä syncillä kun pelaajan energiat näyttävät nollaa, niin pyöritetään räjähdys
@@ -147,22 +138,24 @@ function generateSky(){
     var path;
     
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
-        var skybox;
-        path = assetsPath + "skybox/";
-        var textures = [];
+        if(serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
+            var skybox;
+            path = assetsPath + "skybox/";
+            var textures = [];
 
-        for (var i = 0; i < 6; i++) {
-            textures.push(new THREE.MeshBasicMaterial({
-                map: THREE.ImageUtils.loadTexture(path + "day" + i + ".png"),
-                side: THREE.BackSide
-            }));
-        };
-        
-        var skyMaterial = new THREE.MeshFaceMaterial(textures);
+            for (var i = 0; i < 6; i++) {
+                textures.push(new THREE.MeshBasicMaterial({
+                    map: THREE.ImageUtils.loadTexture(path + "day" + i + ".png"),
+                    side: THREE.BackSide
+                }));
+            };
 
-        skybox = new THREE.Mesh(new THREE.BoxGeometry(8000, 8000, 8000), skyMaterial);
-        skybox.rotation.x += Math.PI / 2;
-        scene.add(skybox);
+            var skyMaterial = new THREE.MeshFaceMaterial(textures);
+
+            skybox = new THREE.Mesh(new THREE.BoxGeometry(8000, 8000, 8000), skyMaterial);
+            skybox.rotation.x += Math.PI / 2;
+            scene.add(skybox);
+        }
     }
     else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
         path = assetsPath + "env/";
@@ -196,10 +189,38 @@ function lightsCamera(){
     camera.position.y = 10;
     camera.rotation.x = 1.57;
     camera.rotation.y = 2.7390000000000025;
+    
+    if(serverData.gameState.darkness >= DARKNESS_DAY_MIN && 
+            serverData.gameState.darkness < DARKNESS_EVENING_MIN){
+        lightValue = LIGHT_VALUE_DAY;
+        lightColor = LIGHT_COLOR_DAY;
+    }
+    else if(serverData.gameState.darkness >= DARKNESS_EVENING_MIN && 
+            serverData.gameState.darkness < DARKNESS_NIGHT_MIN){
+        lightValue = LIGHT_VALUE_EVENING;
+        lightColor = LIGHT_COLOR_EVENING;
+    }
+    else{
+        lightValue = LIGHT_VALUE_NIGHT;
+        lightColor = LIGHT_COLOR_NIGHT;
+    }
 
     // The light that lights the whole world.
-    var light = new THREE.PointLight("rgb(255, 255, 255)", 3, 20000);
-    light.position.set(0, 0, 500);
+    var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
+    light.position.set(GROUND_X, 0, 500);
+    scene.add(light);
+    
+    var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
+    light.position.set(-GROUND_X, 0, 500);
+    scene.add(light);
+    
+    // The light that lights the whole world.
+    var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
+    light.position.set(0, GROUND_Y, 500);
+    scene.add(light);
+
+    var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
+    light.position.set(0, -GROUND_Y, 500);
     scene.add(light);
 }
 
@@ -238,6 +259,8 @@ function generateMapData(path){
     var wallWidth = GROUND_X;
     var x;
     var y;
+    var offsetX;
+    var offsetY;
 
     var wallTextureName;
     wallTextureName = "worldWall" + serverData.gamestate.environment + ".png";
@@ -253,9 +276,12 @@ function generateMapData(path){
         alphaTest: 0.5,
         side: THREE.DoubleSide
     });
-
+    
+    var blockTexture = THREE.ImageUtils.loadTexture(path + blockTexture + serverData.gamestate.environment + ".png");
+    
     var blockMaterial = new THREE.MeshLambertMaterial({
-        map: wallTexture
+        map: blockTexture,
+        side: THREE.DoubleSide
     });
 
     createWorldWall(wallWidth, 128, GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallMaterial);
@@ -264,6 +290,8 @@ function generateMapData(path){
     createWorldWall(wallWidth, 128, -GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
 
     for(var i = 0; i < TEST_MAP.tiles.length; i ++){
+        offsetX = 1 + (Math.random() * TILE_WIDTH);
+        offsetY = 1 + (Math.random() * TILE_HEIGHT);
         x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
         y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
         createTileBlock(x, y, blockMaterial);
@@ -281,7 +309,7 @@ function createTileBlock(x, y, blockMaterial){
     var placeY;
     var placeZ;
 
-    block = new THREE.Mesh(new THREE.BoxGeometry(TILE_WIDTH, TILE_HEIGHT, TILE_DEPTH), blockMaterial);
+    block = new THREE.Mesh(new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT, TILE_DEPTH), blockMaterial);
     placeX = x + TILE_WIDTH / 2;
     placeY = y + TILE_HEIGHT / 2;
     placeZ = TILE_HEIGHT / 2;
