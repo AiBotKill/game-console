@@ -190,13 +190,13 @@ function lightsCamera(){
     camera.rotation.x = 1.57;
     camera.rotation.y = 2.7390000000000025;
     
-    if(serverData.gameState.darkness >= DARKNESS_DAY_MIN && 
-            serverData.gameState.darkness < DARKNESS_EVENING_MIN){
+    if(serverData.gamestate.darkness >= DARKNESS_DAY_MIN && 
+            serverData.gamestate.darkness < DARKNESS_EVENING_MIN){
         lightValue = LIGHT_VALUE_DAY;
         lightColor = LIGHT_COLOR_DAY;
     }
-    else if(serverData.gameState.darkness >= DARKNESS_EVENING_MIN && 
-            serverData.gameState.darkness < DARKNESS_NIGHT_MIN){
+    else if(serverData.gamestate.darkness >= DARKNESS_EVENING_MIN && 
+            serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
         lightValue = LIGHT_VALUE_EVENING;
         lightColor = LIGHT_COLOR_EVENING;
     }
