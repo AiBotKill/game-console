@@ -296,7 +296,7 @@ function generateMapData(path){
         offsetY = 1 + (Math.random() * TILE_HEIGHT);
         x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
         y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
-        createTileBlock(x, y, blockMaterial);
+        createTileBlock(x + offsetX, y + offsetY, blockMaterial);
     }
 }
 
