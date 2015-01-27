@@ -281,6 +281,8 @@ function generateMapData(path){
     
     var blockMaterial = new THREE.MeshLambertMaterial({
         map: blockTexture,
+        transparent: true,
+        alphaTest: 0.5,
         side: THREE.DoubleSide
     });
 
@@ -309,7 +311,7 @@ function createTileBlock(x, y, blockMaterial){
     var placeY;
     var placeZ;
 
-    block = new THREE.Mesh(new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT, TILE_DEPTH), blockMaterial);
+    block = new THREE.Mesh(new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT), blockMaterial);
     placeX = x + TILE_WIDTH / 2;
     placeY = y + TILE_HEIGHT / 2;
     placeZ = TILE_HEIGHT / 2;
@@ -318,6 +320,14 @@ function createTileBlock(x, y, blockMaterial){
     block.position.y = placeY;
     block.position.z = placeZ;
     block.rotation.x += Math.PI / 2;
+    scene.add(block);
+    
+    block = new THREE.Mesh(new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT), blockMaterial);
+    block.position.x = placeX;
+    block.position.y = placeY;
+    block.position.z = placeZ;
+    block.rotation.x += Math.PI / 2;
+    block.rotation.y += Math.PI / 2;
     scene.add(block);
 }
 
