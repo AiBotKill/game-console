@@ -193,16 +193,16 @@ function lightsCamera(){
     if(serverData.gamestate.darkness >= DARKNESS_DAY_MIN && 
             serverData.gamestate.darkness < DARKNESS_EVENING_MIN){
         lightValue = LIGHT_VALUE_DAY;
-        lightColor = LIGHT_COLOR_DAY;
+        lightColor = LIGHT_DAY;
     }
     else if(serverData.gamestate.darkness >= DARKNESS_EVENING_MIN && 
             serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
         lightValue = LIGHT_VALUE_EVENING;
-        lightColor = LIGHT_COLOR_EVENING;
+        lightColor = LIGHT_EVENING;
     }
     else{
         lightValue = LIGHT_VALUE_NIGHT;
-        lightColor = LIGHT_COLOR_NIGHT;
+        lightColor = LIGHT_NIGHT;
     }
 
     // The light that lights the whole world.
