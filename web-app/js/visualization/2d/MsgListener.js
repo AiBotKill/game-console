@@ -54,6 +54,9 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                     terrain.draw();
                 }
                 players.draw(data.players);
+                // Draw player names, hp bars and other stuff to hud.
+                // Hud is on top of fov canvas so darkness won't affect on it.
+                hud.drawPlayerData(data.players);
                 air.draw(data.items, data.sounds, data.bullets);
                 fov.draw(data.players);
                 sound.draw(data.sounds);

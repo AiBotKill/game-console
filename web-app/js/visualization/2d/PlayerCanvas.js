@@ -39,42 +39,13 @@ define(["require", "./HudCanvas", "./config"], function(require) {
             ctx.beginPath();
             ctx.arc(x, y, player.hearing*TILE_SIZE/20, 0, 2 * Math.PI, false);
             ctx.lineWidth = 1;
-            var opacity = hud.isDebugMode() ? 0.1 : 0.08;
+            var opacity = hud.isDebugMode() ? 0.1 : 0.2;
             ctx.fillStyle = "rgba(240, 255, 90, " + opacity + ")";
             if (hud.isDebugMode()) {
                 ctx.strokeStyle = "rgba(0,0,0,0.5)";
                 ctx.stroke();
             }
             ctx.fill();
-        }
-
-        function drawName(player, x, y) {
-            ctx.font = 'bold 15px Courier';
-            ctx.fillStyle = 'white';
-            ctx.fillText(player.name, x - ctx.measureText(player.name).width/2, y - PLAYER_SIZE/2 - 20);
-        }
-
-        function drawHealthBar(player, x, y) {
-            ctx.fillStyle = "black";
-            var x1 = x - player.maxHp/2 - 1;
-            var y1 = y - PLAYER_SIZE/2 - 11;
-            var width = player.maxHp + 2;
-            var height = 12;
-            ctx.fillRect(x1, y1, width, height);
-
-            ctx.fillStyle = "red";
-            x1 = x - player.maxHp/2;
-            y1 = y - PLAYER_SIZE/2 - 10;
-            width = player.maxHp;
-            height = 10;
-            ctx.fillRect(x1, y1, width, height);
-
-            ctx.fillStyle = "green";
-            x1 = x - player.maxHp/2;
-            y1 = y - PLAYER_SIZE/2 - 10;
-            width = player.currentHp;
-            height = 10;
-            ctx.fillRect(x1, y1, width, height);
         }
 
         return {
@@ -94,8 +65,6 @@ define(["require", "./HudCanvas", "./config"], function(require) {
 
                     drawRingOfHearing(player, x, y);
                     drawPlayer(player, x, y);
-                    drawName(player, x, y);
-                    drawHealthBar(player, x, y);
                 }
             },
             resize: function() {

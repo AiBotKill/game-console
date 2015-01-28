@@ -11,7 +11,7 @@ define(["require", "./config", "./HudCanvas"], function(require) {
         var hud = require("HudCanvas");
 
         var FOV = 70;
-        var DARKNESS = 0.6;
+        var DARKNESS = 0.5;
         var FOV_GRADIENT_AMOUNT = 9;
         var GRADIENT_PERCENT_OF_FOV = 0.5;
         var colors = ['0,0,0', '255,0,0', '0,255,0', '0,0,255'];

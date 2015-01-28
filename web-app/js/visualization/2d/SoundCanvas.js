@@ -25,8 +25,8 @@ define(["require", "./HudCanvas", "./config"], function(require) {
 
         for (var i = 0; i < sounds.length; i++) {
             var sound = sounds[i];
-            var x = sound.x * TILE_SIZE;
-            var y = sound.y * TILE_SIZE;
+            var x = sound.x * TILE_SIZE + config.offset[0];
+            var y = sound.y * TILE_SIZE + config.offset[1];
 
             var animatingSound = {
                 x: x,
@@ -76,8 +76,8 @@ define(["require", "./HudCanvas", "./config"], function(require) {
             // -0.1 because I don't want the sound arc disappear totally.
             var opacityToDecreasePerMilli = (START_OPACITY - 0.1) / SOUND_ANIM_TIME / 1000;
 
-            var newRadius = deltatime * radiusToIncreasePerMilli;
-            var newLineWidth = deltatime * SOUND_START_LINE_WIDTH / millisToReachMaxRadius;
+            //var newRadius = deltatime * radiusToIncreasePerMilli;
+            //var newLineWidth = deltatime * SOUND_START_LINE_WIDTH / millisToReachMaxRadius;
             var newOpacity = deltatime * opacityToDecreasePerMilli;
 
             if (sound.opacity - newOpacity >= 0) {
