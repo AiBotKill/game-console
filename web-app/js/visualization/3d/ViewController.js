@@ -69,7 +69,7 @@ var player = {
 };
 
 
-function generateWorld(rounds, darkness, rain, indoor, tiles, items, players) {
+function generateWorld() {
     console.log("Generating world...");
     modelLoader = new THREE.JSONLoader;
     scene = new THREE.Scene();
@@ -129,7 +129,7 @@ function renderHud(){
         graphics.fillText("HP: " + playerFollowed.hp, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
         graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
 
-        graphics.fillText("Time left: " + , HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
+        graphics.fillText("Time left: " + serverData.gamestate.timeLeft, WIDTH - 32, HUD_NAME_FIELD_Y);
         
         graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
                 HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
