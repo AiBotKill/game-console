@@ -6,6 +6,8 @@ define(["require", "./config"], function(require) {
 		var DEBUG_ON = 0, DEBUG_OFF = 1,
             PLAY = 2, PAUSE = 3;
 
+        var PLAYER_SIZE = TILE_SIZE/2;
+
         var msgListener;
         var mockData; // TODO: Remove when server available
 
@@ -207,6 +209,43 @@ define(["require", "./config"], function(require) {
             },
             draw: function() {
                 drawHud();
+            },
+            drawPlayerData: function(players) {
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                drawHud();
+
+                for (var i = 0; i < players.length; i++) {
+                    var player = players[i];
+                    var x = player.x * TILE_SIZE + config.offset[0];
+                    var y = player.y * TILE_SIZE + config.offset[1];
+
+                    // Name
+                    ctx.font = 'bold 15px Courier';
+                    ctx.fillStyle = 'white';
+                    ctx.fillText(player.name, x - ctx.measureText(player.name).width/2, y - PLAYER_SIZE/2 - 20);
+
+                    // Healt bar
+                    ctx.fillStyle = "black";
+                    var x1 = x - player.maxHp/2 - 1;
+                    var y1 = y - PLAYER_SIZE/2 - 11;
+                    var width = player.maxHp + 2;
+                    var height = 12;
+                    ctx.fillRect(x1, y1, width, height);
+
+                    ctx.fillStyle = "red";
+                    x1 = x - player.maxHp/2;
+                    y1 = y - PLAYER_SIZE/2 - 10;
+                    width = player.maxHp;
+                    height = 10;
+                    ctx.fillRect(x1, y1, width, height);
+
+                    ctx.fillStyle = "green";
+                    x1 = x - player.maxHp/2;
+                    y1 = y - PLAYER_SIZE/2 - 10;
+                    width = player.currentHp;
+                    height = 10;
+                    ctx.fillRect(x1, y1, width, height);
+                }
             },
             resize: function() {
                 TILE_SIZE = config.getTileSize();
