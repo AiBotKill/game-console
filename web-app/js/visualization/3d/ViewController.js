@@ -286,6 +286,13 @@ function generateMapData(path){
     createWorldWall(wallWidth, 128, GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
     createWorldWall(wallWidth, 128, -GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
     
+    for (var i = 0; i < TEST_MAP.tiles.length; i++) {
+        offsetX = 1 + (Math.random() * TILE_WIDTH);
+        offsetY = 1 + (Math.random() * TILE_HEIGHT);
+        x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
+        y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
+        createTileBlock(x + offsetX, y + offsetY, blockMaterial);
+    }
     
     /* GENERATE DECORATION 2D PARTICLES. */
     var decorationParticles = new THREE.Geometry();
@@ -297,6 +304,7 @@ function generateMapData(path){
         color: "rgb(255,255,255)", 
         size:4
     });
+    
     
     for(var x = -GROUND_X / TILE_WIDTH; x < GROUND_X / TILE_WIDTH; x ++){
         for(var y = -GROUND_Y / TILE_HEIGHT; y < TILE_HEIGHT / TILE_HEIGHT; y ++){
