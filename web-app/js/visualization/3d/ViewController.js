@@ -301,10 +301,9 @@ function generateMapData(path){
         map: decorationTexture,
         transparent: true,
         alphaTest: 0.5,
-        color: "rgb(255,255,255)", 
+        color: lightColor, 
         size:4
     });
-    
     
     for(var x = -GROUND_X / TILE_WIDTH; x < GROUND_X / TILE_WIDTH; x ++){
         for(var y = -GROUND_Y / TILE_HEIGHT; y < TILE_HEIGHT / TILE_HEIGHT; y ++){
