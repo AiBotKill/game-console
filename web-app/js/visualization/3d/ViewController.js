@@ -244,13 +244,18 @@ function createGround(path){
  * Here we create the decorative features specific to this terrain type.
  */
 function generateEnvFeatures(path){
-    /*
-     for(var i = 0; i < 200; i ++){
-     if(Math.floor(Math.random() * 3) > 1){
-     createTree(path);
-     }
-     }
-     */
+    if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
+        var map = THREE.ImageUtils.loadTexture(path + "grassSprite.png");
+        map.needsUpdate = true;
+        
+        var sprite = new THREE.Sprite({
+            map: map,
+            transparent: true
+        });
+        
+        sprite.position.set(0, 0, 0);
+        scene.add(sprite);
+    }
 }
 /*
  * Here we create the blocks and the walls for the world.
