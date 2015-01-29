@@ -240,23 +240,13 @@ function createGround(path){
     scene.add(ground);
 };
 
-/*
- * Here we create the decorative features specific to this terrain type.
- */
-function generateEnvFeatures(path){
-    if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
-        var map = THREE.ImageUtils.loadTexture(path + "grassSprite.png");
-        map.needsUpdate = true;
-        
-        var sprite = new THREE.Sprite({
-            map: map,
-            transparent: true
-        });
-        
-        sprite.position.set(0, 0, 0);
-        scene.add(sprite);
-    }
-}
+function generateDecorationSprite(x, y, decorationParticles){
+    var offsetX = 1 + (Math.random() * TILE_WIDTH);
+    var offsetY = 1 + (Math.random() * TILE_HEIGHT);
+    var decoration = new THREE.Vector3(x + offsetX, y + offsetY, 1);
+    decorationParticles.vertices.push(decoration);
+};
+
 /*
  * Here we create the blocks and the walls for the world.
  */
@@ -295,15 +285,31 @@ function generateMapData(path){
     createWorldWall(wallWidth, 128, GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallMaterial);
     createWorldWall(wallWidth, 128, GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
     createWorldWall(wallWidth, 128, -GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallMaterial);
-
-    for(var i = 0; i < TEST_MAP.tiles.length; i ++){
-        offsetX = 1 + (Math.random() * TILE_WIDTH);
-        offsetY = 1 + (Math.random() * TILE_HEIGHT);
-        x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
-        y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
-        createTileBlock(x + offsetX, y + offsetY, blockMaterial);
+    
+    
+    /* GENERATE DECORATION 2D PARTICLES. */
+    var decorationParticles = new THREE.Geometry();
+    var decorationTexture = THREE.ImageUtils.loadTexture(path + "grassSprite.png");
+    var decorationMaterial = new THREE.PointCloudMaterial({
+        map: decorationTexture,
+        transparent: true,
+        alphaTest: 0.5,
+        color: "rgb(255,255,255)", 
+        size:4
+    });
+    
+    for(var x = -GROUND_X / TILE_WIDTH; x < GROUND_X / TILE_WIDTH; x ++){
+        for(var y = -GROUND_Y / TILE_HEIGHT; y < TILE_HEIGHT / TILE_HEIGHT; y ++){
+            var random = (Math.random() * 10);
+            if(random > 4){
+                generateDecorationSprite(x * TILE_WIDTH, y * TILE_HEIGHT, decorationParticles);  
+            }
+        }
     }
-}
+    
+    var decorationSystem = new THREE.ParticleSystem(decorationParticles, decorationMaterial);
+    scene.add(decorationSystem);
+};
 
 /*
  * Use this to create blocks to the world.
@@ -389,7 +395,6 @@ function generateMap(){
     var path = assetsPath + "env/";
     generateMapData(path);
     createGround(path);
-    generateEnvFeatures(path);
 }
 
 function loadPlayerData() {
