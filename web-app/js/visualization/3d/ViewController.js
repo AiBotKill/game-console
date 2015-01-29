@@ -2,6 +2,7 @@ var scene;
 var camera;
 var ground;
 var isHUDDrawn;
+var assetsPath = document.getElementById("assetsPath").innerHTML;
 
 /* Model trees. */
 var bulletTree = [];
@@ -144,7 +145,7 @@ function generateSky(){
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
         if(serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
             var skybox;
-            path = "skybox/";
+            path = assets + "skybox/";
             var textures = [];
 
             for (var i = 0; i < 6; i++) {
@@ -318,7 +319,7 @@ function generateMapData(path){
         }
     }
     
-    var decorationSystem = new THREE.ParticleSystem(decorationParticles, decorationMaterial);
+    var decorationSystem = new THREE.PointCloudMaterial(decorationParticles, decorationMaterial);
     scene.add(decorationSystem);
 };
 
