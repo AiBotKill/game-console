@@ -2,7 +2,6 @@ var scene;
 var camera;
 var ground;
 var isHUDDrawn;
-var assetsPath = document.getElementById("assetsPath").innerHTML;
 
 /* Model trees. */
 var bulletTree = [];
@@ -130,6 +129,11 @@ function renderHud(){
         graphics.fillText("HP: " + playerFollowed.hp, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
         graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
 
+        graphics.fillText("Time left: " + , HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
+        
+        graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
+                HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+
         graphics.restore();
     }
 }
@@ -140,7 +144,7 @@ function generateSky(){
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
         if(serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
             var skybox;
-            path = assetsPath + "skybox/";
+            path = "skybox/";
             var textures = [];
 
             for (var i = 0; i < 6; i++) {
