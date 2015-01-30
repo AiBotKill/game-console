@@ -23,7 +23,7 @@ define(["require", "./config", './cave', './forest'], function(require) {
             },
             setTiles: function(data) {
                 //TODO: Check if forest or cave
-                this.environment = "cave";
+                this.environment = "forest";
 
                 this.tiles = data;
                 var lastTile = this.tiles[this.tiles.length-1];

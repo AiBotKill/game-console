@@ -43,11 +43,11 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                 if (!hud.isPaused()) {
                     hud.setCurrentFrame(messageHistory.length);
                     if (currentFrameIsLatest()) {
-                        this.draw(hud.getCurrentFrame());
+                        this.draw(hud.getCurrentFrame(), false);
                     }
                 }
             },
-            draw: function(frame) {
+            draw: function(frame, moving) {
                 console.log("Draw frame " + frame);
                 var data = messageHistory[frame-1];
                 if (data.tiles != undefined && data.tiles.length > 0) {
@@ -57,9 +57,11 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                 // Draw player names, hp bars and other stuff to hud.
                 // Hud is on top of fov canvas so darkness won't affect on it.
                 hud.drawPlayerData(data.players);
-                air.draw(data.items, data.sounds, data.bullets);
+                air.draw(data.items, data.bullets);
                 fov.draw(data.players);
-                sound.draw(data.sounds);
+                if (!moving) {
+                    sound.draw(data.sounds);
+                }
                 lastDrawn = (new Date()).getTime();
 
                 var that = this;
@@ -72,7 +74,7 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
             },
 			redraw: function(frame) {
 				console.log("Redrawing tiles and all...");
-				this.draw(frame);
+				this.draw(frame, false);
 			},
             resize: function() {
                 terrain.resize();

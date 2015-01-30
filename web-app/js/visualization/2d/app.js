@@ -16,7 +16,7 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
             config.zoom = Math.min(25, config.zoom);
             config.zoom = Math.max(1, config.zoom);
             listener.resize();
-            listener.draw(hud.getCurrentFrame()); // TODO: Remove when server available
+            listener.draw(hud.getCurrentFrame(), false); // TODO: Remove when server available
         };
 
         // MOCK DATA
@@ -45,15 +45,19 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
                     } else if (e.mozMovementX) {
                         config.offset[0] += e.mozMovementX;
                         config.offset[1] += e.mozMovementY;
+                    } else if (e.webkitMovementX) {
+                        config.offset[0] += e.webkitMovementX;
+                        config.offset[1] += e.webkitMovementY;
                     }
-                    //listener.resize();
-                    listener.draw(hud.getCurrentFrame()); // TODO: Remove when server available
+
+                    var moving = true;
+                    listener.draw(hud.getCurrentFrame(), moving); // TODO: Remove when server available
                 }
             });
 
             window.addEventListener("resize", function() {
                 listener.resize();
-                listener.draw(hud.getCurrentFrame()); // TODO: Remove when server available
+                listener.draw(hud.getCurrentFrame(), false); // TODO: Remove when server available
             });
         });
     }

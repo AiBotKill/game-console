@@ -49,7 +49,7 @@ define(["require", "./config"], function(require) {
 
                 this.resize();
             },
-            draw: function(items, sounds, bullets) {
+            draw: function(items, bullets) {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 drawItems(items);
                 drawBullets(bullets);
