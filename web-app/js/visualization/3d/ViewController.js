@@ -319,7 +319,7 @@ function generateMapData(path){
         }
     }
     
-    var decorationSystem = new THREE.PointCloudMaterial(decorationParticles, decorationMaterial);
+    var decorationSystem = new THREE.ParticleSystem(decorationParticles, decorationMaterial);
     scene.add(decorationSystem);
 };
 
