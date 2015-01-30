@@ -311,7 +311,7 @@ function generateMapData(path){
     });
     
     for(var x = -GROUND_X / TILE_WIDTH; x < GROUND_X / TILE_WIDTH; x ++){
-        for(var y = -GROUND_Y / TILE_HEIGHT; y < TILE_HEIGHT / TILE_HEIGHT; y ++){
+        for(var y = -GROUND_Y / TILE_HEIGHT; y < GROUND_Y / TILE_HEIGHT; y ++){
             var random = (Math.random() * 10);
             if(random > 4){
                 generateDecorationSprite(x * TILE_WIDTH, y * TILE_HEIGHT, decorationParticles);  
