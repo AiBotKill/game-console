@@ -145,7 +145,7 @@ function generateSky(){
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
         if(serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
             var skybox;
-            path = assets + "skybox/";
+            path = assetsPath + "skybox/";
             var textures = [];
 
             for (var i = 0; i < 6; i++) {
