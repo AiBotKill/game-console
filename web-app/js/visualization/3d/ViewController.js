@@ -129,11 +129,12 @@ function renderHud(){
 
         graphics.fillText("HP: " + playerFollowed.hp, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
         graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
-
-        graphics.fillText("Time left: " + serverData.gamestate.timeLeft, WIDTH - 32, HUD_NAME_FIELD_Y);
         
-        graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
-                HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+        graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH, 
+        HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+                
+        graphics.fillText("Time left: " + serverData.gamestate.timeLeft, HUD_TIME_LEFT_X, HUD_TIME_LEFT_Y);
+        graphics.fillText("Round: " + serverData.gamestate.rounds, HUD_ROUND_COUNT_X, HUD_ROUND_COUNT_Y);
 
         graphics.restore();
     }
@@ -208,6 +209,7 @@ function lightsCamera(){
     else{
         lightValue = LIGHT_VALUE_NIGHT;
         lightColor = LIGHT_NIGHT;
+        scene.fog = new THREE.Fog("rgb(0, 100, 0)", 10, 500);
     }
 
     // The light that lights the whole world.
@@ -368,40 +370,7 @@ function createWorldWall(width, height, x, y, rotateY, wallMaterial){
     }
     scene.add(worldWall);
 }
-/*
-function createTree(path){
-    var treeTexture = THREE.ImageUtils.loadTexture(path + "tree0.png");
 
-    var treeMaterial = new THREE.MeshBasicMaterial({
-        map: treeTexture,
-        transparent: true,
-        alphaTest: 0.5
-    });
-    var tree;
-    var placeX;
-    var placeY;
-    var placeZ;
-
-    tree = new THREE.Mesh(new THREE.BoxGeometry(MIN_TREE_WIDTH, MIN_TREE_HEIGHT, 0), treeMaterial);
-    placeX = Math.floor(Math.random() * 400 - 400) + 64;
-    placeY = Math.floor(Math.random() * 400 - 400) + 64;
-    placeZ = MIN_TREE_HEIGHT / 2;
-
-    tree.position.x = placeX;
-    tree.position.y = placeY;
-    tree.position.z = placeZ;
-    tree.rotation.x += Math.PI / 2;
-    scene.add(tree);
-
-    tree = new THREE.Mesh(new THREE.BoxGeometry(MIN_TREE_WIDTH, MIN_TREE_HEIGHT, 0), treeMaterial);
-    tree.position.x = placeX;
-    tree.position.y = placeY;
-    tree.position.z = placeZ;
-    tree.rotation.x += Math.PI / 2;
-    tree.rotation.y += Math.PI / 2;
-    scene.add(tree);
-}
-*/
 function generateMap(){
     console.log("Generating map..");
     var path = assetsPath + "env/";
