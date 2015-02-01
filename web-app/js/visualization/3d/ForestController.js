@@ -73,7 +73,7 @@ var ForestController = {
     
     createGround: function (path) {
         var groundType;
-        groundType = "ground" + serverData.gamestate.environment + ".png";
+        groundType = "ground.png";
 
         var texture = THREE.ImageUtils.loadTexture(path + groundType);
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -98,7 +98,7 @@ var ForestController = {
     
     generateMap: function () {
         console.log("Generating map..");
-        var path = ASSETS_PATH + "env/";
+        var path = ASSETS_PATH + "env/forest/";
         this.generateMapData(path);
         this.createGround(path);
     },
@@ -112,10 +112,10 @@ var ForestController = {
         var y;
         var offsetX;
         var offsetY;
-        var blockTexture;
+        var blockMaterials = [];
 
         var wallTextureName;
-        wallTextureName = "worldWall" + serverData.gamestate.environment + ".png";
+        wallTextureName = "worldWall.png";
 
         /* Create world walls. */
         var wallTexture = THREE.ImageUtils.loadTexture(path + wallTextureName);
@@ -131,16 +131,14 @@ var ForestController = {
             side: THREE.DoubleSide
         });
 
-        blockTexture = THREE.ImageUtils.loadTexture(path + "envTiles" + serverData.gamestate.environment + ".png");
-        blockTexture.minFilter = TEXTURE_MIN_FILTER;
-        blockTexture.magFilter = TEXTURE_MAG_FILTER;
-
-        var blockMaterial = new THREE.MeshLambertMaterial({
-            map: blockTexture,
-            transparent: true,
-            alphaTest: 0.5,
-            side: THREE.DoubleSide
-        });
+        for (var i = 0; i < 4; i++) {
+            blockMaterials.push(new THREE.MeshLambertMaterial({
+                map: THREE.ImageUtils.loadTexture(path + "block" + i + ".png"),
+                transparent: true,
+                alphaTest: 0.5,
+                side: THREE.DoubleSide
+            }));
+        }
 
         this.createWorldWall(wallWidth, 128, GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallMaterial);
         this.createWorldWall(wallWidth, 128, GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallMaterial);
@@ -152,12 +150,12 @@ var ForestController = {
             offsetY = 1 + (Math.random() * TILE_HEIGHT);
             x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
             y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
-            this.createTileBlock(x + offsetX, y + offsetY, blockMaterial);
+            this.createTileBlock(x + offsetX, y + offsetY, blockMaterials);
         }
 
         /* GENERATE DECORATION 2D PARTICLES. */
         var decorationParticles = new THREE.Geometry();
-        var decorationTexture = THREE.ImageUtils.loadTexture(path + "envTiles" + serverData.gamestate.environment + ".png");
+        var decorationTexture = THREE.ImageUtils.loadTexture(path + "grassSprite.png");
         decorationTexture.minFilter = TEXTURE_MIN_FILTER;
         decorationTexture.magFilter = TEXTURE_MAG_FILTER;
         
@@ -190,28 +188,43 @@ var ForestController = {
     createTileBlock: function (x, y, blockMaterial) {
 
         var block;
+        var blockGeometry;
         var placeX;
         var placeY;
         var placeZ;
-
-        block = new THREE.Mesh(new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT), blockMaterial);
+        var randomTile;
+        
         placeX = x + TILE_WIDTH / 2;
         placeY = y + TILE_HEIGHT / 2;
         placeZ = TILE_HEIGHT / 2;
-
+        
+        blockGeometry = new THREE.PlaneGeometry(TILE_WIDTH, TILE_HEIGHT);
+        
+        randomTile = Math.floor((Math.random() * 4));
+        
+        block = new THREE.Mesh(blockGeometry, blockMaterial[randomTile]);
+        
         block.position.x = placeX;
         block.position.y = placeY;
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
+        
         scene.add(block);
+        
+        blockGeometry = new THREE.PlaneGeometry(TILE_WIDTH, TILE_HEIGHT);
+        
+        console.log(blockGeometry);
 
-        block = new THREE.Mesh(new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT), blockMaterial);
+        block = new THREE.Mesh(blockGeometry, blockMaterial[randomTile]);
+
         block.position.x = placeX;
         block.position.y = placeY;
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
         block.rotation.y += Math.PI / 2;
+
         scene.add(block);
+        
     },
     
     createWorldWall: function (width, height, x, y, rotateY, wallMaterial) {
