@@ -1,17 +1,35 @@
 {"frames": {
 
-"ground1.png":
+"deco0.png":
 {
-	"frame": {"x":2,"y":938,"w":256,"h":256},
+	"frame": {"x":2,"y":1920,"w":128,"h":124},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":256},
-	"sourceSize": {"w":256,"h":256},
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":4,"w":128,"h":124},
+	"sourceSize": {"w":128,"h":128},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"deco1.png":
+{
+	"frame": {"x":132,"y":1920,"w":68,"h":107},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":21,"w":68,"h":107},
+	"sourceSize": {"w":128,"h":128},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"deco2.png":
+{
+	"frame": {"x":202,"y":1920,"w":117,"h":105},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":23,"w":117,"h":105},
+	"sourceSize": {"w":128,"h":128},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "tree0.png":
 {
-	"frame": {"x":2,"y":444,"w":475,"h":492},
+	"frame": {"x":2,"y":918,"w":475,"h":492},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":21,"y":20,"w":475,"h":492},
@@ -20,7 +38,7 @@
 },
 "tree1.png":
 {
-	"frame": {"x":504,"y":2,"w":496,"h":472},
+	"frame": {"x":2,"y":444,"w":496,"h":472},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":12,"y":40,"w":496,"h":472},
@@ -38,7 +56,7 @@
 },
 "tree3.png":
 {
-	"frame": {"x":479,"y":476,"w":451,"h":506},
+	"frame": {"x":2,"y":1412,"w":451,"h":506},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":29,"y":6,"w":451,"h":506},
@@ -50,8 +68,8 @@
 	"version": "1.0",
 	"image": "envTiles1.png",
 	"format": "RGBA8888",
-	"size": {"w":1024,"h":2048},
+	"size": {"w":512,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:4b8e25c60284b2279018d7d1fdb8155b:4e5455b55dffdda300c4ff3d00a8facc:3a4fa7971bb419c2249059081fa72035$"
+	"smartupdate": "$TexturePacker:SmartUpdate:c7ed6a390f1d186dcd7c3bb2b7d76dc8:aff2e6964ecb8fd12de27f555963747c:3a4fa7971bb419c2249059081fa72035$"
 }
 }
