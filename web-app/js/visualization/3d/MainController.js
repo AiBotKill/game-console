@@ -42,7 +42,7 @@ var lightColor;
 
 var visualPlayers = [{
     "id":"testi",
-    "model":"", // Modelidata.
+    "model":"" // Modelidata.
 }];
 
 var player = {

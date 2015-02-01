@@ -18,6 +18,9 @@ function initialization() {
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
         CURRENT_ENV = ForestController;
     }
+    else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
+        CURRENT_ENV = CavernController;
+    }
     
     generateWorld();
     // We enter gameloop.
