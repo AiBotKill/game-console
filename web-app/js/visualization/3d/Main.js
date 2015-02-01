@@ -10,7 +10,7 @@ function initialization() {
     console.log("Initializing...");
     initHud();
     canvas = document.getElementById("gameCanvas");
-    renderer = new THREE.WebGLRenderer({antialiasing: false, canvas:canvas});
+    renderer = new THREE.WebGLRenderer({antialiasing: true, canvas:canvas});
     renderer.setSize(WIDTH, HEIGHT);
     // Initial synchronization.
     synchronizeState();
