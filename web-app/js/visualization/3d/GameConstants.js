@@ -7,6 +7,11 @@ var FAR_DISTANCE = 8000;
 var NEAR_DISTANCE = 1;
 /*************************/
 
+/* RENDERING CONSTANTS. */
+var TEXTURE_MIN_FILTER = THREE.LinearFilter;
+var TEXTURE_MAG_FILTER = THREE.LinearFilter;
+/************************/
+
 /* ENVIRONMENT CONSTANTS. */
 var ENVIRONMENT_CAVERN = 0;
 var ENVIRONMENT_FOREST = 1;

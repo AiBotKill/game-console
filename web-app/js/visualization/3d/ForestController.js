@@ -78,6 +78,8 @@ var ForestController = {
         var texture = THREE.ImageUtils.loadTexture(path + groundType);
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(80, 80);
+        texture.minFilter = TEXTURE_MIN_FILTER;
+        texture.magFilter = TEXTURE_MAG_FILTER;
 
         var groundMaterial = new THREE.MeshLambertMaterial({map: texture});
 
@@ -119,6 +121,8 @@ var ForestController = {
         var wallTexture = THREE.ImageUtils.loadTexture(path + wallTextureName);
         wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
         wallTexture.repeat.set(4, 1);
+        wallTexture.minFilter = TEXTURE_MIN_FILTER;
+        wallTexture.magFilter = TEXTURE_MAG_FILTER;
 
         var wallMaterial = new THREE.MeshLambertMaterial({
             map: wallTexture,
@@ -128,6 +132,8 @@ var ForestController = {
         });
 
         blockTexture = THREE.ImageUtils.loadTexture(path + "envTiles" + serverData.gamestate.environment + ".png");
+        blockTexture.minFilter = TEXTURE_MIN_FILTER;
+        blockTexture.magFilter = TEXTURE_MAG_FILTER;
 
         var blockMaterial = new THREE.MeshLambertMaterial({
             map: blockTexture,
@@ -152,6 +158,9 @@ var ForestController = {
         /* GENERATE DECORATION 2D PARTICLES. */
         var decorationParticles = new THREE.Geometry();
         var decorationTexture = THREE.ImageUtils.loadTexture(path + "envTiles" + serverData.gamestate.environment + ".png");
+        decorationTexture.minFilter = TEXTURE_MIN_FILTER;
+        decorationTexture.magFilter = TEXTURE_MAG_FILTER;
+        
         var decorationMaterial = new THREE.PointCloudMaterial({
             map: decorationTexture,
             transparent: true,

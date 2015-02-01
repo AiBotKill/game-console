@@ -1,66 +1,66 @@
 {"frames": {
 
+"block0.png":
+{
+	"frame": {"x":2,"y":2,"w":512,"h":512},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":512},
+	"sourceSize": {"w":512,"h":512},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"block1.png":
+{
+	"frame": {"x":516,"y":2,"w":512,"h":512},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":512},
+	"sourceSize": {"w":512,"h":512},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"block2.png":
+{
+	"frame": {"x":1030,"y":2,"w":512,"h":512},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":512},
+	"sourceSize": {"w":512,"h":512},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"block3.png":
+{
+	"frame": {"x":2,"y":516,"w":512,"h":512},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":512},
+	"sourceSize": {"w":512,"h":512},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "deco0.png":
 {
-	"frame": {"x":2,"y":1920,"w":128,"h":124},
+	"frame": {"x":516,"y":516,"w":128,"h":128},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":4,"w":128,"h":124},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
 	"sourceSize": {"w":128,"h":128},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "deco1.png":
 {
-	"frame": {"x":132,"y":1920,"w":68,"h":107},
+	"frame": {"x":646,"y":516,"w":128,"h":128},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":24,"y":21,"w":68,"h":107},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
 	"sourceSize": {"w":128,"h":128},
 	"pivot": {"x":0.5,"y":0.5}
 },
 "deco2.png":
 {
-	"frame": {"x":202,"y":1920,"w":117,"h":105},
+	"frame": {"x":776,"y":516,"w":128,"h":128},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":5,"y":23,"w":117,"h":105},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
 	"sourceSize": {"w":128,"h":128},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"tree0.png":
-{
-	"frame": {"x":2,"y":918,"w":475,"h":492},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":21,"y":20,"w":475,"h":492},
-	"sourceSize": {"w":512,"h":512},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"tree1.png":
-{
-	"frame": {"x":2,"y":444,"w":496,"h":472},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":12,"y":40,"w":496,"h":472},
-	"sourceSize": {"w":512,"h":512},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"tree2.png":
-{
-	"frame": {"x":2,"y":2,"w":500,"h":440},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":9,"y":72,"w":500,"h":440},
-	"sourceSize": {"w":512,"h":512},
-	"pivot": {"x":0.5,"y":0.5}
-},
-"tree3.png":
-{
-	"frame": {"x":2,"y":1412,"w":451,"h":506},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":29,"y":6,"w":451,"h":506},
-	"sourceSize": {"w":512,"h":512},
 	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
@@ -68,8 +68,8 @@
 	"version": "1.0",
 	"image": "envTiles1.png",
 	"format": "RGBA8888",
-	"size": {"w":512,"h":2048},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c7ed6a390f1d186dcd7c3bb2b7d76dc8:aff2e6964ecb8fd12de27f555963747c:3a4fa7971bb419c2249059081fa72035$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a728e22dcde5c99cf222cc02e123a3db:76c46c4433849f0669b8e736258ccad7:3a4fa7971bb419c2249059081fa72035$"
 }
 }
