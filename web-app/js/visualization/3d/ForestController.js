@@ -198,7 +198,7 @@ var ForestController = {
         placeY = y + TILE_HEIGHT / 2;
         placeZ = TILE_HEIGHT / 2;
         
-        blockGeometry = new THREE.PlaneGeometry(TILE_WIDTH, TILE_HEIGHT);
+        blockGeometry = new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT);
         
         randomTile = Math.floor((Math.random() * 4));
         
@@ -211,9 +211,7 @@ var ForestController = {
         
         scene.add(block);
         
-        blockGeometry = new THREE.PlaneGeometry(TILE_WIDTH, TILE_HEIGHT);
-        
-        console.log(blockGeometry);
+        blockGeometry = new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT);
 
         block = new THREE.Mesh(blockGeometry, blockMaterial[randomTile]);
 
