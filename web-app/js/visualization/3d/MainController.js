@@ -99,7 +99,7 @@ function generateWorld() {
 function loadPlayerData() {
     console.log("Loading player graphics...");
 
-    var path =  "graphics/player/";
+    var path =  ASSETS_PATH + "player/";
     var x = 20;
     modelLoader.load(path + "robotti.json", function (geometry, materials) {
         // SkinnedMesh tukee animaatioita.
