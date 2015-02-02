@@ -157,7 +157,7 @@ var ForestController = {
             this.createTileBlock(x + offsetX, y + offsetY, blockMaterials, blockGeometry);
         }
         /* GENERATE DECORATION 2D PARTICLES. */
-        
+        /*
         var decorationParticles = new THREE.Geometry();
         var decorationTexture = THREE.ImageUtils.loadTexture(path + "grassSprite.png");
         var decorationMaterial = new THREE.PointCloudMaterial({
