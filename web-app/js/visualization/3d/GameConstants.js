@@ -30,8 +30,6 @@ var DARKNESS_DAY_MIN = 0;
 var DARKNESS_EVENING_MIN = 0.33;
 var DARKNESS_NIGHT_MIN = 0.66; 
 
-var LIGHT_RADIUS = 4000;
-
 /***********************************/
 
 
