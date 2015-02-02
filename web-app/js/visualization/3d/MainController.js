@@ -92,7 +92,7 @@ function generateWorld() {
     CURRENT_ENV.generateSky();
     CURRENT_ENV.generateMap();
     loadPlayerData();
-    scene.add(environmentGroup);
+    scene.add(CURRENT_ENV.environmentGroup);
 }
 
 
@@ -110,7 +110,7 @@ function loadPlayerData() {
         testPlayer.rotation.y = 3.099;
         testPlayer.castShadow = true;
         testPlayer.receiveShadow = true;
-        environmentGroup.add(testPlayer);
+        CURRENT_ENV.environmentGroup.add(testPlayer);
     });
 }
 
