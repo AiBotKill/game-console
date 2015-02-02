@@ -36,6 +36,15 @@ function processInput(key) {
             setStatusMessage("EXTERNAL CAMERA");
             isHUDDrawn = false;
         }
+        if (key === 't') {
+            testPlayer.rotation.y += 0.04;
+        }
+        if (key === 'j') {
+            testPlayer.translateX(0.10);
+        }
+        if (key === 'k') {
+            testPlayer.translateX(-0.10);
+        }
 
         if (key === KEY_LEFT) {
             camera.rotation.y += 0.03;
