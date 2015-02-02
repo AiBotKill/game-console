@@ -1,4 +1,5 @@
 var ForestController = {
+    environmentGroup: new THREE.Object3D(),
     
     generateSky: function () {
         var path;
@@ -19,7 +20,7 @@ var ForestController = {
 
             skybox = new THREE.Mesh(new THREE.BoxGeometry(8000, 8000, 8000), skyMaterial);
             skybox.rotation.x += Math.PI / 2;
-            scene.add(skybox);
+            this.environmentGroup.add(skybox);
         }
     },
 
@@ -52,22 +53,8 @@ var ForestController = {
             scene.fog = new THREE.Fog("rgb(0, 100, 0)", 10, 500);
         }
 
-        // The light that lights the whole world.
-        var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
-        light.position.set(GROUND_X, 0, 500);
-        scene.add(light);
-
-        var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
-        light.position.set(-GROUND_X, 0, 500);
-        scene.add(light);
-
-        // The light that lights the whole world.
-        var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
-        light.position.set(0, GROUND_Y, 500);
-        scene.add(light);
-
-        var light = new THREE.PointLight(lightColor, lightValue, LIGHT_RADIUS);
-        light.position.set(0, -GROUND_Y, 500);
+        var light = new THREE.HemisphereLight(lightColor, "rgb(0, 0, 50)", 1);
+        light.position.set(0, 0, 500);
         scene.add(light);
     },
     
@@ -84,7 +71,7 @@ var ForestController = {
         ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(GROUND_X, GROUND_Y), groundMaterial);
         ground.position.x = 0;
         ground.position.y = 0;
-        scene.add(ground);
+        this.environmentGroup.add(ground);
     },
      
     generateDecorationSprite: function (x, y, decorationParticles) {
@@ -99,6 +86,7 @@ var ForestController = {
         var path = ASSETS_PATH + "env/forest/";
         this.generateMapData(path);
         this.createGround(path);
+        scene.add(this.environmentGroup);
     },
 
     /*
@@ -111,6 +99,7 @@ var ForestController = {
         var offsetX;
         var offsetY;
         var blockMaterials = [];
+        var decoMaterials = [];
 
         var wallTextureName;
         wallTextureName = "worldWall.png";
@@ -179,10 +168,9 @@ var ForestController = {
      * Use this to create blocks to the world.
      * @returns {undefined}
      */
-    createTileBlock: function (x, y, blockMaterial) {
+    createTileBlock: function (x, y) {
 
         var block;
-        var blockGeometry;
         var placeX;
         var placeY;
         var placeZ;
@@ -191,8 +179,6 @@ var ForestController = {
         placeX = x + TILE_WIDTH / 2;
         placeY = y + TILE_HEIGHT / 2;
         placeZ = TILE_HEIGHT / 2;
-        
-        blockGeometry = new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT);
         
         randomTile = Math.floor((Math.random() * 4));
         
@@ -203,9 +189,7 @@ var ForestController = {
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
         
-        scene.add(block);
-        
-        blockGeometry = new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT);
+        this.environmentGroup.add(block);
 
         block = new THREE.Mesh(blockGeometry, blockMaterial[randomTile]);
 
@@ -215,8 +199,8 @@ var ForestController = {
         block.rotation.x += Math.PI / 2;
         block.rotation.y += Math.PI / 2;
 
-        scene.add(block);
-        
+        this.environmentGroup.add(block);
+
     },
     
     createWorldWall: function (width, height, x, y, rotateY, wallMaterial) {
@@ -231,7 +215,7 @@ var ForestController = {
         if (rotateY) {
             worldWall.rotation.y += Math.PI / 2;
         }
-        scene.add(worldWall);
+        this.environmentGroup.add(worldWall);
     }
 };
 
