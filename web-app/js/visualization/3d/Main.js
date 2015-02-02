@@ -12,6 +12,10 @@ function initialization() {
     canvas = document.getElementById("gameCanvas");
     renderer = new THREE.WebGLRenderer({antialiasing: true, canvas:canvas});
     renderer.setSize(WIDTH, HEIGHT);
+    if(SHADOWS){
+        renderer.shadowMapEnabled = true;
+        renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    }
     // Initial synchronization.
     synchronizeState();
     // We initialize the world and associated controller.

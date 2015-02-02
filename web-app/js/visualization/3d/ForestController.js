@@ -53,9 +53,23 @@ var ForestController = {
             scene.fog = new THREE.Fog("rgb(0, 100, 0)", 10, 500);
         }
 
-        var light = new THREE.HemisphereLight(lightColor, "rgb(0, 0, 50)", 1);
+        var light = new THREE.HemisphereLight(lightColor, 1);
         light.position.set(0, 0, 500);
-        scene.add(light);
+        this.environmentGroup.add(light);
+        
+        var light = new THREE.DirectionalLight("rgb(0, 0, 0)", 0);
+        light.onlyShadow = true;
+        light.position.set(GROUND_X, GROUND_Y, 1000);
+        light.castShadow = true;
+        light.shadowDarkness = 0.7;
+        light.shadowCameraVisible = false;
+        light.shadowMapWidth = 1024;
+        light.shadowMapHeight = 1024;
+
+        light.shadowCameraNear = 500;
+        light.shadowCameraFar = 4000;
+        light.shadowCameraFov = 50;
+        this.environmentGroup.add(light);
     },
     
     createGround: function (path) {
@@ -71,6 +85,8 @@ var ForestController = {
         ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(GROUND_X, GROUND_Y), groundMaterial);
         ground.position.x = 0;
         ground.position.y = 0;
+        ground.receiveShadow = true;
+        ground.castShadow = false;
         this.environmentGroup.add(ground);
     },
      
@@ -86,7 +102,6 @@ var ForestController = {
         var path = ASSETS_PATH + "env/forest/";
         this.generateMapData(path);
         this.createGround(path);
-        scene.add(this.environmentGroup);
     },
 
     /*
