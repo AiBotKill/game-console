@@ -220,13 +220,13 @@ var ForestController = {
         
     },
     
-    createWorldWall: function (width, height, x, y, rotateY, wallMaterial) {
+    createWorldWall: function (x, y, rotateY, wallGeometry, wallMaterial) {
         var worldWall;
 
-        worldWall = new THREE.Mesh(new THREE.PlaneBufferGeometry(width, height), wallMaterial);
+        worldWall = new THREE.Mesh(wallGeometry, wallMaterial);
         worldWall.position.x = x;
         worldWall.position.y = y;
-        worldWall.position.z = height / 2;
+        worldWall.position.z = WALL_HEIGHT / 2;
         worldWall.rotation.x += Math.PI / 2;
 
         if (rotateY) {
