@@ -78,7 +78,7 @@ var ForestController = {
 
         var texture = THREE.ImageUtils.loadTexture(path + groundType);
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(80, 80);
+        texture.repeat.set(GROUND_TILES, GROUND_TILES);
 
         var groundMaterial = new THREE.MeshLambertMaterial({map: texture});
 
