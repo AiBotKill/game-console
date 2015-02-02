@@ -167,7 +167,7 @@ var ForestController = {
             color: lightColor,
             size: 4
         });
-
+/*
         for (var x = -GROUND_X / 2; x < GROUND_X / 2; x += TILE_WIDTH) {
             for (var y = -GROUND_Y / 2; y < GROUND_Y; y += TILE_HEIGHT) {
                 var random = (Math.random() * 10);
@@ -179,6 +179,7 @@ var ForestController = {
 
         var decorationSystem = new THREE.ParticleSystem(decorationParticles, decorationMaterial);
         scene.add(decorationSystem);
+        */
     },
 
     /*
@@ -205,6 +206,8 @@ var ForestController = {
         block.position.y = placeY;
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
+        block.receiveShadow = true;
+        block.castShadow = true;
         
         this.environmentGroup.add(block);
 
@@ -215,6 +218,8 @@ var ForestController = {
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
         block.rotation.y += Math.PI / 2;
+        block.receiveShadow = true;
+        block.castShadow = true;
 
         this.environmentGroup.add(block);
         
