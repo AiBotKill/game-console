@@ -7,6 +7,12 @@ var FAR_DISTANCE = 8000;
 var NEAR_DISTANCE = 1;
 /*************************/
 
+/* RENDERING CONSTANTS. */
+var TEXTURE_MIN_FILTER = THREE.LinearMipMapNearestFilter;
+var TEXTURE_MAG_FILTER = THREE.LinearMipMapNearestFilter;
+var SHADOWS = true;
+/************************/
+
 /* ENVIRONMENT CONSTANTS. */
 var ENVIRONMENT_CAVERN = 0;
 var ENVIRONMENT_FOREST = 1;
@@ -24,8 +30,6 @@ var LIGHT_VALUE_NIGHT = 1.80;
 var DARKNESS_DAY_MIN = 0;
 var DARKNESS_EVENING_MIN = 0.33;
 var DARKNESS_NIGHT_MIN = 0.66; 
-
-var LIGHT_RADIUS = 4000;
 
 /***********************************/
 
@@ -53,10 +57,17 @@ var CROSSHAIR_Y = (53.5 * (HEIGHT / 100)) - CROSSHAIR_HEIGHT;
 var HUD_UPPER_PLAYER_NAME_X = 1 * (WIDTH / 100);
 var HUD_UPPER_TEXT_Y = 3 * (HEIGHT / 100);
 
+
 var HUD_NAME_FIELD_WIDTH = 20 * (WIDTH / 100);
 var HUD_NAME_FIELD_HEIGHT = 5 * (HEIGHT / 100);
 var HUD_NAME_FIELD_X = 0;
 var HUD_NAME_FIELD_Y = 0;
+
+var HUD_ROUND_COUNT_X = (WIDTH - HUD_NAME_FIELD_WIDTH) + 1 * (WIDTH / 100);
+var HUD_ROUND_COUNT_Y = 3 * (HEIGHT / 100);
+
+var HUD_TIME_LEFT_X = (WIDTH - HUD_NAME_FIELD_WIDTH) + 8 * (WIDTH / 100);
+var HUD_TIME_LEFT_Y = 3 * (HEIGHT / 100);
 
 var HUD_STATUS_FIELD_WIDTH = 28 * (WIDTH / 100);
 var HUD_STATUS_FIELD_HEIGHT = 20 * (HEIGHT / 100);
@@ -96,6 +107,8 @@ var TILE_DEPTH = 32;
 var GROUND_X = (80 * TILE_WIDTH);
 var GROUND_Y = (80 * TILE_HEIGHT);
 var GROUND_Z = 0;
+
+var GROUND_TILES = GROUND_X / 16;
 
 var WORLD_WALL_X = [(-GROUND_X / 2) + (WALL_WIDTH / 2), GROUND_X / 2 - (WALL_WIDTH / 2), -GROUND_X];
 var WORLD_WALL_Y = [(-GROUND_Y / 2) + (WALL_HEIGHT / 2), GROUND_Y / 2 - (WALL_HEIGHT / 2), GROUND_Y];

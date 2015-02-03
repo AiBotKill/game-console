@@ -3,19 +3,29 @@ var canvas;
 var hud;
 var hudImage;
 var crosshair;
-var assetsPath = document.getElementById("assetsPath").innerHTML;
+var ASSETS_PATH = document.getElementById("assetsPath").innerHTML;
 
 function initialization() {
     KeyboardJS.enable();
     console.log("Initializing...");
-    loadTextures();
     initHud();
     canvas = document.getElementById("gameCanvas");
-    renderer = new THREE.WebGLRenderer({antialiasing: false, canvas:canvas});
+    renderer = new THREE.WebGLRenderer({antialiasing: true, canvas:canvas});
     renderer.setSize(WIDTH, HEIGHT);
+    if(SHADOWS){
+        renderer.shadowMapEnabled = true;
+        renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    }
     // Initial synchronization.
     synchronizeState();
-    // We initialize the world.
+    // We initialize the world and associated controller.
+    if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
+        CURRENT_ENV = ForestController;
+    }
+    else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
+        CURRENT_ENV = CavernController;
+    }
+    
     generateWorld();
     // We enter gameloop.
     console.log("Entering gameloop...");
@@ -26,9 +36,9 @@ function initialization() {
 
 function initHud(){
     hudImage = new Image();
-    hudImage.src = assetsPath + "hud/hudPiece.png";
+    hudImage.src = ASSETS_PATH + "hud/hudPiece.png";
     crosshair = new Image();
-    crosshair.src = assetsPath + "hud/crosshair.png";
+    crosshair.src = ASSETS_PATH + "hud/crosshair.png";
 }
 
 function createHUDCanvas(){

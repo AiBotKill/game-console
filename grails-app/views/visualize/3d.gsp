@@ -15,11 +15,12 @@
 <g:javascript src="visualization/3d/keyboard.js"/>
 <g:javascript src="visualization/3d/three.min.js"/>
 <g:javascript src="visualization/3d/GameConstants.js"/>
-<g:javascript src="visualization/3d/ViewController.js"/>
+<g:javascript src="visualization/3d/ForestController.js"/>
+<g:javascript src="visualization/3d/CavernController.js"/>
+<g:javascript src="visualization/3d/MainController.js"/>
 <g:javascript src="visualization/3d/InputController.js"/>
 <g:javascript src="visualization/3d/View.js"/>
 <g:javascript src="visualization/3d/ViewClient.js"/>
-<g:javascript src="visualization/3d/ViewAssets.js"/>
 <g:javascript src="visualization/3d/Main.js"/>
 </body>
 </html>
