@@ -5,6 +5,8 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'game.label', default: 'Game')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
+		<asset:stylesheet src="jquery-ui/jquery-ui.min.css" />
+		<asset:javascript src="jquery-ui/jquery-ui.min.js" />
 	</head>
 	<body>
 		<g:set var="title" value="${message(code: 'default.edit.label', args: [entityName])}" scope="request" />

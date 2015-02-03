@@ -506,3 +506,53 @@ input:invalid:focus, select:invalid:focus, textarea:invalid:focus {
 	from { opacity: 0;}
 	to { opacity: 1;}
 }
+
+.panel .color-white {
+	background-color: white;
+}
+
+.panel .color-black {
+	background-color: black;
+	color: white;
+}
+
+.panel .color-blue {
+	background-color: blue;
+	color: white;
+}
+
+.panel .color-green {
+	background-color: green;
+}
+
+.panel .color-red {
+	background-color: red;
+}
+
+.panel .color-yellow {
+	background-color: yellow;
+}
+
+.panel .color-orange {
+	background-color: orange;
+}
+
+.panel .color-brown {
+	background-color: brown;
+}
+
+.panel .color-gold {
+	background-color: gold;
+}
+
+.panel .color-silver {
+	background-color: silver;
+}
+
+.panel .color-purple {
+	background-color: purple;
+}
+
+.panel .color-pink {
+	background-color: pink;
+}
