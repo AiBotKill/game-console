@@ -186,30 +186,6 @@ var ForestController = {
             y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
             this.createTileBlock(x + offsetX, y - offsetY, blockMaterials, blockGeometry);
         }
-        /* GENERATE DECORATION 2D PARTICLES. */
-        /*
-        var decorationParticles = new THREE.Geometry();
-        var decorationTexture = THREE.ImageUtils.loadTexture(path + "grassSprite.png");
-        var decorationMaterial = new THREE.PointCloudMaterial({
-            map: decorationTexture,
-            transparent: true,
-            alphaTest: 0.5,
-            color: lightColor,
-            size: 4
-        });
-/*
-        for (var x = -GROUND_X / 2; x < GROUND_X / 2; x += TILE_WIDTH) {
-            for (var y = -GROUND_Y / 2; y < GROUND_Y; y += TILE_HEIGHT) {
-                var random = (Math.random() * 10);
-                if (random > 4) {
-                    this.generateDecorationSprite(x, y, decorationParticles);
-                }
-            }
-        }
-
-        var decorationSystem = new THREE.ParticleSystem(decorationParticles, decorationMaterial);
-        scene.add(decorationSystem);
-        */
     },
 
     /*

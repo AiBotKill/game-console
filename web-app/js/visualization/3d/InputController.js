@@ -36,16 +36,28 @@ function processInput(key) {
             setStatusMessage("EXTERNAL CAMERA");
             isHUDDrawn = false;
         }
-        if (key === 't') {
-            testPlayer.rotation.y += 0.04;
+        if(key === 't'){
+            playerTree[0].rotation.y += 0.04;
         }
-        if (key === 'j') {
-            testPlayer.translateX(0.10);
+        if(key === 'j'){
+            playerTree[0].translateX(1);
         }
         if (key === 'k') {
-            testPlayer.translateX(-0.10);
+            playerTree[0].translateX(-1);
+        }1
+        if(key === 'space'){
+            cooldown = 3;
+            addBullet(
+            playerTree[0].position.x, 
+            playerTree[0].position.y, 
+            serverData.gamestate.bullets[0].velocity.x, 
+            serverData.gamestate.bullets[0].velocity.y);
         }
-
+        /*
+        if(key === 'l'){
+            CURRENT_ENV.environmentGroup.remove(testPlayer);
+        }
+         */
         if (key === KEY_LEFT) {
             camera.rotation.y += 0.03;
         }
@@ -96,9 +108,11 @@ function processInput(key) {
         /*
          console.log(camera.position.x);
          console.log(camera.position.y);
+         
          console.log("ROT X " + camera.rotation.x);
          console.log("ROT Y " + camera.rotation.y);
          */
+         
     }
 }
 

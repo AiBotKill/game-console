@@ -4,11 +4,14 @@ var ground;
 var isHUDDrawn;
 
 /* Model trees. */
+/* bullet tree is constructed of laserObjects. Each of which have a model for graphics
+ * and a velocity value.
+ */
 var bulletTree = [];
-var playerTree = [{
-    "id":"testi",
-    "model":"", // Modelidata.
-}];
+var playerTree = [];
+var laserTemplate = {};
+var BULLET_HEIGHT;
+
 var explosionTree = [];
 var decoTree = [];
 
@@ -29,8 +32,9 @@ var fpsMode = false;
 //TESTING
 var testPlayer;
 var testPlayerData = {
-    "direction":0
+    "direction": 0
 };
+
 
 var lightValue;
 var lightColor;
@@ -41,9 +45,9 @@ var lightColor;
  */
 
 var visualPlayers = [{
-    "id":"testi",
-    "model":"" // Modelidata.
-}];
+        "id": "testi",
+        "model": "" // Modelidata.
+    }];
 
 var player = {
     "id": "",
@@ -84,6 +88,11 @@ function setStatusMessage(message) {
     messageDelay = HUD_STATUS_MESSAGE_DELAY;
 }
 
+function generateMisc() {
+    loadPlayerData();
+    loadLaserData();
+}
+
 function generateWorld() {
     modelLoader = new THREE.JSONLoader;
     scene = new THREE.Scene();
@@ -91,26 +100,45 @@ function generateWorld() {
     CURRENT_ENV.lightsCamera();
     CURRENT_ENV.generateSky();
     CURRENT_ENV.generateMap();
-    loadPlayerData();
     scene.add(CURRENT_ENV.environmentGroup);
+}
+
+function loadLaserData() {
+    var path = "graphics/misc/";
+    modelLoader.load(path + "laser.json", function (geometry, materials) {
+        laserTemplate.geometry = geometry;
+        laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
+    });
 }
 
 
 function loadPlayerData() {
     console.log("Loading player graphics...");
 
-    var path =  ASSETS_PATH + "player/";
-    var x = 20;
+    var path = "graphics/player/";
+    var player;
+
     modelLoader.load(path + "robotti.json", function (geometry, materials) {
         // SkinnedMesh tukee animaatioita.
-        testPlayer = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
-        testPlayer.rotation.x += Math.PI / 2;
-        testPlayer.position.x = x;
-        testPlayer.position.z = -2.5;
-        testPlayer.rotation.y = 3.099;
-        testPlayer.castShadow = true;
-        testPlayer.receiveShadow = true;
-        CURRENT_ENV.environmentGroup.add(testPlayer);
+        var playerMaterials = new THREE.MeshFaceMaterial(materials);
+
+        for (var i = 0; i < serverData.gamestate.players.length; i++) {
+            player = new THREE.SkinnedMesh(geometry, playerMaterials);
+            player.scale.set(3, 3, 3);
+            player.rotation.x += Math.PI / 2;
+            player.position.x = serverData.gamestate.players[i].x;
+            player.position.y = serverData.gamestate.players[i].y;
+            var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
+            helper.update();
+            player.position.z -= helper.box.min.z;
+            console.log(helper);
+            player.castShadow = true;
+            player.receiveShadow = true;
+
+            playerTree.push(player);
+            CURRENT_ENV.environmentGroup.add(player);
+        }
+        BULLET_HEIGHT = helper.box.min.z;
     });
 }
 
@@ -155,8 +183,27 @@ function renderHud() {
     }
 }
 
-function addBullet() {
 
+function createNewBullet(x, y) {
+    var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.materials);
+    laser.position.x = x;
+    laser.position.y = y;
+    laser.position.z = BULLET_HEIGHT;
+    return laser;
+}
+
+function addBullet(x, y, xSpeed, ySpeed, id) {
+    var laserObject = {
+        "model": createNewBullet(x, y),
+        "id": id,
+        "velocity": {
+            "x": xSpeed,
+            "y": ySpeed
+        }
+    };
+
+    bulletTree.push(laserObject);
+    CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
 
 function refreshPlayerData() {
@@ -166,8 +213,16 @@ function refreshPlayerData() {
      */
 }
 
-function refreshBullets(bullet) {
+function refreshBullets() {
+    for (var i = 0; i < bulletTree.length; i++) {
+        bulletTree[i].model.translateX(bulletTree[i].velocity.x);
+        bulletTree[i].model.translateY(bulletTree[i].velocity.y);
 
+        if (bulletTree[i].model.position.x > GROUND_X) {
+            CURRENT_ENV.environmentGroup.remove(bulletTree[i].model);
+            bulletTree.splice(i, 1);
+        }
+    }
 }
 
 function refreshViewState() {

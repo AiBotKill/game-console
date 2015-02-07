@@ -10,7 +10,7 @@ function initialization() {
     console.log("Initializing...");
     initHud();
     canvas = document.getElementById("gameCanvas");
-    renderer = new THREE.WebGLRenderer({antialiasing: true, canvas:canvas});
+    renderer = new THREE.WebGLRenderer({antialiasing: false, canvas:canvas});
     renderer.setSize(WIDTH, HEIGHT);
     if(SHADOWS){
         renderer.shadowMapEnabled = true;
@@ -25,8 +25,8 @@ function initialization() {
     else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
         CURRENT_ENV = CavernController;
     }
-    
     generateWorld();
+    generateMisc();
     // We enter gameloop.
     console.log("Entering gameloop...");
     hud = createHUDCanvas();
