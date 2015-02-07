@@ -22,6 +22,26 @@ var ForestController = {
             skybox.rotation.x += Math.PI / 2;
             this.environmentGroup.add(skybox);
         }
+        else if(serverData.gamestate.darkness >= DARKNESS_EVENING_MIN &&
+                serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
+            var skybox;
+            path = ASSETS_PATH + "skybox/";
+            var textures = [];
+
+            for (var i = 0; i < 6; i++) {
+                textures.push(new THREE.MeshBasicMaterial({
+                    map: THREE.ImageUtils.loadTexture(path + "evening" + i + ".jpg"),
+                    side: THREE.BackSide
+                }));
+            }
+            ;
+
+            var skyMaterial = new THREE.MeshFaceMaterial(textures);
+
+            skybox = new THREE.Mesh(new THREE.BoxGeometry(8000, 8000, 8000), skyMaterial);
+            skybox.rotation.x += Math.PI / 2;
+            this.environmentGroup.add(skybox);
+        }
     },
 
     lightsCamera: function () {
@@ -52,23 +72,27 @@ var ForestController = {
             lightColor = LIGHT_NIGHT;
             scene.fog = new THREE.Fog("rgb(0, 100, 0)", 10, 500);
         }
-
         var light = new THREE.HemisphereLight(lightColor, 1);
         light.position.set(0, 0, 500);
         this.environmentGroup.add(light);
         
         var light = new THREE.DirectionalLight("rgb(0, 0, 0)", 0);
         light.onlyShadow = true;
-        light.position.set(GROUND_X, GROUND_Y, 1000);
+        light.position.set(0, 480, 1000);
         light.castShadow = true;
-        light.shadowDarkness = 0.7;
+        light.shadowDarkness = 0.8;
         light.shadowCameraVisible = false;
-        light.shadowMapWidth = 1024;
-        light.shadowMapHeight = 1024;
+        light.shadowMapWidth = 2048;
+        light.shadowMapHeight = 2048;
+        
+        light.shadowCameraLeft = -GROUND_X;
+        light.shadowCameraRight = GROUND_X;
+        light.shadowCameraTop = GROUND_Y;
+        light.shadowCameraBottom = -GROUND_Y;
 
         light.shadowCameraNear = 500;
-        light.shadowCameraFar = 4000;
-        light.shadowCameraFov = 50;
+        light.shadowCameraFar = 5000;
+        light.shadowCameraFov = 60;
         this.environmentGroup.add(light);
     },
     
