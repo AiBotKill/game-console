@@ -1,4 +1,4 @@
-<%@ page import="botkill.gameconsole.enums.TeamColor; botkill.gameconsole.Game" %>
+<%@ page import="botkill.gameconsole.enums.GameEnvironment; botkill.gameconsole.enums.GameMode; botkill.gameconsole.Team; botkill.gameconsole.enums.TeamColor; botkill.gameconsole.Game" %>
 
 <div class="form-group ${hasErrors(bean: gameInstance, field: 'darkness', 'error')} required">
 	<label for="darkness">
@@ -37,7 +37,7 @@
 		<g:message code="game.environment.label" default="Environment" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select class="form-control" name="environment" from="${botkill.gameconsole.enums.GameEnvironment?.values()}" keys="${botkill.gameconsole.enums.GameEnvironment.values()*.name()}" required="" value="${gameInstance?.environment?.name()}" />
+	<g:select class="form-control" name="environment" from="${GameEnvironment?.values()}" keys="${GameEnvironment.values()*.name()}" required="" value="${gameInstance?.environment?.name()}" />
 </div>
 
 <div class="form-group ${hasErrors(bean: gameInstance, field: 'mode', 'error')} required">
@@ -45,37 +45,49 @@
 		<g:message code="game.mode.label" default="Mode" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select class="form-control" id="mode" name="mode" from="${botkill.gameconsole.enums.GameMode?.values()}" keys="${botkill.gameconsole.enums.GameMode.values()*.name()}" required="" value="${gameInstance?.mode?.name()}" />
+	<g:select class="form-control" id="mode" name="mode" from="${GameMode?.values()}" keys="${GameMode.values()*.name()}" required="" value="${gameInstance?.mode?.name()}" />
 </div>
 
-<h2><g:message code="game.onlineais.label" default="AIs" /></h2>
-<g:each in="${botkill.gameconsole.Team.list()}" var="teamInstance">
-	<div class="${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
-		<input
-				type="checkbox"
-				class="participationCheckbox"
-				name="teams"
-				${gameInstance.mode == botkill.gameconsole.enums.GameMode.TEAM ? "style=display:none" : ''}
-				value="${teamInstance.id}"
-				${gameInstance.gameTeams?.teams?.id?.flatten()?.contains(teamInstance.id) ? 'checked="checked"' : ''}
-				${params?.list("teams")?.contains(teamInstance.id as String) ? 'checked="checked"' : ''} />
-
-		<select
-				class="teamSelect img-rounded"
-				name="teamAssignments"
-				${!gameInstance.id || gameInstance.mode == botkill.gameconsole.enums.GameMode.DEATHMATCH ? "style=display:none" : ""}>
-			<option value=""><g:message code="game.notParticipating.label" default="Not participating" /></option>
-			<g:each in="${1..botkill.gameconsole.enums.TeamColor.values().length}">
-				<option
-						value="${teamInstance.id}:${it}"
-						${gameInstance.gameTeams?.find{it.teams.contains(teamInstance)}?.color?.ordinal() == (it-1) ? 'selected="selected"' : ''}>
-					Team ${it}
-				</option>
-			</g:each>
-		</select>
-
-		${teamInstance.name}
+<div class="pull-left" style="width:45%">
+	<h2><g:message code="game.onlineais.label" default="AIs" /></h2>
+	<div id="ai" class="list-group ${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
+		<g:each in="${Team.list()}" var="teamInstance">
+			<span id="team-${teamInstance.id}" style="cursor:move" class="list-group-item">${teamInstance.name}</span>
+		</g:each>
+		</ul>
 	</div>
+</div>
+<div id="teamsContainer" class="pull-right" style="width:45%">
+	<h2><g:message code="game.teams.label" default="Teams" /></h2>
+	<g:each status="i" in="${gameInstance.gameTeams}" var="gameTeamInstance">
+		<div class="panel panel-default">
+			<div class="panel-heading color-${TeamColor.values()[i].toString().toLowerCase()}">
+				<h3 class="panel-title"><g:message code="game.team.label" default="Team" /> ${(i+1)}</h3>
+			</div>
+			<ul class="list-group ai-team-list" id="ai-team-${(i+1)}">
+				<g:if test="${gameTeamInstance.teams?.size() > 0}">
+					<g:each status="j" in="${gameTeamInstance.teams}" var="teamInstance">
+							<li class="list-group-item" id="ai-${(j+1)}">
+								${teamInstance.name}
+								<button onclick="removeAi(${(i+1)},${(j+1)})" type="button" class="close" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<g:hiddenField name="teamAssignments" value="${teamInstance.id}:${(i+1)}" />
+							</li>
+					</g:each>
+				</g:if>
+				<g:else>
+					<li class="list-group-item placeholder"><strong><g:message code="game.teams.placeholder" default="Drag AIs here" /></strong></li>
+				</g:else>
+			</ul>
+		</div>
+	</g:each>
+</div>
+
+<span class="hidden" id="placeholderText"><g:message code="game.teams.placeholder" default="Drag AIs here" /></span>
+<g:each status="i" in="${TeamColor.values()}" var="color">
+	<span id="color-${i}" class="hidden">${color.toString().toLowerCase()}</span>
 </g:each>
+
 
 <asset:javascript src="game.js"/>
