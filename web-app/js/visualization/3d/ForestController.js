@@ -165,7 +165,7 @@ var ForestController = {
         
         blockGeometry = new THREE.PlaneBufferGeometry(TILE_WIDTH, TILE_HEIGHT);
         
-        for(var i = 0; i < 4; i ++){
+        for(var i = 0; i < 2; i ++){
             blockMaterials.push(new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture(path + "block" + i + ".png"),
                 transparent: true,
@@ -180,11 +180,11 @@ var ForestController = {
         this.createWorldWall(-GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial);
 
         for (var i = 0; i < TEST_MAP.tiles.length; i++) {
-            offsetX = 1 + (Math.random() * TILE_WIDTH);
-            offsetY = 1 + (Math.random() * TILE_HEIGHT);
+            offsetX = 1 + (Math.random() * TILE_WIDTH / 2);
+            offsetY = 1 + (Math.random() * TILE_HEIGHT / 2);
             x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
             y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
-            this.createTileBlock(x + offsetX, y + offsetY, blockMaterials, blockGeometry);
+            this.createTileBlock(x + offsetX, y - offsetY, blockMaterials, blockGeometry);
         }
         /* GENERATE DECORATION 2D PARTICLES. */
         /*
@@ -228,7 +228,7 @@ var ForestController = {
         placeY = y + TILE_HEIGHT / 2;
         placeZ = TILE_HEIGHT / 2;
         
-        randomTile = Math.floor((Math.random() * 4));
+        randomTile = Math.floor((Math.random() * 2));
         
         block = new THREE.Mesh(blockGeometry, blockMaterial[randomTile]);
         
@@ -236,7 +236,6 @@ var ForestController = {
         block.position.y = placeY;
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
-        block.receiveShadow = true;
         block.castShadow = true;
         
         this.environmentGroup.add(block);
@@ -248,7 +247,6 @@ var ForestController = {
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
         block.rotation.y += Math.PI / 2;
-        block.receiveShadow = true;
         block.castShadow = true;
 
         this.environmentGroup.add(block);
