@@ -83,7 +83,7 @@ var ForestController = {
         if(shadows && SHADOWS){
             var light = new THREE.DirectionalLight("rgb(0, 0, 0)", 0);
             light.onlyShadow = true;
-            light.position.set(0, 480, 1000);
+            light.position.set(0, lightPosition, 1000);
             light.castShadow = true;
             light.shadowDarkness = 0.8;
             light.shadowCameraVisible = false;
