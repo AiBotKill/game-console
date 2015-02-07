@@ -62,7 +62,7 @@ var ForestController = {
                 serverData.gamestate.darkness < DARKNESS_EVENING_MIN) {
             lightValue = LIGHT_VALUE_DAY;
             lightColor = LIGHT_DAY;
-            lightPosition = 640;
+            lightPosition = 720;
         }
         else if (serverData.gamestate.darkness >= DARKNESS_EVENING_MIN &&
                 serverData.gamestate.darkness < DARKNESS_NIGHT_MIN) {
@@ -86,18 +86,18 @@ var ForestController = {
             light.position.set(0, lightPosition, 1000);
             light.castShadow = true;
             light.shadowDarkness = 0.8;
-            light.shadowCameraVisible = false;
-            light.shadowMapWidth = 2048;
-            light.shadowMapHeight = 2048;
+            light.shadowCameraVisible = true;
+            light.shadowMapWidth = 5000;
+            light.shadowMapHeight = 5000;
 
             light.shadowCameraLeft = -GROUND_X;
             light.shadowCameraRight = GROUND_X;
             light.shadowCameraTop = GROUND_Y;
             light.shadowCameraBottom = -GROUND_Y;
 
-            light.shadowCameraNear = 500;
-            light.shadowCameraFar = 5000;
-            light.shadowCameraFov = 60;
+            light.shadowCameraNear = 0;
+            light.shadowCameraFar = GROUND_X * 2;
+            light.shadowCameraFov = 100;
             this.environmentGroup.add(light);
         }
     },
