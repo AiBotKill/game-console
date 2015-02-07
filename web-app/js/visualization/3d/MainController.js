@@ -104,7 +104,7 @@ function generateWorld() {
 }
 
 function loadLaserData() {
-    var path = ASSETS_PATH + "/player/";
+    var path = ASSETS_PATH + "/misc/";
     modelLoader.load(path + "laser.json", function (geometry, materials) {
         laserTemplate.geometry = geometry;
         laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
@@ -185,6 +185,7 @@ function renderHud() {
 
 function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.materials);
+    laser.scale.set(0.5, 0.5, 0.5);
     laser.position.x = x;
     laser.position.y = y;
     laser.position.z = BULLET_HEIGHT;
