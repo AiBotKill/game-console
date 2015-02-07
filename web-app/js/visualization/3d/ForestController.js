@@ -186,6 +186,51 @@ var ForestController = {
             y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
             this.createTileBlock(x + offsetX, y - offsetY, blockMaterials, blockGeometry);
         }
+        /* GENERATE DECORATION 2D PARTICLES. */
+        
+        var decorationParticles0 = new THREE.Geometry();
+        var decorationParticles1 = new THREE.Geometry();
+        
+        var decorationTexture0 = THREE.ImageUtils.loadTexture(path + "deco0.png");
+        var decorationTexture1 = THREE.ImageUtils.loadTexture(path + "deco1.png");
+        
+        var deco0Material = new THREE.PointCloudMaterial({
+            map: decorationTexture0,
+            transparent: true,
+            alphaTest: 0.5,
+            color: lightColor,
+            size: 4
+        });
+        
+        var deco1Material = new THREE.PointCloudMaterial({
+            map: decorationTexture1,
+            transparent: true,
+            alphaTest: 0.5,
+            color: lightColor,
+            size: 4
+        });
+
+        for (var x = -GROUND_X / 2; x < GROUND_X / 2; x += TILE_WIDTH) {
+            for (var y = -GROUND_Y / 2; y < GROUND_Y / 2; y += TILE_HEIGHT) {
+                var random = (Math.random() * 20);
+                if (random < 6) {
+                    this.generateDecorationSprite(x, y, decorationParticles1);
+                    this.generateDecorationSprite(x, y, decorationParticles1);
+                    this.generateDecorationSprite(x, y, decorationParticles1);
+                    this.generateDecorationSprite(x, y, decorationParticles1);
+                }
+                else if(random > 7 && random <= 12){
+                    this.generateDecorationSprite(x, y, decorationParticles0);
+                    this.generateDecorationSprite(x, y, decorationParticles0);
+                    this.generateDecorationSprite(x, y, decorationParticles0);
+                    this.generateDecorationSprite(x, y, decorationParticles0);
+                }
+
+            }
+        }
+        
+        this.environmentGroup.add(new THREE.PointCloud(decorationParticles0, deco0Material));
+        this.environmentGroup.add(new THREE.PointCloud(decorationParticles1, deco1Material));
     },
 
     /*

@@ -131,7 +131,6 @@ function loadPlayerData() {
             var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
             helper.update();
             player.position.z -= helper.box.min.z;
-            console.log(helper);
             player.castShadow = true;
             player.receiveShadow = true;
 
