@@ -3,7 +3,7 @@ var ForestController = {
     
     generateSky: function () {
         var path;
-        if (serverData.gamestate.darkness < DARKNESS_NIGHT_MIN) {
+        if (serverData.gamestate.darkness < DARKNESS_EVENING_MIN) {
             var skybox;
             path = ASSETS_PATH + "skybox/";
             var textures = [];
