@@ -46,7 +46,6 @@ function processInput(key) {
             playerTree[0].translateX(-1);
         }1
         if(key === 'space'){
-            cooldown = 3;
             addBullet(
             playerTree[0].position.x, 
             playerTree[0].position.y, 
