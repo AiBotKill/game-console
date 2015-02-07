@@ -45,8 +45,9 @@ var ForestController = {
     },
 
     lightsCamera: function () {
+        var lightPosition;
+        var shadows = true;
         camera = new THREE.PerspectiveCamera(FOV, AOR, NEAR_DISTANCE, FAR_DISTANCE);
-
         camera.position.set(0, 0, 5);
         camera.lookAt(scene.position);
         camera.rotation.x += Math.PI / 2;
@@ -61,39 +62,44 @@ var ForestController = {
                 serverData.gamestate.darkness < DARKNESS_EVENING_MIN) {
             lightValue = LIGHT_VALUE_DAY;
             lightColor = LIGHT_DAY;
+            lightPosition = 640;
         }
         else if (serverData.gamestate.darkness >= DARKNESS_EVENING_MIN &&
                 serverData.gamestate.darkness < DARKNESS_NIGHT_MIN) {
             lightValue = LIGHT_VALUE_EVENING;
             lightColor = LIGHT_EVENING;
+            lightPosition = 480;
         }
         else {
             lightValue = LIGHT_VALUE_NIGHT;
             lightColor = LIGHT_NIGHT;
             scene.fog = new THREE.Fog("rgb(0, 100, 0)", 10, 500);
+            shadows = false;
         }
         var light = new THREE.HemisphereLight(lightColor, 1);
         light.position.set(0, 0, 500);
         this.environmentGroup.add(light);
         
-        var light = new THREE.DirectionalLight("rgb(0, 0, 0)", 0);
-        light.onlyShadow = true;
-        light.position.set(0, 480, 1000);
-        light.castShadow = true;
-        light.shadowDarkness = 0.8;
-        light.shadowCameraVisible = false;
-        light.shadowMapWidth = 2048;
-        light.shadowMapHeight = 2048;
-        
-        light.shadowCameraLeft = -GROUND_X;
-        light.shadowCameraRight = GROUND_X;
-        light.shadowCameraTop = GROUND_Y;
-        light.shadowCameraBottom = -GROUND_Y;
+        if(shadows && SHADOWS){
+            var light = new THREE.DirectionalLight("rgb(0, 0, 0)", 0);
+            light.onlyShadow = true;
+            light.position.set(0, 480, 1000);
+            light.castShadow = true;
+            light.shadowDarkness = 0.8;
+            light.shadowCameraVisible = false;
+            light.shadowMapWidth = 2048;
+            light.shadowMapHeight = 2048;
 
-        light.shadowCameraNear = 500;
-        light.shadowCameraFar = 5000;
-        light.shadowCameraFov = 60;
-        this.environmentGroup.add(light);
+            light.shadowCameraLeft = -GROUND_X;
+            light.shadowCameraRight = GROUND_X;
+            light.shadowCameraTop = GROUND_Y;
+            light.shadowCameraBottom = -GROUND_Y;
+
+            light.shadowCameraNear = 500;
+            light.shadowCameraFar = 5000;
+            light.shadowCameraFov = 60;
+            this.environmentGroup.add(light);
+        }
     },
     
     createGround: function (path) {
