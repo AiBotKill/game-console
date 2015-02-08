@@ -1,4 +1,4 @@
-var ForestController = {
+var CavernController = {
     environmentGroup: new THREE.Object3D(),
     
     generateSky: function () {
