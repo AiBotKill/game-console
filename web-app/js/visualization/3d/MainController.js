@@ -121,6 +121,7 @@ function loadPlayerData() {
     modelLoader.load(path + "robotti.json", function (geometry, materials) {
         // SkinnedMesh tukee animaatioita.
         var playerMaterials = new THREE.MeshFaceMaterial(materials);
+        console.log(materials);
 
         for (var i = 0; i < serverData.gamestate.players.length; i++) {
             player = new THREE.SkinnedMesh(geometry, playerMaterials);
