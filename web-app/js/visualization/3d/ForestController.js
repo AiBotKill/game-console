@@ -104,19 +104,27 @@ var ForestController = {
     
     createGround: function (path) {
         var groundType;
-        groundType = "ground.png";
+        groundType = "ground";
 
-        var texture = THREE.ImageUtils.loadTexture(path + groundType);
+        var texture = THREE.ImageUtils.loadTexture(path + groundType + ".png");
+        var bumpMap = THREE.ImageUtils.loadTexture(path + groundType + "BumpMap.png");
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(GROUND_TILES, GROUND_TILES);
+        
+        bumpMap.wrapS = bumpMap.wrapT = THREE.RepeatWrapping;
+        bumpMap.repeat.set(GROUND_TILES, GROUND_TILES);
 
-        var groundMaterial = new THREE.MeshLambertMaterial({map: texture});
+        var groundMaterial = new THREE.MeshPhongMaterial({
+            map: texture, 
+            bumpMap: bumpMap,
+            shininess: 5, 
+            bumpScale: 0.4});
 
         ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(GROUND_X, GROUND_Y), groundMaterial);
         ground.position.x = 0;
         ground.position.y = 0;
-        ground.receiveShadow = true;
         ground.castShadow = false;
+        ground.receiveShadow = true;
         this.environmentGroup.add(ground);
     },
      
