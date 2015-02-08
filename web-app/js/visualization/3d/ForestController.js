@@ -1,6 +1,7 @@
 var ForestController = {
     environmentGroup: new THREE.Object3D(),
-    treeMass: new THREE.Geometry(),
+    treeMass1: new THREE.Geometry(),
+    treeMass2: new THREE.Geometry(),
     
     generateSky: function () {
         var path;
@@ -169,16 +170,15 @@ var ForestController = {
             alphaTest: 0.5,
             side: THREE.DoubleSide
         });
-        
+
         var wallGeometry = new THREE.PlaneBufferGeometry(wallWidth, 128);
-        
+
         this.createWorldWall(GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallGeometry, wallMaterial);
         this.createWorldWall(GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallGeometry, wallMaterial);
         this.createWorldWall(GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial);
         this.createWorldWall(-GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial);
-        
+
         blockGeometry = new THREE.PlaneGeometry(TILE_WIDTH, TILE_HEIGHT);
-        
         for(var i = 0; i < 2; i ++){
             blockMaterials.push(new THREE.MeshLambertMaterial({
                 map: THREE.ImageUtils.loadTexture(path + "block" + i + ".png"),
@@ -193,20 +193,31 @@ var ForestController = {
             offsetY = 1 + (Math.random() * TILE_HEIGHT / 2);
             x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
             y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
-            this.createTileBlock(x + offsetX, y - offsetY, blockMaterials, blockGeometry);
+            var random = (Math.random() * 2);
+            if(random >= 1){
+                this.createTileBlock(x + offsetX, y - offsetY, blockMaterials[0], blockGeometry, this.treeMass2);
+            }
+            else{
+                this.createTileBlock(x + offsetX, y - offsetY, blockMaterials[1], blockGeometry, this.treeMass1);
+            }
         }
-        var trees = new THREE.Mesh(this.treeMass, new THREE.MeshFaceMaterial(blockMaterials));
-        trees.castShadow = true;
-        trees.receiveShadow = true;
-        this.environmentGroup.add(trees);
-        /* GENERATE DECORATION 2D PARTICLES. */
+        var trees1 = new THREE.Mesh(this.treeMass1, blockMaterials[0]);
+        trees1.castShadow = true;
+        trees1.receiveShadow = true;
+        this.environmentGroup.add(trees1);
         
+        var trees2 = new THREE.Mesh(this.treeMass2, blockMaterials[1]);
+        trees2.castShadow = true;
+        trees2.receiveShadow = true;
+        this.environmentGroup.add(trees2);
+        /* GENERATE DECORATION 2D PARTICLES. */
+
         var decorationParticles0 = new THREE.Geometry();
         var decorationParticles1 = new THREE.Geometry();
-        
+
         var decorationTexture0 = THREE.ImageUtils.loadTexture(path + "deco0.png");
         var decorationTexture1 = THREE.ImageUtils.loadTexture(path + "deco1.png");
-        
+
         var deco0Material = new THREE.PointCloudMaterial({
             map: decorationTexture0,
             transparent: true,
@@ -214,7 +225,7 @@ var ForestController = {
             color: lightColor,
             size: 4
         });
-        
+
         var deco1Material = new THREE.PointCloudMaterial({
             map: decorationTexture1,
             transparent: true,
@@ -232,7 +243,7 @@ var ForestController = {
                     this.generateDecorationSprite(x, y, decorationParticles1);
                     this.generateDecorationSprite(x, y, decorationParticles1);
                 }
-                else if(random > 7 && random <= 12){
+                else if (random > 7 && random <= 12) {
                     this.generateDecorationSprite(x, y, decorationParticles0);
                     this.generateDecorationSprite(x, y, decorationParticles0);
                     this.generateDecorationSprite(x, y, decorationParticles0);
@@ -241,39 +252,35 @@ var ForestController = {
 
             }
         }
-        
+
         this.environmentGroup.add(new THREE.PointCloud(decorationParticles0, deco0Material));
         this.environmentGroup.add(new THREE.PointCloud(decorationParticles1, deco1Material));
     },
-
     /*
      * Use this to create blocks to the world.
      * @returns {undefined}
      */
-    createTileBlock: function (x, y, blockMaterial, blockGeometry) {
+    createTileBlock: function (x, y, blockMaterial, blockGeometry, treeMass) {
 
         var block;
         var placeX;
         var placeY;
         var placeZ;
-        var randomTile;
-        
+
         placeX = x + TILE_WIDTH / 2;
         placeY = y + TILE_HEIGHT / 2;
         placeZ = TILE_HEIGHT / 2;
-        
-        randomTile = Math.floor((Math.random() * 2));
-        
-        block = new THREE.Mesh(blockGeometry, blockMaterial[randomTile]);
-        
+
+        block = new THREE.Mesh(blockGeometry, blockMaterial);
+
         block.position.x = placeX;
         block.position.y = placeY;
         block.position.z = placeZ;
         block.rotation.x += Math.PI / 2;
         block.updateMatrix();
-        this.treeMass.merge(block.geometry, block.matrix);
+        treeMass.merge(block.geometry, block.matrix);
 
-        block = new THREE.Mesh(blockGeometry, blockMaterial[randomTile]);
+        block = new THREE.Mesh(blockGeometry, blockMaterial);
 
         block.position.x = placeX;
         block.position.y = placeY;
@@ -281,8 +288,8 @@ var ForestController = {
         block.rotation.x += Math.PI / 2;
         block.rotation.y += Math.PI / 2;
         block.updateMatrix();
-        this.treeMass.merge(block.geometry, block.matrix);
-        
+        treeMass.merge(block.geometry, block.matrix);
+
     },
     
     createWorldWall: function (x, y, rotateY, wallGeometry, wallMaterial) {
