@@ -87,8 +87,8 @@ var ForestController = {
             light.castShadow = true;
             light.shadowDarkness = 0.8;
             light.shadowCameraVisible = false;
-            light.shadowMapWidth = 5000;
-            light.shadowMapHeight = 5000;
+            light.shadowMapWidth = 4096;
+            light.shadowMapHeight = 4096;
 
             light.shadowCameraLeft = -GROUND_X;
             light.shadowCameraRight = GROUND_X;
