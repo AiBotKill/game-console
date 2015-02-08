@@ -1,6 +1,6 @@
 var ForestController = {
     environmentGroup: new THREE.Object3D(),
-    treeMass: new Geometry(),
+    treeMass: new THREE.Geometry(),
     
     generateSky: function () {
         var path;
