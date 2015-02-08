@@ -133,7 +133,7 @@ function loadPlayerData() {
             helper.update();
             player.position.z -= helper.box.min.z;
             player.castShadow = true;
-
+            player.receiveShadow = true;
             playerTree.push(player);
             CURRENT_ENV.environmentGroup.add(player);
         }
