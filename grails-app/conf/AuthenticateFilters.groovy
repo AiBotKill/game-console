@@ -45,7 +45,7 @@ class AuthenticateFilters {
      */
     boolean hasPermission(Team u, String controller, String action, String id) {
         // Allowed for all
-        def whitelist = ["visualize:*", "team:create", "team:save", "team:show", "team:index", "team:login", "team:loginForm", "tournaments:index", "tournaments:show", "game:index", "game:show"]
+        def whitelist = ["visualize:*", "team:create", "team:save", "team:show", "player:show", "team:index", "team:login", "team:loginForm", "tournaments:index", "tournaments:show", "game:index", "game:show"]
 
         // Check if admin
         if (u?.isAdmin) {
