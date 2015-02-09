@@ -12,9 +12,15 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
 
         var zoom = function(e) {
             var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+            var initialSize = config.getTileSize();
             config.zoom += delta;
             config.zoom = Math.min(25, config.zoom);
             config.zoom = Math.max(1, config.zoom);
+            var centerX = (initialSize - config.getTileSize()) * window.innerWidth / initialSize / 2;
+            var centerY = (initialSize - config.getTileSize()) * window.innerHeight / initialSize / 2;
+            console.log(centerX);
+            config.offset[0] += centerX;
+            config.offset[1] += centerY;
             listener.resize();
             listener.draw(hud.getCurrentFrame(), false); // TODO: Remove when server available
         };
@@ -49,7 +55,7 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
                         config.offset[0] += e.webkitMovementX;
                         config.offset[1] += e.webkitMovementY;
                     }
-
+console.log(config.offset[0]);
                     var moving = true;
                     listener.draw(hud.getCurrentFrame(), moving); // TODO: Remove when server available
                 }

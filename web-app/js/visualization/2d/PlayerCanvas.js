@@ -9,10 +9,14 @@ define(["require", "./HudCanvas", "./config"], function(require) {
         var hud = require("HudCanvas");
         var config = require("config");
         var TILE_SIZE = config.getTileSize();
-        var PLAYER_SIZE = TILE_SIZE/2;
+        var PLAYER_SIZE = getPlayerSize();
 
         var ctx = document.getElementById("playercanvas").getContext("2d");
         var img = new Image();
+
+        function getPlayerSize() {
+            return TILE_SIZE;
+        }
 
         function findAngle(v1, v2) {
             var angle1 = Math.atan2(-v1.y, -v1.x);
@@ -37,7 +41,7 @@ define(["require", "./HudCanvas", "./config"], function(require) {
 
         function drawRingOfHearing(player, x, y) {
             ctx.beginPath();
-            ctx.arc(x, y, player.hearing*TILE_SIZE/20, 0, 2 * Math.PI, false);
+            ctx.arc(x, y, player.hearing*TILE_SIZE/5, 0, 2 * Math.PI, false);
             ctx.lineWidth = 1;
             var opacity = hud.isDebugMode() ? 0.1 : 0.2;
             ctx.fillStyle = "rgba(240, 255, 90, " + opacity + ")";
@@ -69,7 +73,7 @@ define(["require", "./HudCanvas", "./config"], function(require) {
             },
             resize: function() {
                 TILE_SIZE = config.getTileSize();
-                PLAYER_SIZE = TILE_SIZE/2;
+                PLAYER_SIZE = getPlayerSize();
                 ctx.canvas.width  = window.innerWidth;
                 ctx.canvas.height = window.innerHeight;
             }
