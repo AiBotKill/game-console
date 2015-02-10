@@ -216,8 +216,8 @@ function addDestroyedRobot(x, y){
 };
 
 function addExplosion(x, y){
-    explosionTree.push(new Explosion(x, y, 
-    new THREE.Mesh(new THREE.PlaneBufferGeometry(32, 32), new THREE.MeshBasicMaterial({
+    explosionTree.push(x, y, 
+    new Explosion(new THREE.Mesh(new THREE.PlaneBufferGeometry(32, 32), new THREE.MeshBasicMaterial({
         color: "rgb(255, 0, 0)"
     }))));
 };
@@ -225,8 +225,8 @@ function addExplosion(x, y){
 /* Explosion object used in a robot explosion. */
 function Explosion(x, y, model){
     this.model = model;
-    this.x = x;
-    this.y = y;
+    this.model.position.x = x;
+    this.model.position.y = y;
     /* Overall time the animation spends before it restarts. */
     this.animationSpeed = EXPLOSION_SPEED;
     /* Number of frames in the animation. */
@@ -265,7 +265,7 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
 
     bulletTree.push(laserObject);
     CURRENT_ENV.environmentGroup.add(laserObject.model);
-}
+};
 
 function refreshPlayerData() {
     /*
