@@ -20,10 +20,10 @@ function initialization() {
     synchronizeState();
     // We initialize the world and associated controller.
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
-        CURRENT_ENV = ForestController;
+        CURRENT_ENV = new ForestController();
     }
     else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
-        CURRENT_ENV = CavernController;
+        CURRENT_ENV = new CavernController();
     }
     generateWorld();
     generateMisc();

@@ -133,8 +133,14 @@ function loadPlayerData() {
             player.position.z -= helper.box.min.z;
             player.castShadow = true;
             player.receiveShadow = true;
-            playerTree.push(player);
-            CURRENT_ENV.environmentGroup.add(player);
+            
+            var playerObject = {
+                "model": player,
+                "data": serverData.gamestate.players[i]
+            };
+            
+            playerTree.push(playerObject);
+            CURRENT_ENV.environmentGroup.add(playerObject.model);
         }
         BULLET_HEIGHT = helper.box.min.z;
     });
@@ -191,6 +197,41 @@ function createNewBullet(x, y) {
     return laser;
 }
 
+function addDestroyedRobot(x, y){
+    
+}
+
+function addExplosion(x, y){
+    explosionTree.push(new Explosion(x, y));
+}
+
+/* Explosion object used in a robot explosion. */
+function Explosion(x, y, model){
+    this.model = model;
+    this.x = x;
+    this.y = y;
+    /* Overall time the animation spends before it restarts. */
+    this.animationSpeed = EXPLOSION_SPEED;
+    /* Number of frames in the animation. */
+    this.numberOfTiles = 10;
+    /* Time that the CURRENT tile spends on screen. */
+    this.frameCounter = EXPLOSION_SPEED / 10;
+    /* The index of the tile that is currently displayed. */
+    this.currentTile = 0;
+    /* If the Explosion has ended and should be destroyed. */
+    this.ended = false;
+    
+    this.animate = function(){
+        /* Vähennä framecounteria. Siirrä seuraava frame tsekkaa menikö animaatio loppuun.
+         * jos lopussa niin kutsu destroy();
+         */
+    };
+    
+    this.end = function(){
+        this.ended = true;
+    };
+}
+
 function addBullet(x, y, xSpeed, ySpeed, id) {
     var laserObject = {
         "model": createNewBullet(x, y),
@@ -213,18 +254,35 @@ function refreshPlayerData() {
 }
 
 function refreshBullets() {
-    for (var i = 0; i < bulletTree.length; i++) {
-        bulletTree[i].model.translateX(bulletTree[i].velocity.x);
-        bulletTree[i].model.translateY(bulletTree[i].velocity.y);
+    if(bulletTree.length > 0){
+        for (var i = 0; i < bulletTree.length; i++) {
+            bulletTree[i].model.translateX(bulletTree[i].velocity.x);
+            bulletTree[i].model.translateY(bulletTree[i].velocity.y);
 
-        if (bulletTree[i].model.position.x > GROUND_X) {
-            CURRENT_ENV.environmentGroup.remove(bulletTree[i].model);
-            bulletTree.splice(i, 1);
+            if (bulletTree[i].model.position.x > GROUND_X) {
+                CURRENT_ENV.environmentGroup.remove(bulletTree[i].model);
+                bulletTree.splice(i, 1);
+            }
+        }
+    }
+}
+
+function refreshMisc(){
+    if(explosionTree.length > 0){
+        for(var i = 0; i < explosionTree.length; i ++){
+            if(explosionTree[i].ended){
+                CURRENT_ENV.environmentGroup.remove(explosionTree[i])
+                explosionTree[i].splice(i, 1);
+            }
+            else{
+                explosionTree[i].animate();
+            }
         }
     }
 }
 
 function refreshViewState() {
+    refreshMisc();
     refreshPlayerData();
     refreshBullets();
 }

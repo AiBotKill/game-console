@@ -52,6 +52,10 @@ function processInput(key) {
             serverData.gamestate.bullets[0].velocity.x, 
             serverData.gamestate.bullets[0].velocity.y);
         }
+        if(key === 'e'){
+            scene.remove(playerTree[0]);
+            addExplosion(playerTree[0].position.x, playerTree[0].position.y);
+        }
         /*
         if(key === 'l'){
             CURRENT_ENV.environmentGroup.remove(testPlayer);

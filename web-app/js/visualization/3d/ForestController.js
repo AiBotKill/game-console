@@ -1,9 +1,9 @@
-var ForestController = {
-    environmentGroup: new THREE.Object3D(),
-    treeMass1: new THREE.Geometry(),
-    treeMass2: new THREE.Geometry(),
+function ForestController(){
+    this.environmentGroup = new THREE.Object3D();
+    this.treeMass1 = new THREE.Geometry();
+    this.treeMass2 = new THREE.Geometry();
     
-    generateSky: function () {
+    this.generateSky = function () {
         var path;
         if (serverData.gamestate.darkness < DARKNESS_EVENING_MIN) {
             var skybox;
@@ -46,7 +46,7 @@ var ForestController = {
         }
     },
 
-    lightsCamera: function () {
+    this.lightsCamera = function () {
         var lightPosition;
         var shadows = true;
         camera = new THREE.PerspectiveCamera(FOV, AOR, NEAR_DISTANCE, FAR_DISTANCE);
@@ -102,9 +102,9 @@ var ForestController = {
             light.shadowCameraFov = 100;
             this.environmentGroup.add(light);
         }
-    },
+    };
     
-    createGround: function (path) {
+    this.createGround = function (path) {
         var groundType;
         groundType = "ground";
 
@@ -128,26 +128,26 @@ var ForestController = {
         ground.castShadow = false;
         ground.receiveShadow = true;
         this.environmentGroup.add(ground);
-    },
+    };
      
-    generateDecorationSprite: function (x, y, decorationParticles) {
+    this.generateDecorationSprite = function (x, y, decorationParticles) {
         var offsetX = 1 + (Math.random() * TILE_WIDTH);
         var offsetY = 1 + (Math.random() * TILE_HEIGHT);
         var decoration = new THREE.Vector3(x + offsetX, y + offsetY, 1);
         decorationParticles.vertices.push(decoration);
-    },
+    };
     
-    generateMap: function () {
+    this.generateMap = function () {
         console.log("Generating map..");
         var path = ASSETS_PATH + "env/forest/";
         this.generateMapData(path);
         this.createGround(path);
-    },
+    };
 
     /*
      * Here we create the blocks and the walls for the world.
      */
-    generateMapData: function (path) {
+    this.generateMapData = function (path) {
         var wallWidth = GROUND_X;
         var x;
         var y;
@@ -255,12 +255,12 @@ var ForestController = {
 
         this.environmentGroup.add(new THREE.PointCloud(decorationParticles0, deco0Material));
         this.environmentGroup.add(new THREE.PointCloud(decorationParticles1, deco1Material));
-    },
+    };
     /*
      * Use this to create blocks to the world.
      * @returns {undefined}
      */
-    createTileBlock: function (x, y, blockMaterial, blockGeometry, treeMass) {
+    this.createTileBlock = function (x, y, blockMaterial, blockGeometry, treeMass) {
 
         var block;
         var placeX;
@@ -290,9 +290,9 @@ var ForestController = {
         block.updateMatrix();
         treeMass.merge(block.geometry, block.matrix);
 
-    },
+    };
     
-    createWorldWall: function (x, y, rotateY, wallGeometry, wallMaterial) {
+    this.createWorldWall = function (x, y, rotateY, wallGeometry, wallMaterial) {
         var worldWall;
 
         worldWall = new THREE.Mesh(wallGeometry, wallMaterial);
@@ -305,6 +305,6 @@ var ForestController = {
             worldWall.rotation.y += Math.PI / 2;
         }
         this.environmentGroup.add(worldWall);
-    }
+    };
 };
 

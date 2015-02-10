@@ -39,6 +39,7 @@ var TEST_ENV = 1;
 var TEST_DARKNESS = 0.5;
 /***************************************/
 
+var EXPLOSION_SPEED = 500;
 var HUD_STATUS_MESSAGE_DELAY = 100;
 
 var HUD_STATUS_MESSAGE_X = 40 * (WIDTH / 100);
