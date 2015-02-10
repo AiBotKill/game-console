@@ -37,13 +37,13 @@ function processInput(key) {
             isHUDDrawn = false;
         }
         if(key === 't'){
-            playerTree[0].rotation.y += 0.04;
+            playerTree[0].model.rotation.y += 0.04;
         }
         if(key === 'j'){
-            playerTree[0].translateX(1);
+            playerTree[0].model.translateX(1);
         }
         if (key === 'k') {
-            playerTree[0].translateX(-1);
+            playerTree[0].model.translateX(-1);
         }
         if(key === 'space'){
             addBullet(
