@@ -54,7 +54,7 @@ function processInput(key) {
         }
         if(key === 'e'){
             addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y);
-            scene.remove(playerTree[0].model);
+            CURRENT_ENV.environmentGroup.remove(playerTree[0].model);
             playerTree.splice(0, 1);
         }
         /*
