@@ -44,7 +44,7 @@ function processInput(key) {
         }
         if (key === 'k') {
             playerTree[0].translateX(-1);
-        }1
+        }
         if(key === 'space'){
             addBullet(
             playerTree[0].model.position.x, 
