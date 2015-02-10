@@ -199,11 +199,11 @@ function createNewBullet(x, y) {
 
 function addDestroyedRobot(x, y){
     
-}
+};
 
 function addExplosion(x, y){
     explosionTree.push(new Explosion(x, y));
-}
+};
 
 /* Explosion object used in a robot explosion. */
 function Explosion(x, y, model){
@@ -230,7 +230,7 @@ function Explosion(x, y, model){
     this.end = function(){
         this.ended = true;
     };
-}
+};
 
 function addBullet(x, y, xSpeed, ySpeed, id) {
     var laserObject = {
@@ -251,7 +251,7 @@ function refreshPlayerData() {
      * Käydään gamestaten pelaajadataa lävitse ja vertaillaan sitä
      * visualisaation tallentamaan pelaajadataan.
      */
-}
+};
 
 function refreshBullets() {
     if(bulletTree.length > 0){
@@ -265,13 +265,13 @@ function refreshBullets() {
             }
         }
     }
-}
+};
 
 function refreshMisc(){
     if(explosionTree.length > 0){
         for(var i = 0; i < explosionTree.length; i ++){
             if(explosionTree[i].ended){
-                CURRENT_ENV.environmentGroup.remove(explosionTree[i])
+                CURRENT_ENV.environmentGroup.remove(explosionTree[i]);
                 explosionTree[i].splice(i, 1);
             }
             else{
@@ -279,12 +279,12 @@ function refreshMisc(){
             }
         }
     }
-}
+};
 
 function refreshViewState() {
     refreshMisc();
     refreshPlayerData();
     refreshBullets();
-}
+};
 
 

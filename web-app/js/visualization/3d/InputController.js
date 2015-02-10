@@ -47,14 +47,15 @@ function processInput(key) {
         }1
         if(key === 'space'){
             addBullet(
-            playerTree[0].position.x, 
-            playerTree[0].position.y, 
+            playerTree[0].model.position.x, 
+            playerTree[0].model.position.y, 
             serverData.gamestate.bullets[0].velocity.x, 
             serverData.gamestate.bullets[0].velocity.y);
         }
         if(key === 'e'){
-            scene.remove(playerTree[0]);
-            addExplosion(playerTree[0].position.x, playerTree[0].position.y);
+            scene.remove(playerTree[0].model);
+            playerTree.splice(0, 1);
+            addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y);
         }
         /*
         if(key === 'l'){
