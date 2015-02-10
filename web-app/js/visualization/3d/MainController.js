@@ -299,7 +299,7 @@ function refreshMisc(){
         for(var i = 0; i < explosionTree.length; i ++){
             if(explosionTree[i].ended){
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
-                explosionTree[i].splice(i, 1);
+                explosionTree.splice(i, 1);
             }
             else{
                 explosionTree[i].animate();
