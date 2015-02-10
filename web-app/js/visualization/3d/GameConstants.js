@@ -38,7 +38,8 @@ var DARKNESS_NIGHT_MIN = 0.66;
 var TEST_ENV = 1;
 var TEST_DARKNESS = 0.5;
 /***************************************/
-
+var EXPLOSION_WIDTH = 32;
+var EXPLOSION_HEIGHT = 32;
 var EXPLOSION_SPEED = 500;
 var HUD_STATUS_MESSAGE_DELAY = 100;
 

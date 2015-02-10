@@ -114,7 +114,12 @@ function loadDestroyedRobot(){
 }
 
 function loadExplosion(){
-    
+    explosionTemplate = {
+        "geometry": new THREE.PlaneBufferGeometry(EXPLOSION_WIDTH, EXPLOSION_HEIGHT),
+        "material": new THREE.MeshBasicMaterial({
+            color: "rgb(255, 0, 0)"
+        })
+    };
 }
 
 function loadLaserData() {
@@ -217,9 +222,7 @@ function addDestroyedRobot(x, y){
 
 function addExplosion(x, y){
     explosionTree.push(x, y, 
-    new Explosion(new THREE.Mesh(new THREE.PlaneBufferGeometry(32, 32), new THREE.MeshBasicMaterial({
-        color: "rgb(255, 0, 0)"
-    }))));
+    new Explosion(new THREE.Mesh(explosionTemplate.geometry, explosionTemplate.material)));
 };
 
 /* Explosion object used in a robot explosion. */
@@ -239,6 +242,8 @@ function Explosion(x, y, model){
     this.ended = false;
     
     this.animate = function(){
+        this.model.lookAt(
+                new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
         this.frameCounter --;
         if(frameCounter <= 0){
             this.currentTile ++;

@@ -15,8 +15,7 @@ function ForestController(){
                     map: THREE.ImageUtils.loadTexture(path + "day" + i + ".png"),
                     side: THREE.BackSide
                 }));
-            }
-            ;
+            };
 
             var skyMaterial = new THREE.MeshFaceMaterial(textures);
 
@@ -35,8 +34,7 @@ function ForestController(){
                     map: THREE.ImageUtils.loadTexture(path + "evening" + i + ".jpg"),
                     side: THREE.BackSide
                 }));
-            }
-            ;
+            };
 
             var skyMaterial = new THREE.MeshFaceMaterial(textures);
 
