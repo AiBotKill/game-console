@@ -10,6 +10,9 @@ var isHUDDrawn;
 var bulletTree = [];
 var playerTree = [];
 
+/* Templates which hold the geometry and material for objects that require realtime mesh
+ * generation during the game. 
+ * */
 var laserTemplate = {};
 var explosionTemplate = {};
 var destroyedRobotTemplate = {};
@@ -84,20 +87,20 @@ function statusMessageDelay() {
         showMessage = false;
         hudStatusMessage = "";
     }
-}
+};
 
 function setStatusMessage(message) {
     showMessage = true;
     hudStatusMessage = message;
     messageDelay = HUD_STATUS_MESSAGE_DELAY;
-}
+};
 
 function generateMisc() {
     loadPlayerData();
     loadLaserData();
     loadDestroyedRobot();
     loadExplosion();
-}
+};
 
 function generateWorld() {
     modelLoader = new THREE.JSONLoader;
@@ -107,11 +110,11 @@ function generateWorld() {
     CURRENT_ENV.generateSky();
     CURRENT_ENV.generateMap();
     scene.add(CURRENT_ENV.environmentGroup);
-}
+};
 
 function loadDestroyedRobot(){
     
-}
+};
 
 function loadExplosion(){
     explosionTemplate = {
@@ -120,7 +123,7 @@ function loadExplosion(){
             color: "rgb(255, 0, 0)"
         })
     };
-}
+};
 
 function loadLaserData() {
     var path = ASSETS_PATH + "/player/";
@@ -128,8 +131,7 @@ function loadLaserData() {
         laserTemplate.geometry = geometry;
         laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
     });
-}
-
+};
 
 function loadPlayerData() {
     console.log("Loading player graphics...");
@@ -163,7 +165,7 @@ function loadPlayerData() {
         }
         BULLET_HEIGHT = helper.box.min.z;
     });
-}
+};
 
 function renderHud() {
     var graphics = hud.getContext("2d");
@@ -204,8 +206,7 @@ function renderHud() {
 
         graphics.restore();
     }
-}
-
+};
 
 function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.materials);
@@ -214,22 +215,22 @@ function createNewBullet(x, y) {
     laser.position.y = y;
     laser.position.z = BULLET_HEIGHT;
     return laser;
-}
+};
 
 function addDestroyedRobot(x, y){
     
 };
 
 function addExplosion(x, y){
-    explosionTree.push(x, y, 
-    new Explosion(new THREE.Mesh(explosionTemplate.geometry, explosionTemplate.material)));
+    var mesh = new THREE.Mesh(explosionTemplate.geometry, explosionTemplate.material);
+    mesh.position.x = x;
+    mesh.position.y = y;
+    explosionTree.push(new Explosion(mesh));
 };
 
 /* Explosion object used in a robot explosion. */
-function Explosion(x, y, model){
+function Explosion(model){
     this.model = model;
-    this.model.position.x = x;
-    this.model.position.y = y;
     /* Overall time the animation spends before it restarts. */
     this.animationSpeed = EXPLOSION_SPEED;
     /* Number of frames in the animation. */
