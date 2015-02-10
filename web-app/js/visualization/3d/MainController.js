@@ -225,7 +225,7 @@ function addExplosion(x, y){
     var mesh = new THREE.Mesh(explosionTemplate.geometry, explosionTemplate.material);
     mesh.position.x = x;
     mesh.position.y = y;
-    mesh.position.z = y / 2;
+    mesh.position.z = EXPLOSION_HEIGHT / 2;
     CURRENT_ENV.environmentGroup.add(mesh);
     explosionTree.push(new Explosion(mesh));
 };
