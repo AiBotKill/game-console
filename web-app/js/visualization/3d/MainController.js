@@ -246,7 +246,7 @@ function Explosion(model){
         this.model.lookAt(
                 new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
         this.frameCounter --;
-        if(frameCounter <= 0){
+        if(this.frameCounter <= 0){
             this.currentTile ++;
         }
         if(this.currentTile >= this.numberOfTiles){
