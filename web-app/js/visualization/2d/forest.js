@@ -56,9 +56,9 @@ define(["require", "./config", "./HudCanvas"], function(require) {
                 tile = this.tiles[i];
                 if (tile.Type != 'ground') {
                     var tileType = tile.Type;
+                    ctx.save();
+                    ctx.translate(tile.X * TILE_SIZE + config.offset[0], tile.Y * TILE_SIZE + config.offset[1]);
                     if (hud.isDebugMode()) {
-                        ctx.save();
-                        ctx.translate(tile.X * TILE_SIZE + config.offset[0], tile.Y * TILE_SIZE + config.offset[1]);
                         ctx.drawImage(
                             textureMap[tileType],
                             0,
@@ -69,10 +69,7 @@ define(["require", "./config", "./HudCanvas"], function(require) {
                             0 - TILE_SIZE / 4,
                             TILE_SIZE * 1.5,
                             TILE_SIZE * 1.5);
-                        ctx.restore();
                     } else {
-                        ctx.save();
-                        ctx.translate(tile.X * TILE_SIZE + config.offset[0], tile.Y * TILE_SIZE + config.offset[1]);
                         ctx.drawImage(
                             textureMap[tileType],
                             0,
@@ -83,8 +80,8 @@ define(["require", "./config", "./HudCanvas"], function(require) {
                             0 - TILE_SIZE / 4,
                             TILE_SIZE * 1.5,
                             TILE_SIZE * 1.5);
-                        ctx.restore();
                     }
+                    ctx.restore();
                 }
             }
         },

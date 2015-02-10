@@ -99,11 +99,11 @@ define(["require", "./config"], function(require) {
             debugMode = !debugMode;
             drawHud();
             msgListener.redraw(currentFrame);
-        }
+        };
         var pause = function() {
             paused = true;
             drawHud();
-        }
+        };
         var togglePause = function() {
             paused = !paused;
             drawHud();
@@ -114,7 +114,7 @@ define(["require", "./config"], function(require) {
                 console.log("Resuming...");
                 msgListener.draw(currentFrame);
             }
-        }
+        };
         var jumpTo = function(x) {
             currentFrame = Math.ceil(x / (scrollBar.width / msgListener.getHistorySize()));
 
@@ -123,7 +123,7 @@ define(["require", "./config"], function(require) {
             scrollFinderX = scrollBar.x + scrollBar.width / msgListener.getHistorySize() * (currentFrame-1);
             drawHud();
             msgListener.draw(currentFrame);
-        }
+        };
         var moveFinder = function(x, deltaTime) {
             scrollFinderX = x;
             scrollFinderX = Math.max(scrollFinderX, scrollBar.x);
@@ -132,11 +132,11 @@ define(["require", "./config"], function(require) {
             drawHud();
 
             // Redraw only if finder moved enough
-                moveFinderTimeout = setTimeout(function() {
-                    msgListener.draw(currentFrame);
-                    scrollFinder.previousMousePos = x;
-                }, 500);
-        }
+            moveFinderTimeout = setTimeout(function() {
+                msgListener.draw(currentFrame);
+                scrollFinder.previousMousePos = x;
+            }, 500);
+        };
 
         return {
             isDebugMode: function() { return debugMode; },
@@ -144,7 +144,7 @@ define(["require", "./config"], function(require) {
             setCurrentFrame: function(frame) {
                 currentFrame = frame;
                 scrollFinderX = scrollBar.x + scrollBar.width / msgListener.getHistorySize() * (currentFrame-1);
-                drawHud();
+
             },
             getCurrentFrame: function() { return currentFrame; },
 
@@ -207,9 +207,6 @@ define(["require", "./config"], function(require) {
 
                 this.resize();
             },
-            draw: function() {
-                drawHud();
-            },
             drawPlayerData: function(players) {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 drawHud();
@@ -253,7 +250,6 @@ define(["require", "./config"], function(require) {
                 TILE_SIZE = config.getTileSize();
                 ctx.canvas.width  = window.innerWidth;
                 ctx.canvas.height = window.innerHeight;
-                this.draw();
             },
             // TODO: Remove when server available
             setMockData: function(listener, d) {
