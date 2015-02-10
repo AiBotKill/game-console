@@ -6,7 +6,7 @@ define(["require", "./config"], function(require) {
 		var DEBUG_ON = 0, DEBUG_OFF = 1,
             PLAY = 2, PAUSE = 3;
 
-        var PLAYER_SIZE = TILE_SIZE/2;
+        var PLAYER_SIZE = TILE_SIZE;
 
         var msgListener;
         var mockData; // TODO: Remove when server available
@@ -99,11 +99,11 @@ define(["require", "./config"], function(require) {
             debugMode = !debugMode;
             drawHud();
             msgListener.redraw(currentFrame);
-        }
+        };
         var pause = function() {
             paused = true;
             drawHud();
-        }
+        };
         var togglePause = function() {
             paused = !paused;
             drawHud();
@@ -114,7 +114,7 @@ define(["require", "./config"], function(require) {
                 console.log("Resuming...");
                 msgListener.draw(currentFrame);
             }
-        }
+        };
         var jumpTo = function(x) {
             currentFrame = Math.ceil(x / (scrollBar.width / msgListener.getHistorySize()));
 
@@ -123,7 +123,7 @@ define(["require", "./config"], function(require) {
             scrollFinderX = scrollBar.x + scrollBar.width / msgListener.getHistorySize() * (currentFrame-1);
             drawHud();
             msgListener.draw(currentFrame);
-        }
+        };
         var moveFinder = function(x, deltaTime) {
             scrollFinderX = x;
             scrollFinderX = Math.max(scrollFinderX, scrollBar.x);
@@ -132,11 +132,11 @@ define(["require", "./config"], function(require) {
             drawHud();
 
             // Redraw only if finder moved enough
-                moveFinderTimeout = setTimeout(function() {
-                    msgListener.draw(currentFrame);
-                    scrollFinder.previousMousePos = x;
-                }, 500);
-        }
+            moveFinderTimeout = setTimeout(function() {
+                msgListener.draw(currentFrame);
+                scrollFinder.previousMousePos = x;
+            }, 500);
+        };
 
         return {
             isDebugMode: function() { return debugMode; },
@@ -144,7 +144,7 @@ define(["require", "./config"], function(require) {
             setCurrentFrame: function(frame) {
                 currentFrame = frame;
                 scrollFinderX = scrollBar.x + scrollBar.width / msgListener.getHistorySize() * (currentFrame-1);
-                drawHud();
+
             },
             getCurrentFrame: function() { return currentFrame; },
 
@@ -207,9 +207,6 @@ define(["require", "./config"], function(require) {
 
                 this.resize();
             },
-            draw: function() {
-                drawHud();
-            },
             drawPlayerData: function(players) {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 drawHud();
@@ -219,29 +216,31 @@ define(["require", "./config"], function(require) {
                     var x = player.x * TILE_SIZE + config.offset[0];
                     var y = player.y * TILE_SIZE + config.offset[1];
 
+
+
                     // Name
                     ctx.font = 'bold 15px Courier';
                     ctx.fillStyle = 'white';
-                    ctx.fillText(player.name, x - ctx.measureText(player.name).width/2, y - PLAYER_SIZE/2 - 20);
+                    ctx.fillText(player.name, x - ctx.measureText(player.name).width/2, y - PLAYER_SIZE - 20);
 
                     // Healt bar
                     ctx.fillStyle = "black";
                     var x1 = x - player.maxHp/2 - 1;
-                    var y1 = y - PLAYER_SIZE/2 - 11;
+                    var y1 = y - PLAYER_SIZE - 15;
                     var width = player.maxHp + 2;
                     var height = 12;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "red";
                     x1 = x - player.maxHp/2;
-                    y1 = y - PLAYER_SIZE/2 - 10;
+                    y1 = y - PLAYER_SIZE - 14;
                     width = player.maxHp;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "green";
                     x1 = x - player.maxHp/2;
-                    y1 = y - PLAYER_SIZE/2 - 10;
+                    y1 = y - PLAYER_SIZE - 14;
                     width = player.currentHp;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
@@ -251,7 +250,6 @@ define(["require", "./config"], function(require) {
                 TILE_SIZE = config.getTileSize();
                 ctx.canvas.width  = window.innerWidth;
                 ctx.canvas.height = window.innerHeight;
-                this.draw();
             },
             // TODO: Remove when server available
             setMockData: function(listener, d) {

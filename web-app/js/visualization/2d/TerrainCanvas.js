@@ -30,9 +30,10 @@ define(["require", "./config", './cave', './forest'], function(require) {
 
                 var fullTiles = [];
                 // Fill the whole map with ground
+                var index = 0;
                 for (var y = 0; y <= lastTile.Y; y++) {
                     for (var x = 0; x <= lastTile.X; x++) {
-                        fullTiles[y * lastTile.Y + x] = {"Type": "ground", "X": x, "Y": y};
+                        fullTiles[index++] = {"Type": "ground", "X": x, "Y": y};
                     }
                 }
 
@@ -41,7 +42,7 @@ define(["require", "./config", './cave', './forest'], function(require) {
                     var tile = this.tiles[i];
                     // Randomly use one of the 4 different obstacle types
                     tile.Type = Math.floor((Math.random() * 4));
-                    fullTiles[tile.Y * lastTile.Y + tile.X] = tile;
+                    fullTiles[tile.Y * (lastTile.Y+1) + tile.X] = tile;
                 }
 
                 if (this.environment == 'cave') {
