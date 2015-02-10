@@ -9,7 +9,11 @@ var isHUDDrawn;
  */
 var bulletTree = [];
 var playerTree = [];
+
 var laserTemplate = {};
+var explosionTemplate = {};
+var destroyedRobotTemplate = {};
+
 var BULLET_HEIGHT;
 
 var explosionTree = [];
@@ -91,6 +95,8 @@ function setStatusMessage(message) {
 function generateMisc() {
     loadPlayerData();
     loadLaserData();
+    loadDestroyedRobot();
+    loadExplosion();
 }
 
 function generateWorld() {
@@ -101,6 +107,14 @@ function generateWorld() {
     CURRENT_ENV.generateSky();
     CURRENT_ENV.generateMap();
     scene.add(CURRENT_ENV.environmentGroup);
+}
+
+function loadDestroyedRobot(){
+    
+}
+
+function loadExplosion(){
+    
 }
 
 function loadLaserData() {
@@ -202,7 +216,10 @@ function addDestroyedRobot(x, y){
 };
 
 function addExplosion(x, y){
-    explosionTree.push(new Explosion(x, y));
+    explosionTree.push(new Explosion(x, y, 
+    new THREE.Mesh(new THREE.PlaneBufferGeometry(32, 32), new THREE.MeshBasicMaterial({
+        color: "rgb(255, 0, 0)"
+    }))));
 };
 
 /* Explosion object used in a robot explosion. */
@@ -222,9 +239,13 @@ function Explosion(x, y, model){
     this.ended = false;
     
     this.animate = function(){
-        /* Vähennä framecounteria. Siirrä seuraava frame tsekkaa menikö animaatio loppuun.
-         * jos lopussa niin kutsu destroy();
-         */
+        this.frameCounter --;
+        if(frameCounter <= 0){
+            this.currentTile ++;
+        }
+        if(this.currentTile >= this.numberOfTiles){
+            this.ended = true;
+        }
     };
     
     this.end = function(){
@@ -271,7 +292,7 @@ function refreshMisc(){
     if(explosionTree.length > 0){
         for(var i = 0; i < explosionTree.length; i ++){
             if(explosionTree[i].ended){
-                CURRENT_ENV.environmentGroup.remove(explosionTree[i]);
+                CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 explosionTree[i].splice(i, 1);
             }
             else{

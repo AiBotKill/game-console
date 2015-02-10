@@ -53,9 +53,9 @@ function processInput(key) {
             serverData.gamestate.bullets[0].velocity.y);
         }
         if(key === 'e'){
+            addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y);
             scene.remove(playerTree[0].model);
             playerTree.splice(0, 1);
-            addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y);
         }
         /*
         if(key === 'l'){
