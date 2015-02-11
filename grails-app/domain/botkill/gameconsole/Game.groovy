@@ -5,6 +5,7 @@ import botkill.gameconsole.enums.GameMode
 import botkill.gameconsole.enums.GameState
 
 class Game {
+    def nats
 
     // Game may have many teams to compete against each other. Team in the same GameTeam are on the same side.
     static hasMany = ["gameTeams":GameTeam, "results": GameResult]
@@ -32,7 +33,7 @@ class Game {
         roundTime min: 1, max: 600
     }
 
-    static transients = ['AICount']
+    static transients = ['AICount', 'nats']
 
     static mapping = {
         gameTeams sort: 'id', order: 'asc'
@@ -54,7 +55,7 @@ class Game {
         state = GameState.STARTED
         save flush:true
 
-        // TODO: Send "start game" -message to NATS
+        nats.publish("${this.id}.start")
     }
 
     void end(List<GameResult> results) {

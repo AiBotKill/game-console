@@ -1,14 +1,15 @@
 package botkill.gameconsole
 
-import botkill.gameconsole.enums.GameMode
-import botkill.gameconsole.enums.GameState
 import botkill.gameconsole.enums.TeamColor
+import grails.converters.JSON
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class GameController {
+    def natsSubscriberService
+    def nats
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -18,13 +19,12 @@ class GameController {
     }
 
     def show(Game gameInstance) {
+        println((gameInstance as JSON).toString())
         respond gameInstance
     }
 
     def create() {
-        // TODO: Fetch online AIs from NATS
-
-        respond new Game(params)
+        respond new Game(params), model: [connectedAIs: natsSubscriberService.getConnectedAIs()]
     }
 
     @Transactional
@@ -68,6 +68,8 @@ class GameController {
         }
 
         gameInstance.save flush: true
+
+        nats.publish("createGame", (gameInstance as JSON).toString())
 
         request.withFormat {
             form multipartForm {

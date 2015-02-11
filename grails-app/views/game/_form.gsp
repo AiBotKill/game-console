@@ -51,8 +51,8 @@
 <div class="pull-left" style="width:45%">
 	<h2><g:message code="game.onlineais.label" default="AIs" /></h2>
 	<div id="ai" class="list-group ${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
-		<g:each in="${Team.list()}" var="teamInstance">
-			<span id="team-${teamInstance.id}" style="cursor:move" class="list-group-item">${teamInstance.name}</span>
+		<g:each in="${connectedAIs}" var="team">
+			<span id="team-${team.value.id}" style="cursor:move" class="list-group-item">${team.key}</span>
 		</g:each>
 		</ul>
 	</div>
