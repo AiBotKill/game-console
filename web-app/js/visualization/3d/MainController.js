@@ -120,7 +120,8 @@ function loadExplosion(){
     explosionTemplate = {
         "geometry": new THREE.PlaneBufferGeometry(EXPLOSION_WIDTH, EXPLOSION_HEIGHT),
         "material": new THREE.MeshBasicMaterial({
-            color: "rgb(255, 0, 0)"
+            'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosion.png'),
+            'alphaTest': 0.5
         })
     };
 };
@@ -225,7 +226,7 @@ function addExplosion(x, y){
     var mesh = new THREE.Mesh(explosionTemplate.geometry, explosionTemplate.material);
     mesh.position.x = x;
     mesh.position.y = y;
-    mesh.position.z = EXPLOSION_HEIGHT / 2;
+    mesh.position.z = EXPLOSION_HEIGHT / 2 - 2;
     CURRENT_ENV.environmentGroup.add(mesh);
     explosionTree.push(new Explosion(mesh));
 };
@@ -233,12 +234,14 @@ function addExplosion(x, y){
 /* Explosion object used in a robot explosion. */
 function Explosion(model){
     this.model = model;
+    this.model.material.map.wrapS = this.model.material.map.wrapT = THREE.RepeatWrapping;
+    this.model.material.map.repeat.set(1 / 4, 1 / 4);
     /* Overall time the animation spends before it restarts. */
-    this.animationSpeed = EXPLOSION_SPEED;
+    this.animationSpeed = EXPLOSION_DURATION;
     /* Number of frames in the animation. */
-    this.numberOfTiles = 10;
+    this.numberOfTiles = 16;
     /* Time that the CURRENT tile spends on screen. */
-    this.frameCounter = EXPLOSION_SPEED / 10;
+    this.frameCounter = this.animationSpeed / this.numberOfTiles;
     /* The index of the tile that is currently displayed. */
     this.currentTile = 0;
     /* If the Explosion has ended and should be destroyed. */
@@ -249,7 +252,12 @@ function Explosion(model){
                 new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
         this.frameCounter --;
         if(this.frameCounter <= 0){
+            this.frameCounter = this.animationSpeed / this.numberOfTiles;
             this.currentTile ++;
+            var currentColumn = this.currentTile % 4;
+            var currentRow = Math.floor(this.currentTile / 4);
+            this.model.material.map.offset.x = currentColumn / 4;
+            this.model.material.map.offset.y = currentRow / 4;
         }
         if(this.currentTile >= this.numberOfTiles){
             this.ended = true;
