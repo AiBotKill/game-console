@@ -11,7 +11,7 @@ define("config", [], function() {
         tilesXCount: 79,
         tilesYCount: 79,
         assetsPath: "../../images/visualization/2d/",
-        zoom: 1,
+        zoom: 3,
         offset: [0, 0],
         getTileSize : function() {
             return window.innerHeight / (this.tilesYCount) * this.zoom; // Tiles on y-axis and +1 for hud controls
