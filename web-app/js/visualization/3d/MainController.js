@@ -15,6 +15,7 @@ var playerTree = [];
  * */
 var laserTemplate = {};
 var explosionTemplate = {};
+var explosionTexture = [];
 var destroyedRobotTemplate = {};
 
 var BULLET_HEIGHT;
@@ -51,10 +52,12 @@ var lightColor;
  niihin koordinaatteihin ja id:tä vastaava pelaaja poistetaan visualPlayers taulukosta.
  */
 
-var visualPlayers = [{
+var visualPlayers = [
+    {
         "id": "testi",
         "model": "" // Modelidata.
-    }];
+    }
+];
 
 var player = {
     "id": "",
@@ -112,17 +115,14 @@ function generateWorld() {
     scene.add(CURRENT_ENV.environmentGroup);
 };
 
-function loadDestroyedRobot(){
-    
+function loadDestroyedRobot() {
+
 };
 
-function loadExplosion(){
+function loadExplosion() {
     explosionTemplate = {
         "geometry": new THREE.PlaneBufferGeometry(EXPLOSION_WIDTH, EXPLOSION_HEIGHT),
-        "material": new THREE.MeshBasicMaterial({
-            'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosion.png'),
-            'alphaTest': 0.5
-        })
+        "texture": THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosion.png')
     };
 };
 
@@ -155,12 +155,12 @@ function loadPlayerData() {
             player.position.z -= helper.box.min.z;
             player.castShadow = true;
             player.receiveShadow = true;
-            
+
             var playerObject = {
                 "model": player,
                 "data": serverData.gamestate.players[i]
             };
-            
+
             playerTree.push(playerObject);
             CURRENT_ENV.environmentGroup.add(playerObject.model);
         }
@@ -175,7 +175,7 @@ function renderHud() {
     if (showMessage) {
         graphics.font = "20px Inconsolata";
         graphics.drawImage(hudImage, HUD_STATUS_MESSAGE_BOX_X, HUD_STATUS_MESSAGE_BOX_Y,
-                HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+            HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
         graphics.fillStyle = HUD_TEXT_COLOR;
         graphics.fillText(hudStatusMessage, HUD_STATUS_MESSAGE_X, HUD_STATUS_MESSAGE_Y);
         statusMessageDelay();
@@ -188,19 +188,19 @@ function renderHud() {
         graphics.drawImage(crosshair, CROSSHAIR_X, CROSSHAIR_Y, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT);
 
         graphics.drawImage(hudImage, HUD_NAME_FIELD_X,
-                HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+            HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
         graphics.fillStyle = HUD_TEXT_COLOR;
         graphics.fillText("Player: " + playerFollowed.name,
-                HUD_UPPER_PLAYER_NAME_X, HUD_UPPER_TEXT_Y);
+            HUD_UPPER_PLAYER_NAME_X, HUD_UPPER_TEXT_Y);
 
         graphics.drawImage(hudImage, HUD_STATUS_FIELD_X,
-                HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
+            HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
 
         graphics.fillText("HP: " + playerFollowed.hp, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
         graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
 
         graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
-                HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+            HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
 
         graphics.fillText("Time left: " + serverData.gamestate.timeLeft, HUD_TIME_LEFT_X, HUD_TIME_LEFT_Y);
         graphics.fillText("Round: " + serverData.gamestate.rounds, HUD_ROUND_COUNT_X, HUD_ROUND_COUNT_Y);
@@ -216,23 +216,28 @@ function createNewBullet(x, y) {
     laser.position.y = y;
     laser.position.z = BULLET_HEIGHT;
     return laser;
-};
+}
 
-function addDestroyedRobot(x, y){
-    
-};
+function addDestroyedRobot(x, y) {
 
-function addExplosion(x, y){
-    var mesh = new THREE.Mesh(explosionTemplate.geometry, explosionTemplate.material);
+}
+
+function addExplosion(x, y) {
+    var cloneTexture = explosionTemplate.texture.clone();
+    cloneTexture.needsUpdate = true;
+    var mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
+        'map': cloneTexture,
+        'alphaTest': 0.5
+    }));
     mesh.position.x = x;
     mesh.position.y = y;
     mesh.position.z = EXPLOSION_HEIGHT / 2 - 2;
     CURRENT_ENV.environmentGroup.add(mesh);
     explosionTree.push(new Explosion(mesh));
-};
+}
 
 /* Explosion object used in a robot explosion. */
-function Explosion(model){
+function Explosion(model) {
     this.model = model;
     this.model.material.map.wrapS = this.model.material.map.wrapT = THREE.RepeatWrapping;
     this.model.material.map.repeat.set(1 / 4, 1 / 4);
@@ -246,25 +251,25 @@ function Explosion(model){
     this.currentTile = 0;
     /* If the Explosion has ended and should be destroyed. */
     this.ended = false;
-    
-    this.animate = function(){
+
+    this.animate = function () {
         this.model.lookAt(
-                new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
-        this.frameCounter --;
-        if(this.frameCounter <= 0){
+            new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+        this.frameCounter--;
+        if (this.frameCounter <= 0) {
             this.frameCounter = this.animationSpeed / this.numberOfTiles;
-            this.currentTile ++;
+            this.currentTile++;
             var currentColumn = this.currentTile % 4;
             var currentRow = Math.floor(this.currentTile / 4);
             this.model.material.map.offset.x = currentColumn / 4;
             this.model.material.map.offset.y = currentRow / 4;
         }
-        if(this.currentTile >= this.numberOfTiles){
+        if (this.currentTile >= this.numberOfTiles) {
             this.ended = true;
         }
     };
-    
-    this.end = function(){
+
+    this.end = function () {
         this.ended = true;
     };
 };
@@ -291,7 +296,7 @@ function refreshPlayerData() {
 };
 
 function refreshBullets() {
-    if(bulletTree.length > 0){
+    if (bulletTree.length > 0) {
         for (var i = 0; i < bulletTree.length; i++) {
             bulletTree[i].model.translateX(bulletTree[i].velocity.x);
             bulletTree[i].model.translateY(bulletTree[i].velocity.y);
@@ -304,14 +309,14 @@ function refreshBullets() {
     }
 };
 
-function refreshMisc(){
-    if(explosionTree.length > 0){
-        for(var i = 0; i < explosionTree.length; i ++){
-            if(explosionTree[i].ended){
+function refreshMisc() {
+    if (explosionTree.length > 0) {
+        for (var i = 0; i < explosionTree.length; i++) {
+            if (explosionTree[i].ended) {
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 explosionTree.splice(i, 1);
             }
-            else{
+            else {
                 explosionTree[i].animate();
             }
         }

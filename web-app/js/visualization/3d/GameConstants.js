@@ -40,7 +40,7 @@ var TEST_DARKNESS = 0.5;
 /***************************************/
 var EXPLOSION_WIDTH = 32;
 var EXPLOSION_HEIGHT = 32;
-var EXPLOSION_DURATION = 50;
+var EXPLOSION_DURATION = 40;
 var HUD_STATUS_MESSAGE_DELAY = 100;
 
 var HUD_STATUS_MESSAGE_X = 40 * (WIDTH / 100);
