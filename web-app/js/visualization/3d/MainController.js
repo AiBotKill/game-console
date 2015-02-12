@@ -127,7 +127,7 @@ function loadExplosion() {
 };
 
 function loadLaserData() {
-    var path = ASSETS_PATH + "/player/";
+    var path = ASSETS_PATH + "player/";
     modelLoader.load(path + "laser.json", function (geometry, materials) {
         laserTemplate.geometry = geometry;
         laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
@@ -137,7 +137,7 @@ function loadLaserData() {
 function loadPlayerData() {
     console.log("Loading player graphics...");
 
-    var path = ASSETS_PATH + "/player/";
+    var path = ASSETS_PATH + "player/";
     var player;
 
     modelLoader.load(path + "robotti.json", function (geometry, materials) {
