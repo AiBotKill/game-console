@@ -10,6 +10,8 @@ var isHUDDrawn;
 var bulletTree = [];
 var playerTree = [];
 
+var lightTree = [NUMBER_OF_LIGHTS];
+
 /* Templates which hold the geometry and material for objects that require realtime mesh
  * generation during the game. 
  * */
@@ -82,11 +84,16 @@ var player = {
     }
 };
 
-function updateMaterials(){
-    for(var i = 0; i < playerTree.length; i ++){
-        playerTree[i].model.material.needsUpdate = true;
+function fetchLight(color, intensity, distance){
+    for(var i = 0; i < lightTree.length; i ++){
+        if(lightTree[i].intensity === 0){
+            lightTree[i].intensity = intensity;
+            lightTree[i].distance = distance;
+            console.log(lightTree[i]);
+            return lightTree[i];
+        }
     }
-    ground.material.needsUpdate = true;
+    return false;
 }
 
 function statusMessageDelay() {
@@ -110,6 +117,7 @@ function generateMisc() {
     loadLaserData();
     loadDestroyedRobot();
     loadExplosion();
+    loadLights();
 };
 
 function generateWorld() {
@@ -121,6 +129,14 @@ function generateWorld() {
     CURRENT_ENV.generateMap();
     scene.add(CURRENT_ENV.environmentGroup);
 };
+
+function loadLights(){
+    console.log("Loading lights..");
+    for(var i = 0; i < lightTree.length; i++){
+        lightTree[i] = new THREE.PointLight("rgb(0, 0, 0)", 0, 1);
+        CURRENT_ENV.environmentGroup.add(lightTree[i]);
+    }
+}
 
 function loadDestroyedRobot() {
 
@@ -230,7 +246,7 @@ function addDestroyedRobot(x, y) {
 }
 
 function addExplosion(x, y) {
-    var light = new THREE.PointLight("rgb(255, 179, 0)", 3, 50);
+    var light = fetchLight("rgb(255, 171, 0)", 3, 40);
     light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
@@ -241,7 +257,6 @@ function addExplosion(x, y) {
     mesh.position.x = x;
     mesh.position.y = y;
     mesh.position.z = EXPLOSION_HEIGHT / 2 - 2;
-    CURRENT_ENV.environmentGroup.add(light);
     CURRENT_ENV.environmentGroup.add(mesh);
     explosionTree.push(new Explosion(mesh, light));
 }
@@ -325,7 +340,6 @@ function refreshMisc() {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
                 explosionTree[i].light.intensity = 0;
-                CURRENT_ENV.environmentGroup.remove(explosionTree[i].light);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 explosionTree.splice(i, 1);
             }
