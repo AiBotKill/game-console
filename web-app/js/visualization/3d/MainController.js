@@ -35,8 +35,6 @@ var playerFollowed = {
     "team": 0
 };
 
-var modelLoader;
-
 var playerTexture = [];
 var fpsMode = false;
 //TESTING
@@ -122,7 +120,6 @@ function generateMisc() {
 };
 
 function generateWorld() {
-    modelLoader = new THREE.JSONLoader;
     scene = new THREE.Scene();
     console.log("Generating world...");
     CURRENT_ENV.lightsCamera();
@@ -247,7 +244,7 @@ function addDestroyedRobot(x, y) {
 }
 
 function addExplosion(x, y) {
-    var light = fetchLight(new THREE.Color("rgb(255, 171, 0"), 3.0, 40);
+    var light = fetchLight(new THREE.Color("rgb(255, 171, 0"), 2.0, 30);
     if(light){
         light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
     }

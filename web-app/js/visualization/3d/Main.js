@@ -4,6 +4,7 @@ var hud;
 var hudImage;
 var crosshair;
 var ASSETS_PATH = document.getElementById("assetsPath").innerHTML;
+var modelLoader;
 
 function initialization() {
     KeyboardJS.enable();
@@ -12,6 +13,7 @@ function initialization() {
     canvas = document.getElementById("gameCanvas");
     renderer = new THREE.WebGLRenderer({antialiasing: false, canvas:canvas});
     renderer.setSize(WIDTH, HEIGHT);
+    modelLoader = new THREE.JSONLoader;
     if(SHADOWS){
         renderer.shadowMapEnabled = true;
         renderer.shadowMapType = THREE.PCFSoftShadowMap;
