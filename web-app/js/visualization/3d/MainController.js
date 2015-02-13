@@ -89,6 +89,7 @@ function fetchLight(color, intensity, distance){
         if(lightTree[i].intensity === 0){
             lightTree[i].intensity = intensity;
             lightTree[i].distance = distance;
+            lightTree[i].color = color;
             console.log(lightTree[i]);
             return lightTree[i];
         }
@@ -246,7 +247,7 @@ function addDestroyedRobot(x, y) {
 }
 
 function addExplosion(x, y) {
-    var light = fetchLight("rgb(255, 171, 0)", 3, 40);
+    var light = fetchLight(new THREE.Color("rgb(255, 171, 0"), 3.0, 40);
     if(light){
         light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
     }
