@@ -25,8 +25,8 @@ function initialization() {
     else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
         CURRENT_ENV = new CavernController();
     }
-    generateWorld();
     generateMisc();
+    generateWorld();
     // We enter gameloop.
     console.log("Entering gameloop...");
     hud = createHUDCanvas();
