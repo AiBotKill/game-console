@@ -63,8 +63,7 @@ function processInput(key) {
         if (key === 'e') {
             if (playerTree.length != 0) {
                 cooldown = 5;
-                addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y);
-                CURRENT_ENV.environmentGroup.remove(playerTree[0].model);
+                addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y, playerTree[0].model);
                 playerTree.splice(0, 1);
             }
         }

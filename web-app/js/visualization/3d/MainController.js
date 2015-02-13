@@ -247,7 +247,7 @@ function addDestroyedRobot(x, y) {
 
 }
 
-function addExplosion(x, y) {
+function addExplosion(x, y, player) {
     var light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
     if(light){
         light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
@@ -265,15 +265,16 @@ function addExplosion(x, y) {
     decal.position.x = x;
     decal.position.y = y;
     decal.position.z = 0.1;
-    CURRENT_ENV.environmentGroup.add(mesh);
     CURRENT_ENV.environmentGroup.add(decal);
-    explosionTree.push(new Explosion(mesh, light));
+    CURRENT_ENV.environmentGroup.add(mesh);
+    explosionTree.push(new Explosion(mesh, light, player));
 }
 
 /* Explosion object used in a robot explosion. */
-function Explosion(model, light) {
+function Explosion(model, light, player) {
     this.model = model;
     this.light = light;
+    this.player = player;
     this.model.material.map.wrapS = this.model.material.map.wrapT = THREE.RepeatWrapping;
     this.model.material.map.repeat.set(1 / 4, 1 / 4);
     /* Overall time the animation spends before it restarts. */
@@ -358,6 +359,7 @@ function refreshMisc() {
                     explosionTree[i].light.intensity = 0;
                 }
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
+                CURRENT_ENV.environmentGroup.remove(explosionTree[i].player);
                 explosionTree.splice(i, 1);
             }
             else {
