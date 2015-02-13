@@ -250,7 +250,7 @@ function addDestroyedRobot(x, y) {
 function addExplosion(x, y, player) {
     var light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
     if(light){
-        light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
+        light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 8);
     }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
