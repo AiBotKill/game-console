@@ -82,6 +82,13 @@ var player = {
     }
 };
 
+function updateMaterials(){
+    for(var i = 0; i < playerTree.length; i ++){
+        playerTree[i].model.material.needsUpdate = true;
+    }
+    ground.material.needsUpdate = true;
+}
+
 function statusMessageDelay() {
     if (messageDelay > 0) {
         messageDelay--;
@@ -223,9 +230,8 @@ function addDestroyedRobot(x, y) {
 }
 
 function addExplosion(x, y) {
-    var light = new THREE.DirectionalLight("rgb(255, 179, 0)", 3);
+    var light = new THREE.PointLight("rgb(255, 179, 0)", 3, 50);
     light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
-    light.castShadow = true;
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
     var mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
@@ -318,6 +324,7 @@ function refreshMisc() {
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
+                explosionTree[i].light.intensity = 0;
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].light);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 explosionTree.splice(i, 1);
