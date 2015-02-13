@@ -10,7 +10,7 @@ var isHUDDrawn;
 var bulletTree = [];
 var playerTree = [];
 
-var lightTree = [NUMBER_OF_LIGHTS];
+var lightTree = [];
 
 /* Templates which hold the geometry and material for objects that require realtime mesh
  * generation during the game. 
@@ -132,7 +132,7 @@ function generateWorld() {
 
 function loadLights(){
     console.log("Loading lights..");
-    for(var i = 0; i < lightTree.length; i++){
+    for(var i = 0; i < NUMBER_OF_LIGHTS; i++){
         lightTree[i] = new THREE.PointLight("rgb(0, 0, 0)", 0, 1);
         CURRENT_ENV.environmentGroup.add(lightTree[i]);
     }
