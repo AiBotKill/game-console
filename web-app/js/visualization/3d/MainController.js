@@ -224,7 +224,8 @@ function addDestroyedRobot(x, y) {
 
 function addExplosion(x, y) {
     var light = new THREE.PointLight("rgb(100, 50, 0)", 1, 20);
-    light.position.set(x, y, EXPLOSION_HEIGHT / 2);
+    light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
+    
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
     var mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
@@ -236,7 +237,7 @@ function addExplosion(x, y) {
     mesh.position.z = EXPLOSION_HEIGHT / 2 - 2;
     CURRENT_ENV.environmentGroup.add(light);
     CURRENT_ENV.environmentGroup.add(mesh);
-    explosionTree.push(new Explosion(mesh));
+    explosionTree.push(new Explosion(mesh, light));
 }
 
 /* Explosion object used in a robot explosion. */
