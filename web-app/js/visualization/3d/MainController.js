@@ -283,6 +283,12 @@ function Explosion(model, light) {
             new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
         this.frameCounter--;
         if (this.frameCounter <= 0) {
+            if (this.light.intensity < 1) {
+                this.light.intensity = 2;
+            }
+            else {
+                this.light.intensity = 0.5;
+            }
             this.frameCounter = this.animationSpeed / this.numberOfTiles;
             this.currentTile++;
             var currentColumn = this.currentTile % 4;
