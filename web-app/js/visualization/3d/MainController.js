@@ -88,7 +88,6 @@ function fetchLight(color, intensity, distance){
             lightTree[i].intensity = intensity;
             lightTree[i].distance = distance;
             lightTree[i].color = color;
-            console.log(lightTree[i]);
             return lightTree[i];
         }
     }
@@ -143,7 +142,10 @@ function loadDestroyedRobot() {
 function loadExplosion() {
     explosionTemplate = {
         "geometry": new THREE.PlaneBufferGeometry(EXPLOSION_WIDTH, EXPLOSION_HEIGHT),
-        "texture": THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosion.png')
+        "texture": THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosion.png'),
+        "decalMaterial": new THREE.MeshPhongMaterial({
+            'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosionDecal.png')
+        })
     };
 };
 
@@ -257,7 +259,12 @@ function addExplosion(x, y) {
     mesh.position.x = x;
     mesh.position.y = y;
     mesh.position.z = EXPLOSION_HEIGHT / 2 - 2;
+    var decal = new THREE.Mesh(explosionTemplate.geometry, explosionTemplate.decalMaterial);
+    decal.position.x = x;
+    decal.position.y = y;
+    decal.position.z = 0.1;
     CURRENT_ENV.environmentGroup.add(mesh);
+    CURRENT_ENV.environmentGroup.add(decal);
     explosionTree.push(new Explosion(mesh, light));
 }
 
