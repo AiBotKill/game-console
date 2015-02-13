@@ -247,7 +247,9 @@ function addDestroyedRobot(x, y) {
 
 function addExplosion(x, y) {
     var light = fetchLight("rgb(255, 171, 0)", 3, 40);
-    light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
+    if(light){
+        light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
+    }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
     var mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
@@ -339,7 +341,9 @@ function refreshMisc() {
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
-                explosionTree[i].light.intensity = 0;
+                if(explosionTree[i].light){
+                    explosionTree[i].light.intensity = 0;
+                }
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 explosionTree.splice(i, 1);
             }
