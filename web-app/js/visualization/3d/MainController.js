@@ -223,9 +223,9 @@ function addDestroyedRobot(x, y) {
 }
 
 function addExplosion(x, y) {
-    var light = new THREE.PointLight("#FFA200", 1, 20);
+    var light = new THREE.DirectionalLight("rgb(255, 179, 0)", 3);
     light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 2);
-    
+    light.castShadow = true;
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
     var mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
