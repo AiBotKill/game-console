@@ -36,32 +36,42 @@ function processInput(key) {
             setStatusMessage("EXTERNAL CAMERA");
             isHUDDrawn = false;
         }
-        if(key === 't'){
-            playerTree[0].model.rotation.y += 0.04;
+        if (key === 't') {
+            if (playerTree.length != 0) {
+                playerTree[0].model.rotation.y += 0.04;
+            }
         }
-        if(key === 'j'){
-            playerTree[0].model.translateX(1);
+        if (key === 'j') {
+            if (playerTree.length != 0) {
+                playerTree[0].model.translateX(1);
+            }
         }
         if (key === 'k') {
-            playerTree[0].model.translateX(-1);
+            if (playerTree.length != 0) {
+                playerTree[0].model.translateX(-1);
+            }
         }
-        if(key === 'space'){
-            addBullet(
-            playerTree[0].model.position.x, 
-            playerTree[0].model.position.y, 
-            serverData.gamestate.bullets[0].velocity.x, 
-            serverData.gamestate.bullets[0].velocity.y);
+        if (key === 'space') {
+            if (playerTree.length != 0) {
+                addBullet(
+                        playerTree[0].model.position.x,
+                        playerTree[0].model.position.y,
+                        serverData.gamestate.bullets[0].velocity.x,
+                        serverData.gamestate.bullets[0].velocity.y);
+            }
         }
-        if(key === 'e'){
-            cooldown = 5;
-            addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y);
-            CURRENT_ENV.environmentGroup.remove(playerTree[0].model);
-            playerTree.splice(0, 1);
+        if (key === 'e') {
+            if (playerTree.length != 0) {
+                cooldown = 5;
+                addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y);
+                CURRENT_ENV.environmentGroup.remove(playerTree[0].model);
+                playerTree.splice(0, 1);
+            }
         }
         /*
-        if(key === 'l'){
-            CURRENT_ENV.environmentGroup.remove(testPlayer);
-        }
+         if(key === 'l'){
+         CURRENT_ENV.environmentGroup.remove(testPlayer);
+         }
          */
         if (key === KEY_LEFT) {
             camera.rotation.y += 0.03;
@@ -117,7 +127,7 @@ function processInput(key) {
          console.log("ROT X " + camera.rotation.x);
          console.log("ROT Y " + camera.rotation.y);
          */
-         
+
     }
 }
 
