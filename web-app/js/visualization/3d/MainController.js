@@ -144,7 +144,8 @@ function loadExplosion() {
         "geometry": new THREE.PlaneBufferGeometry(EXPLOSION_WIDTH, EXPLOSION_HEIGHT),
         "texture": THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosion.png'),
         "decalMaterial": new THREE.MeshPhongMaterial({
-            'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosionDecal.png')
+            'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosionDecal.png'),
+            'alphaTest': 0.5
         })
     };
 };
