@@ -420,7 +420,7 @@ function refreshMisc() {
             }
         }
     }
-    particleTree.smoke(clock.getDelta());
+    particleTree.smoke.tick(clock.getDelta());
 };
 
 function refreshViewState() {
