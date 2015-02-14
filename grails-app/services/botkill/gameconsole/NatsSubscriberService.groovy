@@ -13,7 +13,7 @@ class NatsSubscriberService {
 
     @Subscribe("ping")
     def ping(Message message) {
-
+        String test = "";
     }
 
     @Subscribe("registerAI")
@@ -26,15 +26,15 @@ class NatsSubscriberService {
 
             if (!connectedAIs.containsKey("${t.name} - ${version}")) {
                 println("Team ${t.name} registered!")
-                message.reply("{'status':'OK', 'id':'${t.botId}'")
+                message.reply('{"status":"OK", "id":"${t.botId}"')
                 connectedAIs["${t.name} - ${version}"] = t
             } else {
                 println("Team with id ${id} and version ${version} already registered")
-                message.reply("{'status':'error', 'id':'${id}', 'error':'Team already registered with given version'}")
+                message.reply('{"status"":"error", "id":"${id}", "error":"Team already registered with given version"}')
             }
         } else {
             println("Team not found with id ${id}")
-            message.reply("{'status':'error', 'id':'', 'error':'Team not found'}")
+            message.reply('{"status":"error", "id":"${id}", "error":"Team not found"}')
         }
     }
 
