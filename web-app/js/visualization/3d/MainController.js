@@ -22,6 +22,12 @@ var destroyedRobotTemplate = {};
 
 var BULLET_HEIGHT;
 
+/* A particle tree for all the different particle groups. */
+var particleTree = {
+    "smoke": "",
+    "laser": ""
+};
+
 var explosionTree = [];
 var decoTree = [];
 
@@ -46,6 +52,8 @@ var testPlayerData = {
 
 var lightValue;
 var lightColor;
+
+var clock = new THREE.Clock();
 
 /* Player data used for visualization.
  Sillä syncillä kun pelaajan energiat näyttävät nollaa, niin pyöritetään räjähdys
@@ -135,6 +143,13 @@ function loadLights(){
     }
 }
 
+function loadParticles(){
+    particleTree.smoke = new SPE.Group({
+        texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
+        maxAge: 5
+    });
+}
+
 function loadDestroyedRobot() {
 
 };
@@ -192,6 +207,26 @@ function loadPlayerData() {
         BULLET_HEIGHT = helper.box.min.z;
     });
 };
+
+function createSmoke(x, y){
+    var smoke = new SPE.Emitter({
+        type: 'cube',
+        position: new THREE.Vector3(0, 0, 0),
+        acceleration: new THREE.Vector3(0, 10, 0),
+        velocity: new THREE.Vector3(0, 15, 0),
+        particlesPerSecond: 100,
+        sizeStart: 10,
+        sizeEnd: 0,
+        opacityStart: 1,
+        opacityEnd: 0,
+        colorStart: new THREE.Color('blue'),
+        colorEnd: new THREE.Color('white')
+    });
+    
+    particleTree.addEmitter(smoke);
+    CURRENT_ENV.environmentGroup.remove(particleTree.smoke.mesh);
+    CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
+}
 
 function renderHud() {
     var graphics = hud.getContext("2d");
@@ -376,6 +411,7 @@ function refreshMisc() {
                 }
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].player);
+                var smoke = createSmoke();
                 explosionTree.splice(i, 1);
             }
             else {
@@ -383,6 +419,7 @@ function refreshMisc() {
             }
         }
     }
+    particleTree.smoke(clock.getDelta());
 };
 
 function refreshViewState() {
