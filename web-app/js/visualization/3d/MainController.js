@@ -124,6 +124,7 @@ function generateMisc() {
     loadDestroyedRobot();
     loadExplosion();
     loadLights();
+    loadParticles();
 };
 
 function generateWorld() {
@@ -223,7 +224,7 @@ function createSmoke(x, y){
         colorEnd: new THREE.Color('white')
     });
     
-    particleTree.addEmitter(smoke);
+    particleTree.smoke.addEmitter(smoke);
     CURRENT_ENV.environmentGroup.remove(particleTree.smoke.mesh);
     CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
 }
