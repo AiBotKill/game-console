@@ -20,6 +20,15 @@ class NatsSubscriberService {
         return connectedAIs[connectionId]
     }
 
+    private boolean botIdAndVersionAlreadyConnected(String botId, String version) {
+        connectedAIs.each { String connectionId, Team team ->
+            if (team.botId.equals(botId) && team.botVersion.equals(version)) {
+                return true
+            }
+        }
+        return false
+    }
+
     @Subscribe("registerAI")
     def registerAI(Message message) {
         JSONObject registerMsg = new JSONObject(message.getBody())
@@ -28,10 +37,13 @@ class NatsSubscriberService {
         Team t = Team.findByBotId(id)
         if (t) {
 
-            if (!connectedAIs.containsKey("${t.name} - ${version}")) {
+            if (!botIdAndVersionAlreadyConnected(id, version)) {
                 println("Team ${t.name} registered!")
                 String connectionId = UUID.randomUUID().toString();
                 message.reply("{\"status\":\"ok\", \"id\":\"${connectionId}\"}")
+
+                t.botVersion = version
+                t.connectionId = connectionId
                 connectedAIs["${connectionId}"] = t
             } else {
                 println("Team with id ${id} and version ${version} already registered")

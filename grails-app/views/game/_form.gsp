@@ -52,7 +52,7 @@
 	<h2><g:message code="game.onlineais.label" default="AIs" /></h2>
 	<div id="ai" class="list-group ${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
 		<g:each in="${connectedAIs}" var="team">
-			<span id="team-${team.value.id}" style="cursor:move" class="list-group-item">${team.key}</span>
+			<span id="team;${team.value.key}" style="cursor:move" class="list-group-item">${team.name} - ${team.botVersion}</span>
 		</g:each>
 		</ul>
 	</div>
