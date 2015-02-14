@@ -248,16 +248,32 @@ function addDestroyedRobot(x, y) {
 }
 
 function addExplosion(x, y, player) {
-    var light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
+    var light;
+    var mesh;
+    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+        light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
+    }
+    else{
+        light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
+    }
+    
     if(light){
         light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 8);
     }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
-    var mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
-        'map': cloneTexture,
-        'alphaTest': 0.5
-    }));
+    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+        mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshLambertMaterial({
+            'map': cloneTexture,
+            'alphaTest': 0.5
+        }));
+    }
+    else{
+        mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
+            'map': cloneTexture,
+            'alphaTest': 0.5
+        }));
+    }
     mesh.position.x = x;
     mesh.position.y = y;
     mesh.position.z = EXPLOSION_HEIGHT / 2 - 2;
