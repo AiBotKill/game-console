@@ -26,7 +26,7 @@ class NatsSubscriberService {
 
             if (!connectedAIs.containsKey("${t.name} - ${version}")) {
                 println("Team ${t.name} registered!")
-                message.reply("{\"status\":\"OK\", \"id\":\"${t.botId}\"")
+                message.reply("{\"status\":\"ok\", \"id\":\"${t.botId}\"}")
                 connectedAIs["${t.name} - ${version}"] = t
             } else {
                 println("Team with id ${id} and version ${version} already registered")
