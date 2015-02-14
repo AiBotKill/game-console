@@ -37,7 +37,7 @@ var DARKNESS_NIGHT_MIN = 0.66;
 
 /* TEST CONSTANTS FOR CONSOLE DEMOING. */
 var TEST_ENV = 1;
-var TEST_DARKNESS = 0.5;
+var TEST_DARKNESS = 0.2;
 /***************************************/
 var EXPLOSION_WIDTH = 32;
 var EXPLOSION_HEIGHT = 32;
