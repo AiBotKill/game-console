@@ -48,8 +48,11 @@ class GameController {
                     GameTeam gameTeam = new GameTeam()
                     gameTeam.color = TeamColor.values()[team%maxTeams]
                     gameTeam.game = gameInstance
-                    Team t = natsSubscriberService.getConnectedAI(connectionId).merge()
-                    gameTeam.addToTeams(t)
+                    Team.withSession {
+                        Team t = natsSubscriberService.getConnectedAI(connectionId).merge()
+                        gameTeam.addToTeams(t)
+                    }
+
                     gameTeam.connectionId = connectionId
                     teams[team] = gameTeam
                     teamCount++
