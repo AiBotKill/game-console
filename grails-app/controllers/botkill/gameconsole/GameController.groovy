@@ -38,15 +38,17 @@ class GameController {
         int maxTeams = TeamColor.values().size();
         params.list("teamAssignments").each {
             if (!it.equals("") && it.toString().contains(":")) {
-                def aiIdAndTeamNumber = it.split(":")
-                def aiId = aiIdAndTeamNumber[0]
-                def team = (aiIdAndTeamNumber[1] as int) - 1
+                def connectionIdAndTeamNumber = it.split(":")
+                def connectionId = connectionIdAndTeamNumber[0] as String
+                def team = (connectionIdAndTeamNumber[1] as int) - 1
                 // If team is not yet created
                 if (!teams[team]) {
                     GameTeam gameTeam = new GameTeam()
                     gameTeam.color = TeamColor.values()[team%maxTeams]
                     gameTeam.game = gameInstance
-                    gameTeam.addToTeams(Team.findById((aiId as long)))
+                    Team t = natsSubscriberService.getConnectedAI(connectionId)
+                    gameTeam.addToTeams(t)
+                    gameTeam.connectionId = connectionId
                     teams[team] = gameTeam
                 }
                 // Else, get the team and add ai to it

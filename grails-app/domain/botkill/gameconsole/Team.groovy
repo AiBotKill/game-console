@@ -13,6 +13,9 @@ class Team {
     String botId = UUID.randomUUID().toString()
     boolean isAdmin = false
 
+    String connectionId;
+    String botVersion;
+
     static constraints = {
         name nullable: false, blank: false, unique: true
         password blank: false, nullable: false
@@ -20,7 +23,7 @@ class Team {
         players nullable: false, maxSize: 3, minSize: 1
     }
 
-    static transients = ["passwordService"]
+    static transients = ["passwordService", "connectionId", "botVersion"]
 
     static mapping = {
         players sort: 'id', order: 'asc'

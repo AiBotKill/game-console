@@ -9,11 +9,15 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 class NatsSubscriberService {
     static lazyInit = false
 
-    def connectedAIs = [:]
+    Map<String, Team> connectedAIs = [:]
 
     @Subscribe("ping")
     def ping(Message message) {
         String test = "";
+    }
+
+    Team getConnectedAI(String connectionId) {
+        return connectedAIs[connectionId]
     }
 
     @Subscribe("registerAI")
@@ -26,8 +30,9 @@ class NatsSubscriberService {
 
             if (!connectedAIs.containsKey("${t.name} - ${version}")) {
                 println("Team ${t.name} registered!")
-                message.reply("{\"status\":\"ok\", \"id\":\"${t.botId}\"}")
-                connectedAIs["${t.name} - ${version}"] = t
+                String connectionId = UUID.randomUUID().toString();
+                message.reply("{\"status\":\"ok\", \"id\":\"${connectionId}\"}")
+                connectedAIs["${connectionId}"] = t
             } else {
                 println("Team with id ${id} and version ${version} already registered")
                 message.reply("\"{\"status\"\":\"error\", \"id\":\"${id}\", \"error\":\"Team already registered with given version\"}")
@@ -42,11 +47,10 @@ class NatsSubscriberService {
     def unregisterAI(Message message) {
         JSONObject unregisterMsg = new JSONObject(message.getBody())
         String id = unregisterMsg.getString("botId")
-        String version = unregisterMsg.getString("version")
-        Team t = Team.findByBotId(id)
-        if (t && connectedAIs.containsKey("${t.name} - ${version}")) {
+        Team t = getConnectedAI(id)
+        if (t) {
             println("Team ${t.name} unregistered!")
-            connectedAIs.remove("${t.name} - ${version}")
+            connectedAIs.remove(id)
         }
     }
 }

@@ -9,6 +9,7 @@ class GameTeam {
 
     List teams = new ArrayList()
     TeamColor color
+    String connectionId
 
     static constraints = {
         teams nullable: false, minSize: 1, maxSize: 10

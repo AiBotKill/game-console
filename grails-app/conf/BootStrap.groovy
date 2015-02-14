@@ -21,11 +21,9 @@ class BootStrap {
 
         JSON.registerObjectMarshaller(Game) { Game g ->
             def teams = g.gameTeams.collect { GameTeam gt ->
-                gt.teams.collect { Team t ->
-                    ["team": gt.color.ordinal(), "botId": t.botId]
-                }
+                ["team": gt.color.ordinal(), "botId": gt.connectionId]
             }
-            return ["timeLimit": g.roundTime, "environment": g.environment.toString(), "players":teams.flatten(), "mode": g.mode.toString(), "darkness": g.darkness]
+            return ["timeLimit": g.roundTime, "environment": g.environment.toString(), "players":teams, "mode": g.mode.toString(), "darkness": g.darkness]
         }
 
     }
