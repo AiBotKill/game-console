@@ -10,6 +10,7 @@ import grails.transaction.Transactional
 class GameController {
     def natsSubscriberService
     def nats
+    def mapService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -35,6 +36,7 @@ class GameController {
         }
 
         def teams = [:]
+        int teamCount = 0
         int maxTeams = TeamColor.values().size();
         params.list("teamAssignments").each {
             if (!it.equals("") && it.toString().contains(":")) {
@@ -46,10 +48,11 @@ class GameController {
                     GameTeam gameTeam = new GameTeam()
                     gameTeam.color = TeamColor.values()[team%maxTeams]
                     gameTeam.game = gameInstance
-                    Team t = natsSubscriberService.getConnectedAI(connectionId)
+                    Team t = natsSubscriberService.getConnectedAI(connectionId).merge()
                     gameTeam.addToTeams(t)
                     gameTeam.connectionId = connectionId
                     teams[team] = gameTeam
+                    teamCount++
                 }
                 // Else, get the team and add ai to it
                 else {
@@ -68,6 +71,11 @@ class GameController {
             respond gameInstance.errors, view: 'create'
             return
         }
+
+        GameMap map = mapService.getMap(teamCount)
+        gameInstance.startingPositions = map.getStartingPositions()
+        gameInstance.gameArea = map.getGameArea()
+        gameInstance.tiles = map.getTiles()
 
         gameInstance.save flush: true
 

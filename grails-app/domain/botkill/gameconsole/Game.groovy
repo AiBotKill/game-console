@@ -25,6 +25,10 @@ class Game {
     int darkness
     int rain
 
+    List<Tile> tiles
+    float[] gameArea
+    Vector2d[] startingPositions
+
     static constraints = {
         gameTeams nullable: false, minSize: 2, maxSize: 12 // MaxSize is the number of TeamColors
         darkness min: 0, max: 100
@@ -33,7 +37,7 @@ class Game {
         roundTime min: 1, max: 600
     }
 
-    static transients = ['AICount', 'nats']
+    static transients = ['AICount', 'nats', 'tiles', 'gameArea', 'startingPositions']
 
     static mapping = {
         gameTeams sort: 'id', order: 'asc'
