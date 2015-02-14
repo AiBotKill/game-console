@@ -14,6 +14,7 @@
 
 <g:javascript src="visualization/3d/keyboard.js"/>
 <g:javascript src="visualization/3d/three.min.js"/>
+<g:javascript src="visualization/3d/ShaderParticles.js"/>
 <g:javascript src="visualization/3d/GameConstants.js"/>
 <g:javascript src="visualization/3d/ForestController.js"/>
 <g:javascript src="visualization/3d/CavernController.js"/>

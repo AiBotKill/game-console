@@ -22,6 +22,12 @@ var destroyedRobotTemplate = {};
 
 var BULLET_HEIGHT;
 
+/* A particle tree for all the different particle groups. */
+var particleTree = {
+    "smoke": "",
+    "laser": ""
+};
+
 var explosionTree = [];
 var decoTree = [];
 
@@ -46,6 +52,8 @@ var testPlayerData = {
 
 var lightValue;
 var lightColor;
+
+var clock = new THREE.Clock();
 
 /* Player data used for visualization.
  Sillä syncillä kun pelaajan energiat näyttävät nollaa, niin pyöritetään räjähdys
@@ -116,6 +124,7 @@ function generateMisc() {
     loadDestroyedRobot();
     loadExplosion();
     loadLights();
+    loadParticles();
 };
 
 function generateWorld() {
@@ -133,6 +142,13 @@ function loadLights(){
         lightTree[i] = new THREE.PointLight("rgb(0, 0, 0)", 0, 1);
         CURRENT_ENV.environmentGroup.add(lightTree[i]);
     }
+}
+
+function loadParticles(){
+    particleTree.smoke = new SPE.Group({
+        texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
+        maxAge: 5
+    });
 }
 
 function loadDestroyedRobot() {
@@ -193,6 +209,26 @@ function loadPlayerData() {
     });
 };
 
+function createSmoke(x, y){
+    var smoke = new SPE.Emitter({
+        type: 'cube',
+        position: new THREE.Vector3(0, 0, 0),
+        acceleration: new THREE.Vector3(0, 10, 0),
+        velocity: new THREE.Vector3(0, 15, 0),
+        particlesPerSecond: 100,
+        sizeStart: 10,
+        sizeEnd: 0,
+        opacityStart: 1,
+        opacityEnd: 0,
+        colorStart: new THREE.Color('blue'),
+        colorEnd: new THREE.Color('white')
+    });
+    
+    particleTree.smoke.addEmitter(smoke);
+    CURRENT_ENV.environmentGroup.remove(particleTree.smoke.mesh);
+    CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
+}
+
 function renderHud() {
     var graphics = hud.getContext("2d");
     graphics.clearRect(0, 0, WIDTH, HEIGHT);
@@ -248,16 +284,32 @@ function addDestroyedRobot(x, y) {
 }
 
 function addExplosion(x, y, player) {
-    var light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
+    var light;
+    var mesh;
+    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+        light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
+    }
+    else{
+        light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
+    }
+    
     if(light){
         light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 8);
     }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
-    var mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
-        'map': cloneTexture,
-        'alphaTest': 0.5
-    }));
+    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+        mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshLambertMaterial({
+            'map': cloneTexture,
+            'alphaTest': 0.5
+        }));
+    }
+    else{
+        mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
+            'map': cloneTexture,
+            'alphaTest': 0.5
+        }));
+    }
     mesh.position.x = x;
     mesh.position.y = y;
     mesh.position.z = EXPLOSION_HEIGHT / 2 - 2;
@@ -360,6 +412,7 @@ function refreshMisc() {
                 }
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].player);
+                var smoke = createSmoke();
                 explosionTree.splice(i, 1);
             }
             else {
@@ -367,6 +420,7 @@ function refreshMisc() {
             }
         }
     }
+    particleTree.smoke.tick(clock.getDelta());
 };
 
 function refreshViewState() {
