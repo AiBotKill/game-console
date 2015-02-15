@@ -149,31 +149,29 @@ function loadParticles(){
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
         maxAge: 2
     });
-    particleTree.laser = new SPE.Group({
-        texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
-        maxAge: 8
-    });
-    
-    var fire = new SPE.Emitter({
-        type: 'cube',
-        position: new THREE.Vector3(0, 0, 0),
-        positionSpread: new THREE.Vector3(1, 0, 10),
-        acceleration: new THREE.Vector3(0, -10, 0),
-        velocity: new THREE.Vector3(0, 0, 10),
-        velocitySpread: new THREE.Vector3(8, 8, 32),
-        radius: 8,
-        particlesPerSecond: 100,
-        angleStartSpread: 720,
-        sizeStart: 32,
-        sizeEnd: 8,
-        opacityStart: 1,
-        opacityEnd: 0,
-        colorStart: new THREE.Color("red"),
-        colorMiddle: new THREE.Color("orange"),
-        colorEnd: new THREE.Color("white"),
-        emitterDuration: SMOKE_DURATION
-    });
-    particleTree.smoke.addPool(NUMBER_OF_EMITTERS, fire, true);
+    for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
+        var fire = new SPE.Emitter({
+            type: 'cube',
+            position: new THREE.Vector3(0, 0, 0),
+            positionSpread: new THREE.Vector3(1, 0, 10),
+            acceleration: new THREE.Vector3(0, -10, 0),
+            velocity: new THREE.Vector3(0, 0, 10),
+            velocitySpread: new THREE.Vector3(8, 8, 32),
+            radius: 8,
+            particlesPerSecond: 100,
+            angleStartSpread: 720,
+            sizeStart: 32,
+            sizeEnd: 8,
+            opacityStart: 1,
+            opacityEnd: 0,
+            colorStart: new THREE.Color("red"),
+            colorMiddle: new THREE.Color("orange"),
+            colorEnd: new THREE.Color("white"),
+            duration: SMOKE_DURATION,
+            alive: 0
+        });
+        particleTree.smoke.addEmitter(fire);
+    }
     CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
 }
 
@@ -236,7 +234,17 @@ function loadPlayerData() {
 };
 
 function createSmoke(x, y){
-    particleTree.smoke.triggerPoolEmitter(1, new THREE.Vector3(x, y, 0));
+    for(var i = 0; i < particleTree.smoke.emitters.length; i ++){
+        if(particleTree.smoke.emitters[i].alive === 0){
+            particleTree.smoke.emitters[i].alive = 1;
+            particleTree.smoke.emitters[i].position = new THREE.Vector3(x, y, 0.1);
+            return;
+        }
+    }
+    particleTree.smoke.emitters[0].alive = 0;
+    particleTree.smoke.emitters[0].alive = 1;
+    particleTree.smoke.emitters[0].duration = SMOKE_DURATION;
+    particleTree.smoke.emitters[0] = new THREE.Vector3(x, y, 0.1);
 }
 
 function renderHud() {
