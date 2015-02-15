@@ -127,7 +127,7 @@ class GameController {
         // Generate some results
         Random random = new Random()
         List<GameResult> results = new ArrayList<>()
-        int aisLeft = gameInstance.gameTeams
+        int aisLeft = gameInstance.gameTeams.size()
         gameInstance.gameTeams.each { GameTeam gt ->
             gt.teams.each { Team t ->
                 GameResult gr = new GameResult()

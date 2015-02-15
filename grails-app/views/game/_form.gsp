@@ -50,12 +50,11 @@
 
 <div class="pull-left" style="width:45%">
 	<h2><g:message code="game.onlineais.label" default="AIs" /></h2>
-	<div id="ai" class="list-group ${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
+	<ul id="ai" class="list-group ${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
 		<g:each in="${connectedAIs}" var="team">
-			<span id="team.${team.value.connectionId}" style="cursor:move" class="list-group-item">${team.value.name} - ${team.value.botVersion}</span>
+			<li id="team.${team.value.connectionId}" style="cursor:move" class="list-group-item">${team.value.name} - ${team.value.botVersion}</li>
 		</g:each>
-		</ul>
-	</div>
+    </ul>
 </div>
 <div id="teamsContainer" class="pull-right" style="width:45%">
 	<h2><g:message code="game.teams.label" default="Teams" /></h2>
