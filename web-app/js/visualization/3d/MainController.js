@@ -441,6 +441,7 @@ function refreshMisc() {
                     explosionTree[i].light.intensity = 0;
                 }
                 createSmoke(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
+                addDestroyedRobot(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].player);
                 explosionTree.splice(i, 1);
