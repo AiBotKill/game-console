@@ -108,6 +108,7 @@ function addNewTeam() {
 function removeAi(item, team) {
     var team = $("#ai-team-" + team);
     item.find( "button.close").remove();
+    item.find("input").remove();
     item.appendTo("#ai");
     item.draggable("enable");
 
