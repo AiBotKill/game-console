@@ -147,7 +147,8 @@ function loadLights(){
 function loadParticles(){
     particleTree.smoke = new SPE.Group({
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
-        maxAge: 2
+        maxAge: 2,
+        fixedTimeStep: 0.016
     });
     for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
         var fire = new SPE.Emitter({
@@ -237,14 +238,12 @@ function createSmoke(x, y){
     for(var i = 0; i < particleTree.smoke.emitters.length; i ++){
         if(particleTree.smoke.emitters[i].alive === 0){
             particleTree.smoke.emitters[i].alive = 1;
-            particleTree.smoke.emitters[i].position = new THREE.Vector3(x, y, 0.1);
+            particleTree.smoke.emitters[i].position = new THREE.Vector3(x, y, 1);
             return;
         }
     }
-    particleTree.smoke.emitters[0].alive = 0;
-    particleTree.smoke.emitters[0].alive = 1;
     particleTree.smoke.emitters[0].duration = SMOKE_DURATION;
-    particleTree.smoke.emitters[0] = new THREE.Vector3(x, y, 0.1);
+    particleTree.smoke.emitters[0] = new THREE.Vector3(x, y, 1);
 }
 
 function renderHud() {
@@ -438,7 +437,6 @@ function refreshMisc() {
             }
         }
     }
-    particleTree.smoke.tick(clock.getDelta());
 };
 
 function refreshViewState() {
