@@ -3,7 +3,6 @@ $(function() {
 
     $( "#ai span" ).draggable({
         appendTo: "body",
-        helper: "clone",
         start: function(event, ui) {
             ui.helper.css("width", $(this).css("width"));
         }

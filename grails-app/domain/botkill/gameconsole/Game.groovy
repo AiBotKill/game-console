@@ -51,10 +51,6 @@ class Game {
         mode.toString() + ": " + teamMembers.join(" vs ")
     }
 
-    int getAICount() {
-        return gameTeams.teams*.size().sum()
-    }
-
     void start() {
         state = GameState.STARTED
         save flush:true
