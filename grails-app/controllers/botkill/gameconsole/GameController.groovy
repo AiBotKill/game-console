@@ -36,37 +36,25 @@ class GameController {
         }
 
         def teams = [:]
-        int teamCount = 0
         int maxTeams = TeamColor.values().size();
         params.list("teamAssignments").each {
             if (!it.equals("") && it.toString().contains(":")) {
                 def connectionIdAndTeamNumber = it.split(":")
                 def connectionId = connectionIdAndTeamNumber[0] as String
                 def team = (connectionIdAndTeamNumber[1] as int) - 1
-                // If team is not yet created
-                if (!teams[team]) {
-                    GameTeam gameTeam = new GameTeam()
-                    gameTeam.color = TeamColor.values()[team%maxTeams]
-                    gameTeam.game = gameInstance
-                    Team.withSession {
-                        Team t = natsSubscriberService.getConnectedAI(connectionId).merge()
-                        gameTeam.addToTeams(t)
-                    }
 
-                    gameTeam.connectionId = connectionId
-                    teams[team] = gameTeam
-                    teamCount++
-                }
-                // Else, get the team and add ai to it
-                else {
-                    GameTeam gameTeam = teams[team] as GameTeam
-                    gameTeam.addToTeams(Team.findById((aiId as long)))
-                }
+                GameTeam gameTeam = new GameTeam()
+                gameTeam.color = TeamColor.values()[team%maxTeams]
+                gameTeam.game = gameInstance
+                Team connectedTeam = natsSubscriberService.getConnectedAI(connectionId)
+                Team t = Team.findById(connectedTeam.id)
+                gameTeam.botVersion = connectedTeam.botVersion
+                gameTeam.team = t
+                gameTeam.connectionId = connectionId
+                teams[team] = gameTeam
+
+                gameInstance.addToGameTeams(gameTeam)
             }
-        }
-
-        teams.each { teamNumber, gameTeam ->
-            gameInstance.addToGameTeams(gameTeam)
         }
 
         gameInstance.validate()
@@ -75,7 +63,7 @@ class GameController {
             return
         }
 
-        GameMap map = mapService.getMap(teamCount)
+        GameMap map = mapService.getMap(gameInstance.gameTeams.size())
         gameInstance.startingPositions = map.getStartingPositions()
         gameInstance.gameArea = map.getGameArea()
         gameInstance.tiles = map.getTiles()
@@ -150,66 +138,14 @@ class GameController {
     }
 
     @Transactional
-    def update(Game gameInstance) {
-        if (gameInstance == null) {
-            notFound()
-            return
-        }
-
-        GameTeam.deleteAll(gameInstance.gameTeams)
-        gameInstance.gameTeams = []
-
-        def teams = [:]
-        int maxTeams = TeamColor.values().size();
-        params.list("teamAssignments").each {
-            if (!it.equals("")) {
-                def aiIdAndTeamNumber = it.split(":")
-                def aiId = aiIdAndTeamNumber[0]
-                def team = (aiIdAndTeamNumber[1] as int) - 1
-                // If team is not yet created
-                if (!teams[team]) {
-                    GameTeam gameTeam = new GameTeam()
-                    gameTeam.color = TeamColor.values()[team%maxTeams]
-                    gameTeam.game = gameInstance
-                    gameTeam.addToTeams(Team.findById((aiId as long)))
-                    teams[team] = gameTeam
-                }
-                // Else, get the team and add ai to it
-                else {
-                    GameTeam gameTeam = teams[team] as GameTeam
-                    gameTeam.addToTeams(Team.findById((aiId as long)))
-                }
-            }
-        }
-
-        teams.each { teamNumber, gameTeam ->
-            gameInstance.addToGameTeams(gameTeam)
-        }
-
-        gameInstance.validate();
-        if (gameInstance.hasErrors()) {
-            respond gameInstance.errors, view: 'edit'
-            return
-        }
-
-        gameInstance.save flush: true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Game.label', default: 'Game'), gameInstance.id])
-                redirect gameInstance
-            }
-            '*' { respond gameInstance, [status: OK] }
-        }
-    }
-
-    @Transactional
     def delete(Game gameInstance) {
 
         if (gameInstance == null) {
             notFound()
             return
         }
+
+        nats.publish("${gameInstance.id}.end")
 
         gameInstance.delete flush: true
 

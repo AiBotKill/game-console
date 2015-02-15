@@ -5,21 +5,17 @@ import botkill.gameconsole.enums.TeamColor
 class GameTeam {
 
     static belongsTo = ["game":Game]
-    static hasMany = ["teams":Team]
 
-    List teams = new ArrayList()
+    Team team
     TeamColor color
     String connectionId
+    String botVersion
 
     static constraints = {
-        teams nullable: false, minSize: 1, maxSize: 10
-    }
-
-    static mapping = {
-        teams id: "asc"
+        team nullable: false
     }
 
     String toString() {
-        "Team ${color}: " + teams.join(", ")
+        "Team ${color}: ${team.name}"
     }
 }

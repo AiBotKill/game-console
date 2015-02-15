@@ -66,5 +66,7 @@ class Game {
         state = GameState.FINISHED
         this.results = results
         save flush:true
+
+        nats.publish("${this.id}.end")
     }
 }
