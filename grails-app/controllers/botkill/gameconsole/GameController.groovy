@@ -87,9 +87,11 @@ class GameController {
             @Override
             public void onMessage(Message message) {
                 JSONObject response = new JSONObject(message.getBody())
-                Game g = Game.findById(gameId)
-                g.publicId = response.getString("id")
-                g.save flush: true
+                Game.withNewSession {
+                    Game g = Game.findById(gameId)
+                    g.publicId = response.getString("id")
+                    g.save flush: true
+                }
             }
         })
 
