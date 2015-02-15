@@ -147,8 +147,7 @@ function loadLights(){
 function loadParticles(){
     particleTree.smoke = new SPE.Group({
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
-        maxAge: 2,
-        fixedTimeStep: 0.016
+        maxAge: 2
     });
     for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
         var fire = new SPE.Emitter({
@@ -437,6 +436,7 @@ function refreshMisc() {
             }
         }
     }
+    particleTree.smoke.tick(clock.getDelta());
 };
 
 function refreshViewState() {
