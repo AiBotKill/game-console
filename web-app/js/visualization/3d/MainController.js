@@ -147,7 +147,7 @@ function loadLights(){
 function loadParticles(){
     particleTree.smoke = new SPE.Group({
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
-        maxAge: 5
+        maxAge: 2
     });
 }
 
@@ -212,16 +212,20 @@ function loadPlayerData() {
 function createSmoke(x, y){
     var smoke = new SPE.Emitter({
         type: 'cube',
-        position: new THREE.Vector3(0, 0, 0),
-        acceleration: new THREE.Vector3(0, 10, 0),
-        velocity: new THREE.Vector3(0, 15, 0),
-        particlesPerSecond: 100,
+        position: new THREE.Vector3(x, y, 0),
+        positionSpread   : new THREE.Vector3( 10, 0, 10 ),
+        acceleration: new THREE.Vector3( 0,-10,0 ),
+        velocity: new THREE.Vector3( 0, 150, 0 ),
+        velocitySpread: new THREE.Vector3( 80, 50, 80 ),
+        radius: 10,
+        particlesPerSecond: 200,
+        angleStartSpread: 720,
         sizeStart: 10,
         sizeEnd: 0,
         opacityStart: 1,
         opacityEnd: 0,
-        colorStart: new THREE.Color('blue'),
-        colorEnd: new THREE.Color('white')
+        colorStart: new THREE.Color('black'),
+        colorEnd: new THREE.Color('grey')
     });
     
     particleTree.smoke.addEmitter(smoke);
@@ -410,9 +414,9 @@ function refreshMisc() {
                 if(explosionTree[i].light){
                     explosionTree[i].light.intensity = 0;
                 }
+                createSmoke(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].player);
-                var smoke = createSmoke();
                 explosionTree.splice(i, 1);
             }
             else {
