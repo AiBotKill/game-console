@@ -65,16 +65,14 @@
 				<h3 class="panel-title"><g:message code="game.team.label" default="Team" /> ${(i+1)}</h3>
 			</div>
 			<ul class="list-group ai-team-list" id="ai-team-${(i+1)}">
-				<g:if test="${gameTeamInstance.teams?.size() > 0}">
-					<g:each status="j" in="${gameTeamInstance.teams}" var="teamInstance">
-							<li class="list-group-item" id="ai-${(j+1)}">
-								${teamInstance.name}
-								<button onclick="removeAi(${(i+1)},${(j+1)})" type="button" class="close" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-								<g:hiddenField name="teamAssignments" value="${teamInstance.id}:${(i+1)}" />
-							</li>
-					</g:each>
+				<g:if test="${gameTeamInstance.team}">
+                    <li class="list-group-item" id="ai-${(j+1)}">
+                        ${gameTeamInstance.team.name}
+                        <button onclick="removeAi(${(i+1)},${(j+1)},'${gameTeamInstance.connectionId}','${gameTeamInstance.team.name} - ${gameTeamInstance.team.botVersion}')" type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <g:hiddenField name="teamAssignments" value="${gameTeamInstance.team.id}:${(i+1)}" />
+                    </li>
 				</g:if>
 				<g:else>
 					<li class="list-group-item placeholder"><strong><g:message code="game.teams.placeholder" default="Drag AIs here" /></strong></li>

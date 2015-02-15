@@ -40,7 +40,6 @@ class GameController {
             return
         }
 
-        def teams = [:]
         int maxTeams = TeamColor.values().size();
         params.list("teamAssignments").each {
             if (!it.equals("") && it.toString().contains(":")) {
@@ -56,7 +55,6 @@ class GameController {
                 gameTeam.botVersion = connectedTeam.botVersion
                 gameTeam.team = t
                 gameTeam.connectionId = connectionId
-                teams[team] = gameTeam
 
                 gameInstance.addToGameTeams(gameTeam)
             }
