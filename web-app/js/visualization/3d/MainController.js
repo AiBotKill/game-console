@@ -177,7 +177,11 @@ function loadParticles(){
 }
 
 function loadDestroyedRobot() {
-
+    var path = ASSETS_PATH + "player/";
+    modelLoader.load(path + "robottiRomu.json", function (geometry, materials) {
+        destroyedRobotTemplate.geometry = geometry;
+        destroyedRobotTemplate.materials = new THREE.MeshFaceMaterial(materials);
+    });
 };
 
 function loadExplosion() {
@@ -295,7 +299,17 @@ function createNewBullet(x, y) {
 }
 
 function addDestroyedRobot(x, y) {
-
+    var destroyed = new THREE.Mesh(destroyedRobotTemplate.geometry, destroyedRobotTemplate.materials);
+    destroyed.scale.set(3, 3, 3);
+    destroyed.rotation.x += Math.PI / 2;
+    destroyed.position.x = x;
+    destroyed.position.y = y;
+    var helper = new THREE.BoundingBoxHelper(destroyed, 0xff0000);
+    helper.update();
+    destroyed.position.z -= helper.box.min.z;
+    destroyed.castShadow = true;
+    destroyed.receiveShadow = true;
+    CURRENT_ENV.environmentGroup.add(destroyed);
 }
 
 function addExplosion(x, y, player) {
