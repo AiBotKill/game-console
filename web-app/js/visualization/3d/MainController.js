@@ -171,8 +171,7 @@ function loadParticles(){
         colorStart: new THREE.Color("red"),
         colorMiddle: new THREE.Color("orange"),
         colorEnd: new THREE.Color("white"),
-        emitterDuration: SMOKE_DURATION,
-        alive: 0
+        emitterDuration: SMOKE_DURATION
     });
     particleTree.smoke.addPool(NUMBER_OF_EMITTERS, fire, true);
     CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
