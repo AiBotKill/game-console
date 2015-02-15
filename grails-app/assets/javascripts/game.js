@@ -1,9 +1,9 @@
 $(function() {
     addNewTeam();
 
-    $( "#ai span" ).draggable({
+    $( "#ai li" ).draggable({
         appendTo: "body",
-        helper: "clone",
+        revert: true,
         start: function(event, ui) {
             ui.helper.css("width", $(this).css("width"));
         }
@@ -16,6 +16,17 @@ $(function() {
 
     checkGameMode();
     $("#mode").change(checkGameMode);
+
+    $("#ai > li").click(function(event) {
+        var item = $(this);
+        var target = $( event.target );
+        if (target.is( "button.close" ) ) {
+            if (target.parent().parent().attr("id")) {
+                var team = target.parent().parent().attr("id").split("ai-team-")[1];
+                removeAi(item, team);
+            }
+        }
+    });
 });
 
 function checkGameMode() {
@@ -38,7 +49,7 @@ function checkGameMode() {
     } else if ($("#mode").val() === "TEAM") {
         // Accept as many AIs as user wants
         $.each($(".ai-team-list"), function(index, element) {
-            $(element).droppable("option", "accept","span");
+            $(element).droppable("option", "accept","li");
         });
     }
 
@@ -52,10 +63,11 @@ function dropped(event, ui) {
     $( this ).find( ".placeholder" ).remove();
     var team = this.id.split("-")[2];
     var id = $(this).children().size();
-    var closeIcon = '<button onclick="removeAi('+team+','+id+')" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-    var teamInstanceId = $(ui.draggable).attr("id").split("-")[1];
-    var input = $("<input type='hidden' name='teamAssignments' value='"+teamInstanceId+":"+team+"' />");
-    $( "<li id='ai-"+id+"' class='list-group-item'></li>" ).text( ui.draggable.text()).append(closeIcon).append(input).appendTo( this );
+    var connectionId = $(ui.draggable).attr("id").split(".")[1];
+    var closeIcon = '<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+    var input = $("<input type='hidden' name='teamAssignments' value='"+connectionId+":"+team+"' />");
+    $(ui.draggable).append(closeIcon).append(input).appendTo( this );
+    $(ui.draggable).draggable("disable");
 
     // Accept only 1 AI if DEATHMATCH or DUEL selected
     if (($("#mode").val() === "DEATHMATCH" || $("#mode").val() === "DUEL") && id == 0) {
@@ -93,12 +105,16 @@ function addNewTeam() {
     }
 }
 
-function removeAi(team, id) {
-    $( "#ai-team-" + team + " #ai-" + id).remove();
+function removeAi(item, team) {
     var team = $("#ai-team-" + team);
+    item.find( "button.close").remove();
+    item.find("input").remove();
+    item.appendTo("#ai");
+    item.draggable("enable");
+
     if (team.children("li").size() == 0) {
         if ($("#mode").val() === "DEATHMATCH" || $("#mode").val() === "DUEL") {
-            team.droppable("option", "accept","span");
+            team.droppable("option", "accept","li");
         }
         $("<li class='placeholder list-group-item'></li>").text($("#placeholderText").html()).appendTo(team);
     }
