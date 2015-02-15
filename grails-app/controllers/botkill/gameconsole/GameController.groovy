@@ -145,7 +145,7 @@ class GameController {
             return
         }
 
-        nats.publish("${gameInstance.id}.end")
+        nats.publish("${gameInstance.id}.end", "{}")
 
         gameInstance.delete flush: true
 

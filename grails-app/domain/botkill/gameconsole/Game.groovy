@@ -59,7 +59,7 @@ class Game {
         state = GameState.STARTED
         save flush:true
 
-        nats.publish("${this.id}.start")
+        nats.publish("${this.id}.start", "{}")
     }
 
     void end(List<GameResult> results) {
@@ -67,6 +67,6 @@ class Game {
         this.results = results
         save flush:true
 
-        nats.publish("${this.id}.end")
+        nats.publish("${this.id}.end", "{}")
     }
 }
