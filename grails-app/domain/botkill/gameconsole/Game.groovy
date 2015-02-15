@@ -3,6 +3,7 @@ package botkill.gameconsole
 import botkill.gameconsole.enums.GameEnvironment
 import botkill.gameconsole.enums.GameMode
 import botkill.gameconsole.enums.GameState
+import botkill.gameconsole.enums.TeamColor
 
 class Game {
     def nats
@@ -46,11 +47,24 @@ class Game {
     }
 
     String toString() {
-        def teamMembers = []
-        gameTeams.each {
-            teamMembers << it.teams.join(",")
+        Map<TeamColor, List<String>> teamMembers = [:]
+        gameTeams.each { GameTeam gt ->
+            if (teamMembers.containsKey(gt.color)) {
+                teamMembers[gt.color] << gt.team.name
+            } else {
+                teamMembers[gt.color] = []
+                teamMembers[gt.color] << gt.team.name
+            }
         }
-        mode.toString() + ": " + teamMembers.join(" vs ")
+
+        List<String> teamStrings = new ArrayList<>()
+        teamMembers.each { TeamColor teamColor, List<String> teams ->
+            StringBuilder teamString = new StringBuilder()
+            teamString.append(teamColor.toString()).append(": ").append(teams.join(", "))
+            teamStrings.add(teamString.toString())
+        }
+
+        mode.toString() + ": " + teamStrings.join(" vs ")
     }
 
     void start() {

@@ -52,7 +52,7 @@ function dropped(event, ui) {
     var team = this.id.split("-")[2];
     var id = $(this).children().size();
     var connectionId = $(ui.draggable).attr("id").split(";")[1];
-    var closeIcon = '<button onclick="removeAi('+team+','+id+','+connectionId+','+ui.draggable.text()+')" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+    var closeIcon = '<button onclick="removeAi('+team+','+id+',\''+connectionId+'\',\''+ui.draggable.text()+'\')" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
     var input = $("<input type='hidden' name='teamAssignments' value='"+connectionId+":"+team+"' />");
     $( "<li id='ai-"+id+"' class='list-group-item'></li>" ).text( ui.draggable.text()).append(closeIcon).append(input).appendTo( this );
 
