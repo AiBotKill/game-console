@@ -387,6 +387,7 @@ SPE.Group = function( options ) {
     // And finally create the ParticleSystem. It's got its `dynamic` property
     // set so that THREE.js knows to update it on each frame.
     that.mesh = new THREE.PointCloud( that.geometry, that.material );
+    that.mesh.frustumCulled = false;
     that.mesh.dynamic = true;
 };
 
