@@ -306,7 +306,8 @@ function addDestroyedRobot(x, y) {
     destroyed.position.y = y;
     var helper = new THREE.BoundingBoxHelper(destroyed, 0xff0000);
     helper.update();
-    destroyed.position.z -= helper.box.min.z - 4;
+    destroyed.position.z -= helper.box.min.z;
+    destroyed.position.z -= 4;
     destroyed.castShadow = true;
     destroyed.receiveShadow = true;
     CURRENT_ENV.environmentGroup.add(destroyed);
