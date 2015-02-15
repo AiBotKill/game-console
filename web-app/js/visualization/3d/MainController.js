@@ -22,10 +22,10 @@ var destroyedRobotTemplate = {};
 
 var BULLET_HEIGHT;
 
-/* A particle tree for all the different particle groups. */
+/* A particle tree for all the different emitters. */
 var particleTree = {
-    "smoke": "",
-    "laser": ""
+    "smoke": "emittersForDeadPlayers",
+    "laser": "emittersForLaserBlasts"
 };
 
 var explosionTree = [];
@@ -149,6 +149,31 @@ function loadParticles(){
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
         maxAge: 2
     });
+    
+    for(var i = 0; i < NUMBER_OF_EMITTERS; i ++){
+        var fire = new SPE.Emitter({
+            type: 'cube',
+            position: new THREE.Vector3(x, y, 0),
+            positionSpread: new THREE.Vector3(1, 0, 10),
+            acceleration: new THREE.Vector3(0, -10, 0),
+            velocity: new THREE.Vector3(0, 0, 10),
+            velocitySpread: new THREE.Vector3(8, 8, 32),
+            radius: 8,
+            particlesPerSecond: 100,
+            angleStartSpread: 720,
+            sizeStart: 32,
+            sizeEnd: 8,
+            opacityStart: 1,
+            opacityEnd: 0,
+            colorStart: new THREE.Color("red"),
+            colorMiddle: new THREE.Color("orange"),
+            colorEnd: new THREE.Color("white"),
+            emitterDuration: SMOKE_DURATION,
+            alive: 0
+        });
+        particleTree.smoke.addEmitter(fire);
+    }
+    CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
 }
 
 function loadDestroyedRobot() {
@@ -210,26 +235,7 @@ function loadPlayerData() {
 };
 
 function createSmoke(x, y){
-    var smoke = new SPE.Emitter({
-        type: 'cube',
-        position: new THREE.Vector3(x, y, 0),
-        positionSpread   : new THREE.Vector3( 10, 0, 10 ),
-        acceleration: new THREE.Vector3( 0,-10,0 ),
-        velocity: new THREE.Vector3( 0, 150, 0 ),
-        velocitySpread: new THREE.Vector3( 80, 50, 80 ),
-        radius: 10,
-        particlesPerSecond: 200,
-        angleStartSpread: 720,
-        sizeStart: 10,
-        sizeEnd: 0,
-        opacityStart: 1,
-        opacityEnd: 0,
-        colorStart: new THREE.Color("rgb(54, 54, 54)"),
-        colorEnd: new THREE.Color("rgb(117, 113, 113)")
-    });
-    
-    particleTree.smoke.addEmitter(smoke);
-    CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
+    particleTree.smoke.triggerPoolEmitter(1, new THREE.Vector3(x, y, 0));
 }
 
 function renderHud() {

@@ -11,6 +11,8 @@ var NEAR_DISTANCE = 1;
 var TEXTURE_MIN_FILTER = THREE.LinearMipMapNearestFilter;
 var TEXTURE_MAG_FILTER = THREE.LinearMipMapNearestFilter;
 var NUMBER_OF_LIGHTS = 32;
+var NUMBER_OF_EMITTERS = 8;
+var SMOKE_DURATION = 32;
 var SHADOWS = true;
 /************************/
 
