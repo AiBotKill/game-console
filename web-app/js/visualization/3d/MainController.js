@@ -238,12 +238,12 @@ function createSmoke(x, y){
     for(var i = 0; i < particleTree.smoke.emitters.length; i ++){
         if(particleTree.smoke.emitters[i].alive === 0){
             particleTree.smoke.emitters[i].alive = 1;
-            particleTree.smoke.emitters[i].position = new THREE.Vector3(x, y, 1);
+            particleTree.smoke.emitters[i].position = new THREE.Vector3(x, y, 0);
             return;
         }
     }
     particleTree.smoke.emitters[0].duration = SMOKE_DURATION;
-    particleTree.smoke.emitters[0] = new THREE.Vector3(x, y, 1);
+    particleTree.smoke.emitters[0] = new THREE.Vector3(x, y, 0);
 }
 
 function renderHud() {
