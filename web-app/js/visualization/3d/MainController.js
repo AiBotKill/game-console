@@ -242,8 +242,6 @@ function createSmoke(x, y){
             return;
         }
     }
-    particleTree.smoke.emitters[0].duration = SMOKE_DURATION;
-    particleTree.smoke.emitters[0] = new THREE.Vector3(x, y, 0);
 }
 
 function renderHud() {
