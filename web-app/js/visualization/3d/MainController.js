@@ -154,29 +154,27 @@ function loadParticles(){
         maxAge: 8
     });
     
-    for(var i = 0; i < NUMBER_OF_EMITTERS; i ++){
-        var fire = new SPE.Emitter({
-            type: 'cube',
-            position: new THREE.Vector3(0, 0, 0),
-            positionSpread: new THREE.Vector3(1, 0, 10),
-            acceleration: new THREE.Vector3(0, -10, 0),
-            velocity: new THREE.Vector3(0, 0, 10),
-            velocitySpread: new THREE.Vector3(8, 8, 32),
-            radius: 8,
-            particlesPerSecond: 100,
-            angleStartSpread: 720,
-            sizeStart: 32,
-            sizeEnd: 8,
-            opacityStart: 1,
-            opacityEnd: 0,
-            colorStart: new THREE.Color("red"),
-            colorMiddle: new THREE.Color("orange"),
-            colorEnd: new THREE.Color("white"),
-            emitterDuration: SMOKE_DURATION,
-            alive: 0
-        });
-        particleTree.smoke.addEmitter(fire);
-    }
+    var fire = new SPE.Emitter({
+        type: 'cube',
+        position: new THREE.Vector3(0, 0, 0),
+        positionSpread: new THREE.Vector3(1, 0, 10),
+        acceleration: new THREE.Vector3(0, -10, 0),
+        velocity: new THREE.Vector3(0, 0, 10),
+        velocitySpread: new THREE.Vector3(8, 8, 32),
+        radius: 8,
+        particlesPerSecond: 100,
+        angleStartSpread: 720,
+        sizeStart: 32,
+        sizeEnd: 8,
+        opacityStart: 1,
+        opacityEnd: 0,
+        colorStart: new THREE.Color("red"),
+        colorMiddle: new THREE.Color("orange"),
+        colorEnd: new THREE.Color("white"),
+        emitterDuration: SMOKE_DURATION,
+        alive: 0
+    });
+    particleTree.smoke.addPool(NUMBER_OF_EMITTERS, fire, true);
     CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
 }
 
