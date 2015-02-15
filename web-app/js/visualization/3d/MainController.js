@@ -147,7 +147,8 @@ function loadLights(){
 function loadParticles(){
     particleTree.smoke = new SPE.Group({
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
-        maxAge: 2
+        maxAge: 2,
+        transparent: true
     });
     for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
         var fire = new SPE.Emitter({
@@ -420,6 +421,7 @@ function refreshBullets() {
 };
 
 function refreshMisc() {
+    particleTree.smoke.tick(clock.getDelta());
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
@@ -436,7 +438,6 @@ function refreshMisc() {
             }
         }
     }
-    particleTree.smoke.tick(clock.getDelta());
 };
 
 function refreshViewState() {
