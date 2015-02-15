@@ -149,11 +149,15 @@ function loadParticles(){
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
         maxAge: 2
     });
+    particleTree.laser = new SPE.Group({
+        texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
+        maxAge: 8
+    });
     
     for(var i = 0; i < NUMBER_OF_EMITTERS; i ++){
         var fire = new SPE.Emitter({
             type: 'cube',
-            position: new THREE.Vector3(x, y, 0),
+            position: new THREE.Vector3(0, 0, 0),
             positionSpread: new THREE.Vector3(1, 0, 10),
             acceleration: new THREE.Vector3(0, -10, 0),
             velocity: new THREE.Vector3(0, 0, 10),

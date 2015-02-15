@@ -13,6 +13,7 @@ var TEXTURE_MAG_FILTER = THREE.LinearMipMapNearestFilter;
 var NUMBER_OF_LIGHTS = 32;
 var NUMBER_OF_EMITTERS = 8;
 var SMOKE_DURATION = 32;
+var LASER_BLAST_DURATION = 32;
 var SHADOWS = true;
 /************************/
 
