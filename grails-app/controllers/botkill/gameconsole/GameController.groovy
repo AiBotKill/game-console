@@ -62,7 +62,16 @@ class GameController {
 
         gameInstance.validate()
         if (gameInstance.hasErrors()) {
-            respond gameInstance.errors, view: 'create'
+            Map<TeamColor, List<GameTeam>> gameTeams = [:]
+            gameInstance.gameTeams.each { GameTeam gt ->
+                if (gameTeams.containsKey(gt.color)) {
+                    gameTeams[gt.color] << gt
+                } else {
+                    gameTeams[gt.color] = []
+                    gameTeams[gt.color] << gt
+                }
+            }
+            respond gameInstance.errors, view: 'create', model: ["gameTeams":gameTeams]
             return
         }
 

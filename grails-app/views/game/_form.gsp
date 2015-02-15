@@ -52,7 +52,7 @@
 	<h2><g:message code="game.onlineais.label" default="AIs" /></h2>
 	<div id="ai" class="list-group ${hasErrors(bean: tournamentInstance, field: 'teams', 'error')} ">
 		<g:each in="${connectedAIs}" var="team">
-			<span id="team;${team.value.connectionId}" style="cursor:move" class="list-group-item">${team.value.name} - ${team.value.botVersion}</span>
+			<span id="team.${team.value.connectionId}" style="cursor:move" class="list-group-item">${team.value.name} - ${team.value.botVersion}</span>
 		</g:each>
 		</ul>
 	</div>
@@ -65,14 +65,16 @@
 				<h3 class="panel-title"><g:message code="game.team.label" default="Team" /> ${(i+1)}</h3>
 			</div>
 			<ul class="list-group ai-team-list" id="ai-team-${(i+1)}">
-				<g:if test="${gameTeamInstance.team}">
-                    <li class="list-group-item" id="ai-${(j+1)}">
-                        ${gameTeamInstance.team.name}
-                        <button onclick="removeAi(${(i+1)},${(j+1)},'${gameTeamInstance.connectionId}','${gameTeamInstance.team.name} - ${gameTeamInstance.team.botVersion}')" type="button" class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <g:hiddenField name="teamAssignments" value="${gameTeamInstance.team.id}:${(i+1)}" />
-                    </li>
+				<g:if test="${gameTeams[gameTeamInstance.color]}">
+                    <g:each in="${gameTeams[gameTeamInstance.color]}" var="gameTeam">
+                        <li class="list-group-item" id="ai-${gameTeamInstance.color}">
+                            ${gameTeam.team.name}
+                            <button onclick="removeAi(${(i+1)},${gameTeamInstance.color},'${gameTeam.connectionId}','${gameTeam.team.name} - ${gameTeam.team.botVersion}')" type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <g:hiddenField name="teamAssignments" value="${gameTeam.team.id}:${(i+1)}" />
+                        </li>
+                    </g:each>
 				</g:if>
 				<g:else>
 					<li class="list-group-item placeholder"><strong><g:message code="game.teams.placeholder" default="Drag AIs here" /></strong></li>

@@ -3,6 +3,7 @@ $(function() {
 
     $( "#ai span" ).draggable({
         appendTo: "body",
+        revert: true,
         start: function(event, ui) {
             ui.helper.css("width", $(this).css("width"));
         }
@@ -51,12 +52,12 @@ function dropped(event, ui) {
     $( this ).find( ".placeholder" ).remove();
     var team = this.id.split("-")[2];
     var id = $(this).children().size();
-    var connectionId = $(ui.draggable).attr("id").split(";")[1];
+    var connectionId = $(ui.draggable).attr("id").split(".")[1];
     var closeIcon = '<button onclick="removeAi('+team+','+id+',\''+connectionId+'\',\''+ui.draggable.text()+'\')" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
     var input = $("<input type='hidden' name='teamAssignments' value='"+connectionId+":"+team+"' />");
     $( "<li id='ai-"+id+"' class='list-group-item'></li>" ).text( ui.draggable.text()).append(closeIcon).append(input).appendTo( this );
 
-    $(ui.draggable).remove();
+    //$(ui.draggable).hide();
 
     // Accept only 1 AI if DEATHMATCH or DUEL selected
     if (($("#mode").val() === "DEATHMATCH" || $("#mode").val() === "DUEL") && id == 0) {
@@ -96,9 +97,9 @@ function addNewTeam() {
 
 function removeAi(team, id, connectionId, name) {
     $( "#ai-team-" + team + " #ai-" + id).remove();
+    var id = "team;"+connectionId;
 
-    var connectedAI = "<span id=\"team;"+connectionId+"\" style=\"cursor:move\" class=\"list-group-item\">"+name+"</span>";
-    connectedAI.appendTo($("#ai"));
+    $("#team."+connectionId).show();
 
     var team = $("#ai-team-" + team);
     if (team.children("li").size() == 0) {

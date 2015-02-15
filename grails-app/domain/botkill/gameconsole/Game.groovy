@@ -38,6 +38,7 @@ class Game {
         rain min: 0, max: 100
         rounds min: 1, max: 10
         roundTime min: 1, max: 600
+        publicId nullable: true
     }
 
     static transients = ['AICount', 'nats', 'tiles', 'gameArea', 'startingPositions']
