@@ -224,12 +224,11 @@ function createSmoke(x, y){
         sizeEnd: 0,
         opacityStart: 1,
         opacityEnd: 0,
-        colorStart: new THREE.Color('black'),
-        colorEnd: new THREE.Color('grey')
+        colorStart: new THREE.Color("rgb(54, 54, 54)"),
+        colorEnd: new THREE.Color("rgb(117, 113, 113)")
     });
     
     particleTree.smoke.addEmitter(smoke);
-    CURRENT_ENV.environmentGroup.remove(particleTree.smoke.mesh);
     CURRENT_ENV.environmentGroup.add(particleTree.smoke.mesh);
 }
 
