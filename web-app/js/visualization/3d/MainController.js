@@ -430,7 +430,6 @@ function refreshMisc() {
             }
         }
     }
-    particleTree.smoke.tick(clock.getDelta());
 };
 
 function refreshViewState() {
