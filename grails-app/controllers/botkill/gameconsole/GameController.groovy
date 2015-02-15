@@ -2,6 +2,11 @@ package botkill.gameconsole
 
 import botkill.gameconsole.enums.TeamColor
 import grails.converters.JSON
+import nats.client.Message
+import nats.client.MessageHandler
+import org.codehaus.groovy.grails.web.json.JSONObject
+
+import java.util.concurrent.TimeUnit
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -69,8 +74,17 @@ class GameController {
         gameInstance.tiles = map.getTiles()
 
         gameInstance.save flush: true
+        long gameId = gameInstance.id
 
-        nats.publish("createGame", (gameInstance as JSON).toString())
+        nats.request("createGame", (gameInstance as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {
+            @Override
+            public void onMessage(Message message) {
+                JSONObject response = new JSONObject(message.getBody())
+                Game g = Game.findById(gameId)
+                g.publicId = response.getString("id")
+                g.save flush: true
+            }
+        })
 
         request.withFormat {
             form multipartForm {
@@ -145,7 +159,7 @@ class GameController {
             return
         }
 
-        nats.publish("${gameInstance.id}.end", "{}")
+        nats.publish("${gameInstance.publicId}.end", "{}")
 
         gameInstance.delete flush: true
 

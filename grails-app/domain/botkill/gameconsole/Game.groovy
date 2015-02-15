@@ -25,6 +25,8 @@ class Game {
     int darkness
     int rain
 
+    String publicId // Game server returns this when created
+
     List<Tile> tiles
     float[] gameArea
     Vector2d[] startingPositions
@@ -55,7 +57,7 @@ class Game {
         state = GameState.STARTED
         save flush:true
 
-        nats.publish("${this.id}.start", "{}")
+        nats.publish("${this.publicId}.start", "{}")
     }
 
     void end(List<GameResult> results) {
@@ -63,6 +65,6 @@ class Game {
         this.results = results
         save flush:true
 
-        nats.publish("${this.id}.end", "{}")
+        nats.publish("${this.publicId}.end", "{}")
     }
 }
