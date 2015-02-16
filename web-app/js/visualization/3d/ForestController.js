@@ -2,6 +2,7 @@ function ForestController(){
     this.environmentGroup = new THREE.Object3D();
     this.treeMass1 = new THREE.Geometry();
     this.treeMass2 = new THREE.Geometry();
+    this.wallMass = new THREE.Geometry();
     
     this.generateSky = function () {
         var path;
@@ -171,10 +172,13 @@ function ForestController(){
 
         var wallGeometry = new THREE.PlaneBufferGeometry(wallWidth, WALL_HEIGHT);
 
-        this.createWorldWall(GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallGeometry, wallMaterial);
-        this.createWorldWall(GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallGeometry, wallMaterial);
-        this.createWorldWall(GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial);
-        this.createWorldWall(-GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial);
+        this.createWorldWall(GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallGeometry, wallMaterial, this.wallMass);
+        this.createWorldWall(GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallGeometry, wallMaterial, this.wallMass);
+        this.createWorldWall(GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial, this.wallMass);
+        this.createWorldWall(-GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial, this.wallMass);
+        
+        var walls = new THREE.Mesh(this.wallMass, wallMaterial);
+        this.environmentGroup.add(walls);
 
         blockGeometry = new THREE.PlaneGeometry(TILE_WIDTH, TILE_HEIGHT);
         for(var i = 0; i < 2; i ++){
@@ -290,7 +294,7 @@ function ForestController(){
 
     };
     
-    this.createWorldWall = function (x, y, rotateY, wallGeometry, wallMaterial) {
+    this.createWorldWall = function (x, y, rotateY, wallGeometry, wallMaterial, wallMass) {
         var worldWall;
 
         worldWall = new THREE.Mesh(wallGeometry, wallMaterial);
@@ -302,7 +306,8 @@ function ForestController(){
         if (rotateY) {
             worldWall.rotation.y += Math.PI / 2;
         }
-        this.environmentGroup.add(worldWall);
+        worldWall.updateMatrix();
+        wallMass.merge(worldWall.geometry, worldWall.matrix);
     };
 };
 
