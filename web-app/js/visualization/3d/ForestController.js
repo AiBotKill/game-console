@@ -169,7 +169,7 @@ function ForestController(){
             side: THREE.DoubleSide
         });
 
-        var wallGeometry = new THREE.PlaneBufferGeometry(wallWidth, 128);
+        var wallGeometry = new THREE.PlaneBufferGeometry(wallWidth, WALL_HEIGHT);
 
         this.createWorldWall(GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallGeometry, wallMaterial);
         this.createWorldWall(GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallGeometry, wallMaterial);
