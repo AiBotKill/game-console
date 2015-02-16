@@ -165,12 +165,11 @@ function ForestController(){
 
         var wallMaterial = new THREE.MeshLambertMaterial({
             map: wallTexture,
-            transparent: true,
             alphaTest: 0.5,
             side: THREE.DoubleSide
         });
 
-        var wallGeometry = new THREE.PlaneBufferGeometry(wallWidth, WALL_HEIGHT);
+        var wallGeometry = new THREE.PlaneGeometry(wallWidth, WALL_HEIGHT);
 
         this.createWorldWall(GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallGeometry, wallMaterial, this.wallMass);
         this.createWorldWall(GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallGeometry, wallMaterial, this.wallMass);
