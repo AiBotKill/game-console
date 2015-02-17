@@ -119,7 +119,6 @@ function generateMisc() {
     loadExplosion();
     loadLights();
     loadParticles();
-    cameraSettings.cameraMode = new CameraModeFPS(0);
 };
 
 function generateWorld() {
@@ -231,6 +230,7 @@ function loadPlayerData() {
             CURRENT_ENV.environmentGroup.add(playerObject.model);
         }
         BULLET_HEIGHT = helper.box.min.z;
+        cameraSettings.cameraMode = new CameraModeFPS();
     });
 };
 
