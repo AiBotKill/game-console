@@ -13,7 +13,6 @@ function CameraModeFPS(){
         else {
             cameraSettings.playerIndex = 0;
         }
-        console.log(cameraSettings.playerIndex);
         setStatusMessage("NEXT BOT");
         this.resetCamera();
     };
