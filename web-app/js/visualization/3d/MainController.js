@@ -39,7 +39,7 @@ var playerTexture = [];
 
 var camera;
 var cameraSettings = {
-    "cameraMode": new CameraModeFPS(0),
+    "cameraMode": "",
     "cameraCounter": CAMERA_TIME,
     "playerIndex": 0                                     
 };
@@ -119,6 +119,7 @@ function generateMisc() {
     loadExplosion();
     loadLights();
     loadParticles();
+    cameraSettings.cameraMode = new CameraModeFPS(0);
 };
 
 function generateWorld() {
