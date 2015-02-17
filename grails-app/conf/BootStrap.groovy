@@ -33,7 +33,7 @@ class BootStrap {
             def teams = g.gameTeams.collect { GameTeam gt ->
                 ["team": gt.color.ordinal(), "botId": gt.connectionId]
             }
-            return ["timeLimit": g.roundTime, "environment": g.environment.toString(), "tiles":g.tiles, "players":teams, "mode": g.mode.toString(), "darkness": g.darkness]
+            return ["timeLimit": g.roundTime, "environment": g.environment.toString(), "tiles":g.tileModels, "players":teams, "mode": g.mode.toString(), "darkness": g.darkness]
         }
 
     }

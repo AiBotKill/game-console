@@ -129,15 +129,13 @@ class GameController {
         List<GameResult> results = new ArrayList<>()
         int aisLeft = gameInstance.gameTeams.size()
         gameInstance.gameTeams.each { GameTeam gt ->
-            gt.teams.each { Team t ->
-                GameResult gr = new GameResult()
-                gr.team = t
-                gr.survived = random.nextInt(2) == 0
-                gr.kills = random.nextInt(Math.max(aisLeft - 1, 1))
-                aisLeft = gr.kills
-                gr.damageDone = random.nextInt(1000)
-                results.add(gr)
-            }
+            GameResult gr = new GameResult()
+            gr.team = gt.team
+            gr.survived = random.nextInt(2) == 0
+            gr.kills = random.nextInt(Math.max(aisLeft - 1, 1))
+            aisLeft = gr.kills
+            gr.damageDone = random.nextInt(1000)
+            results.add(gr)
         }
 
         Tournament t = Tournament.createCriteria().get {

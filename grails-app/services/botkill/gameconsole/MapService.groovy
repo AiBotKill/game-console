@@ -28,6 +28,7 @@ class MapService {
             tileArray.add(tile)
         }
 
+        map.tileModels = tileArray
         map.gameArea = [tileArray.last().X+1, tileArray.last().Y+1]
 
         for (int i = 0; i < playerCount; i++) {
