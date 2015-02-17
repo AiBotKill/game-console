@@ -399,7 +399,6 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
             "y": ySpeed
         }
     };
-    laserObject.model.lookAt(new THREE.Vector3(xSpeed, ySpeed, 0));
     bulletTree.push(laserObject);
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
