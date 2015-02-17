@@ -49,7 +49,7 @@ var lightValue;
 var lightColor;
 
 var clock = new THREE.Clock();
-var cameraClock = new THREE.Clock();
+var delta;
 
 /* Player data used for visualization.
  Sillä syncillä kun pelaajan energiat näyttävät nollaa, niin pyöritetään räjähdys
@@ -425,7 +425,7 @@ function refreshBullets() {
 }
 
 function refreshMisc() {
-    particleTree.smoke.tick(clock.getDelta());
+    particleTree.smoke.tick(delta);
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
@@ -451,12 +451,13 @@ function refreshCamera(){
         cameraSettings.cameraMode.refreshCameraMode();
     }
     else{
-        cameraSettings.cameraCounter -= cameraClock.getDelta();
+        cameraSettings.cameraCounter -= delta;
     }
     
 }
 
 function refreshViewState() {
+    delta = clock.getDelta();
     refreshMisc();
     refreshPlayerData();
     refreshBullets();
