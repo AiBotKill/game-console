@@ -79,6 +79,7 @@ class GameController {
         gameInstance.startingPositions = map.getStartingPositions()
         gameInstance.gameArea = map.getGameArea()
         gameInstance.tiles = map.getTiles()
+        gameInstance.tileModels = map.getTileModels()
 
         gameInstance.save flush: true
         long gameId = gameInstance.id
