@@ -52,12 +52,7 @@ grails.project.dependency.resolution = {
         // NATS
         compile "com.github.cloudfoundry-community:nats-client:0.5.1"
         compile "com.github.cloudfoundry-community:nats-client-spring:0.5.1"
-
-        bundle('javax.websocket:javax.websocket-api:1.1') {
-            // This line is necessary for deployment to Tomcat, since
-            // Tomcat comes with its own version of javax.websocket-api.
-            export = false
-        }
+        compile "javax.websocket:javax.websocket-api:1.1"
 
         runtime 'mysql:mysql-connector-java:5.1.29'
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
