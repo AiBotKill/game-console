@@ -84,6 +84,8 @@ class GameController {
         gameInstance.save flush: true
         long gameId = gameInstance.id
 
+        log.debug("Created game ${gameInstance.publicId}")
+
         nats.request("createGame", (gameInstance as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
@@ -113,6 +115,7 @@ class GameController {
         }
 
         gameInstance.start()
+        log.debug("Game ${gameInstance.publicId} started!")
 
         redirect controller: "game", action: "index"
     }

@@ -169,4 +169,6 @@ log4j = {
         error 'rollingLogger', 'stdout'
         additivity = true
     }
+
+    debug rollingLogger:"grails.app","botkill.gameconsole"
 }

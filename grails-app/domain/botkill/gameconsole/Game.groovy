@@ -4,6 +4,11 @@ import botkill.gameconsole.enums.GameEnvironment
 import botkill.gameconsole.enums.GameMode
 import botkill.gameconsole.enums.GameState
 import botkill.gameconsole.enums.TeamColor
+import grails.converters.JSON
+import nats.client.Message
+import nats.client.MessageHandler
+
+import java.util.concurrent.TimeUnit
 
 class Game {
     def nats
@@ -75,7 +80,12 @@ class Game {
         state = GameState.STARTED
         save flush:true
 
-        nats.publish("${this.publicId}.start", "{}")
+        nats.request("${this.publicId}.start", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
+            @Override
+            public void onMessage(Message message) {
+
+            }
+        })
     }
 
     void end(List<GameResult> results) {
@@ -83,6 +93,11 @@ class Game {
         this.results = results
         save flush:true
 
-        nats.publish("${this.publicId}.end", "{}")
+        nats.request("${this.publicId}.end", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
+            @Override
+            public void onMessage(Message message) {
+
+            }
+        })
     }
 }
