@@ -124,7 +124,7 @@ function generateMisc() {
     loadDestroyedRobot();
     loadExplosion();
     loadLights();
-    //loadParticles();
+    loadParticles();
 };
 
 function generateWorld() {
