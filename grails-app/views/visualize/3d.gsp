@@ -16,12 +16,12 @@
 <g:javascript src="visualization/3d/three.min.js"/>
 <g:javascript src="visualization/3d/ShaderParticles.js"/>
 <g:javascript src="visualization/3d/GameConstants.js"/>
-<g:javascript src="visualization/3d/ForestController.js"/>
 <g:javascript src="visualization/3d/CavernController.js"/>
-<g:javascript src="visualization/3d/MainController.js"/>
 <g:javascript src="visualization/3d/CameraModeFPS.js"/>
 <g:javascript src="visualization/3d/CameraModeExternal.js"/>
 <g:javascript src="visualization/3d/CameraModeArea.js"/>
+<g:javascript src="visualization/3d/ForestController.js"/>
+<g:javascript src="visualization/3d/MainController.js"/>
 <g:javascript src="visualization/3d/InputController.js"/>
 <g:javascript src="visualization/3d/View.js"/>
 <g:javascript src="visualization/3d/ViewClient.js"/>
