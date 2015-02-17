@@ -13,7 +13,7 @@ function CameraModeFPS(){
         playerTree[cameraSettings.playerIndex].model.remove(camera);
         console.log(players);
         console.log(index);
-        if (index < players) {
+        if (index < players - 1) {
             cameraSettings.playerIndex++;
         }
         else {
