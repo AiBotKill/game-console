@@ -435,13 +435,14 @@ function refreshBullets() {
 };
 
 function refreshMisc() {
+    //particleTree.smoke.tick(clock.getDelta());
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
                 if(explosionTree[i].light){
                     explosionTree[i].light.intensity = 0;
                 }
-                createSmoke(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
+                //createSmoke(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
                 addDestroyedRobot(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].player);
