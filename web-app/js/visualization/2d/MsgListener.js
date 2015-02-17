@@ -34,10 +34,9 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
             handle: function(msg) {
                 var data = JSON.parse(msg);
 
-                if (terrain.tiles.length == 0) {
+                if (terrain.tiles.length == 0 && data.tiles) {
                     terrain.setTiles(data.tiles);
                 }
-
                 // Save for pause and playback
                 messageHistory.push(data);
                 if (!hud.isPaused()) {
@@ -53,13 +52,21 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                 if (data.tiles != undefined && data.tiles.length > 0) {
                     terrain.draw();
                 }
-                players.draw(data.players);
-                // Draw player names, hp bars and other stuff to hud.
-                // Hud is on top of fov canvas so darkness won't affect on it.
-                hud.drawPlayerData(data.players);
+                if (data.players) {
+                    players.draw(data.players);
+
+                    // Draw player names, hp bars and other stuff to hud.
+                    // Hud is on top of fov canvas so darkness won't affect on it.
+                    hud.drawPlayerData(data.players);
+                }
+
                 air.draw(data.items, data.bullets);
-                fov.draw(data.players);
-                if (!moving) {
+
+                if (data.players) {
+                    fov.draw(data.players);
+                }
+
+                if (!moving && data.sounds) {
                     sound.draw(data.sounds);
                 }
                 lastDrawn = (new Date()).getTime();
