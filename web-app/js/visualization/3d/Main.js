@@ -22,7 +22,7 @@ function initialization() {
         renderer.shadowMapType = THREE.PCFSoftShadowMap;
     }
     // Initial synchronization.
-    synchronizeState();
+    initSync();
     // We initialize the world and associated controller.
     CURRENT_ENV = new ForestController();
     /*
