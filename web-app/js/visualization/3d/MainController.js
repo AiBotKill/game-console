@@ -40,7 +40,7 @@ var playerTexture = [];
 
 var camera;
 var cameraSettings = {
-    "cameraMode": 0,
+    "cameraMode": new CameraModeFPS(),
     "cameraCounter": CAMERA_TIME,
     "playerIndex": 0                                     
 };
@@ -404,36 +404,6 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
 
-function cameraModeFPS(){
-    var index = cameraSettings.playerIndex;
-    var players = serverData.gamestate.players.length;
-    playerTree[cameraSettings.playerIndex].model.remove(camera);
-    
-    if(index < players){
-        cameraSettings.playerIndex ++;
-    }
-    else{
-        cameraSettings.playerIndex = 0;
-    }
-    isHUDDrawn = true;
-    setStatusMessage("FPS CAMERA");
-    playerTree[cameraSettings.playerIndex].model.add(camera);
-    camera.rotation.x = Math.PI * -0.5;
-    camera.rotation.y = Math.PI * -0.5;
-    camera.rotation.z = Math.PI * -0.5;
-    camera.position.set(1, 6, 0);
-}
-
-function cameraModeExternal(){
-    isHUDDrawn = false;
-    setStatusMessage("EXTERNAL CAMERA");
-}
-
-function cameraModeArea(){
-    isHUDDrawn = false;
-    setStatusMessage("AREA CAMERA");
-}
-
 function refreshPlayerData() {
     /*
      * Käydään gamestaten pelaajadataa lävitse ja vertaillaan sitä
@@ -479,16 +449,7 @@ function refreshMisc() {
 function refreshCamera(){
     if(cameraSettings.cameraCounter <= 0){
         cameraSettings.cameraCounter = CAMERA_TIME;
-
-        if (cameraSettings.cameraMode === CAMERA_MODE_FPS) {
-            cameraModeFPS();
-        }
-        else if (cameraSettings.cameraMode === CAMERA_MODE_EXTERNAL) {
-            cameraModeExternal();
-        }
-        else if (cameraSettings.cameraMode === CAMERA_MODE_AREA) {
-            cameraModeArea();
-        }
+        cameraSettings.cameraMode.refreshCameraMode();
     }
     else{
         cameraSettings.cameraCounter -= cameraClock.getDelta();

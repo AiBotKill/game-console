@@ -17,25 +17,47 @@ function inputCooldown() {
 
 function actionCameraModeFPS(){
     cameraSettings.cameraCounter = CAMERA_TIME;
-    cameraSettings.cameraMode = CAMERA_MODE_FPS;
+    playerTree[cameraSettings.playerIndex].model.remove(camera);
+    cameraSettings.cameraMode = new CameraModeFPS();
 }
 
 function actionCameraModeExternal(){
     cameraSettings.cameraCounter = CAMERA_TIME;
-    cameraSettings.cameraMode = CAMERA_MODE_EXTERNAL;
+    playerTree[cameraSettings.playerIndex].model.remove(camera);
+    cameraSettings.cameraMode = new CameraModeExternal();
 }
 
 function actionCameraModeArea(){
     cameraSettings.cameraCounter = CAMERA_TIME;
-    cameraSettings.cameraMode = CAMERA_MODE_AREA;
+    cameraSettings.cameraMode = new CameraModeArea();
 }
 
 function actionPreviousPlayer(){
-    
+    cameraSettings.cameraCounter = CAMERA_TIME;
+    var index = cameraSettings.playerIndex;
+    var players = serverData.gamestate.players.length;
+
+    if(index > 0){
+        cameraSettings.playerIndex--;
+    }
+    else {
+        cameraSettings.playerIndex = players - 1;
+    }
+    setStatusMessage("Previous bot");
 }
 
 function actionNextPlayer(){
+    cameraSettings.cameraCounter = CAMERA_TIME;
+    var index = cameraSettings.playerIndex;
+    var players = serverData.gamestate.players.length;
     
+    if(index < players){
+        cameraSettings.playerIndex ++;
+    }
+    else{
+        cameraSettings.playerIndex = 0;
+    }
+    setStatusMessage("Next bot");
 }
 
 function processInput(key) {
@@ -53,12 +75,12 @@ function processInput(key) {
             cooldown = KEY_COOLDOWN;
             actionCameraModeArea();
         }
-        
         if(key === 'left'){
+            cooldown = KEY_COOLDOWN;
             actionPreviousPlayer();
         }
-        
         if(key === 'right'){
+            cooldown = KEY_COOLDOWN;
             actionNextPlayer();
         }
     }
