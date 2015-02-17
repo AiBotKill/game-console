@@ -150,6 +150,7 @@ function loadParticles(){
         maxAge: 2,
         transparent: true
     });
+    console.log(particleTree.smoke);
     for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
         var fire = new SPE.Emitter({
             type: 'cube',
