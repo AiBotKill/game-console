@@ -24,19 +24,18 @@ class NatsSubscriberService {
     def registerAI(Message message) {
         JSONObject registerMsg = new JSONObject(message.getBody())
         String id = registerMsg.getString("botId")
-        String version = registerMsg.getString("version")
         Team t = Team.findByBotId(id)
         if (t) {
             println("Team ${t.name} registered!")
             String connectionId = UUID.randomUUID().toString();
-            message.reply("{\"status\":\"ok\", \"id\":\"${connectionId}\"}")
+            message.reply("{\"type\":\"reply\", \"status\":\"ok\", \"id\":\"${connectionId}\"}")
 
             t.botVersion = version
             t.connectionId = connectionId
             connectedAIs["${connectionId}"] = t
         } else {
             println("Team not found with id ${id}")
-            message.reply("{\"status\":\"error\", \"id\":\"${id}\", \"error\":\"Team not found\"}")
+            message.reply("{\"type\":\"reply\",\"status\":\"error\", \"id\":\"${id}\", \"error\":\"Team not found\"}")
         }
     }
 
