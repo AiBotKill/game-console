@@ -57,7 +57,7 @@ class WebSocket implements ServletContextListener {
             nats.subscribe("*.gameState", new MessageHandler() {
                 @Override
                 public void onMessage(Message message) {
-                    String gamePublicId = message.getSubject().split(".")[0]
+                    String gamePublicId = message.getSubject().split("\\.")[0]
                     String gameState = message.getBody()
                     sendMessage(gamePublicId, gameState)
                 }
