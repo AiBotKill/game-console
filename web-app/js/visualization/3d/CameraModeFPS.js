@@ -11,6 +11,7 @@ function CameraModeFPS(){
         var index = cameraSettings.playerIndex;
         var players = serverData.gamestate.players.length;
         playerTree[cameraSettings.playerIndex].model.remove(camera);
+        console.log(players);
         console.log(index);
         if (index < players) {
             cameraSettings.playerIndex++;
@@ -18,6 +19,7 @@ function CameraModeFPS(){
         else {
             cameraSettings.playerIndex = 0;
         }
+        console.log(index);
         setStatusMessage("NEXT BOT");
         playerTree[cameraSettings.playerIndex].model.add(camera);
         camera.rotation.x = Math.PI * -0.5;
