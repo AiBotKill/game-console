@@ -48,6 +48,9 @@ var DARKNESS_NIGHT_MIN = 0.66;
 
 /***********************************/
 
+/* CONTROL CONSTANTS. */
+var KEY_COOLDOWN = 10;
+/***********************************/
 
 /* TEST CONSTANTS FOR CONSOLE DEMOING. */
 var TEST_ENV = 1;

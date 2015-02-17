@@ -404,17 +404,10 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
 
-function setCameraModeExternal(){
-    isHUDDrawn = false;
-}
-
-function setCameraModeArea(){
-    isHUDDrawn = false;
-}
-
 function cameraModeFPS(){
     var index = cameraSettings.playerIndex;
     var players = serverData.gamestate.players.length;
+    playerTree[cameraSettings.playerIndex].model.remove(camera);
     
     if(index < players){
         cameraSettings.playerIndex ++;
