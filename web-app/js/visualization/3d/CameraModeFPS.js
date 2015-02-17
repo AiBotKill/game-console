@@ -19,7 +19,7 @@ function CameraModeFPS(){
         else {
             cameraSettings.playerIndex = 0;
         }
-        console.log(index);
+        console.log(cameraSettings.playerIndex);
         setStatusMessage("NEXT BOT");
         playerTree[cameraSettings.playerIndex].model.add(camera);
         camera.rotation.x = Math.PI * -0.5;
