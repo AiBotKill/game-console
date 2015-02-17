@@ -22,7 +22,7 @@ define(function() {
             };
 
             ws.onmessage = function(message) {
-                listener.handle(message.data);
+                listener.syncState(message.data);
             };
 
             ws.onerror = function(error) {
