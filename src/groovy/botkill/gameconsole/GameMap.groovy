@@ -5,6 +5,7 @@ package botkill.gameconsole
  */
 class GameMap {
     String tiles
+    List<Tile> tileModels
     Vector2d[] startingPositions
     float[] gameArea
 }
