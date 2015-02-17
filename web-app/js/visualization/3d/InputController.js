@@ -67,11 +67,6 @@ function processInput(key) {
                 playerTree.splice(0, 1);
             }
         }
-        /*
-         if(key === 'l'){
-         CURRENT_ENV.environmentGroup.remove(testPlayer);
-         }
-         */
         if (key === KEY_LEFT) {
             camera.rotation.y += 0.03;
         }
@@ -93,9 +88,11 @@ function processInput(key) {
 
         if (key === 'y') {
             camera.translateY(0.1);
+            console.log(camera.position.y);
         }
         if (key === 'u') {
             camera.translateY(-0.1);
+            console.log(camera.position.y);
 
         }
         /*

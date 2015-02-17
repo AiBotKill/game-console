@@ -1,5 +1,4 @@
 var scene;
-var camera;
 var ground;
 var isHUDDrawn;
 
@@ -35,25 +34,22 @@ var hudStatusMessage;
 var showMessage;
 var messageDelay = 0;
 
-var playerFollowed = {
-    "name": "Robomies",
-    "hp": 100,
-    "team": 0
-};
+var playerFollowed = {};
 
 var playerTexture = [];
-var fpsMode = false;
-//TESTING
-var testPlayer;
-var testPlayerData = {
-    "direction": 0
-};
 
+var camera;
+var cameraSettings = {
+    "cameraMode": 0,
+    "cameraCounter": CAMERA_TIME,
+    "selectedPlayerIndex": 0                                     
+};
 
 var lightValue;
 var lightColor;
 
 var clock = new THREE.Clock();
+var cameraClock = new THREE.Clock();
 
 /* Player data used for visualization.
  Sillä syncillä kun pelaajan energiat näyttävät nollaa, niin pyöritetään räjähdys
@@ -397,7 +393,7 @@ function Explosion(model, light, player) {
     this.end = function () {
         this.ended = true;
     };
-};
+}
 
 function addBullet(x, y, xSpeed, ySpeed, id) {
     var laserObject = {
@@ -408,17 +404,42 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
             "y": ySpeed
         }
     };
-
+    laserObject.model.lookAt(new THREE.Vector3(xSpeed, BULLET_HEIGHT, ySpeed));
     bulletTree.push(laserObject);
     CURRENT_ENV.environmentGroup.add(laserObject.model);
-};
+}
+
+function setCameraModeFPS(){
+    camera.translateY(-0.17172959582774813);
+    isHUDDrawn = true;
+}
+
+function setCameraModeExternal(){
+    isHUDDrawn = false;
+}
+
+function setCameraModeArea(){
+    isHUDDrawn = false;
+}
+
+function cameraModeFPS(){
+    
+}
+
+function cameraModeExternal(){
+    
+}
+
+function cameraModeArea(){
+    
+}
 
 function refreshPlayerData() {
     /*
      * Käydään gamestaten pelaajadataa lävitse ja vertaillaan sitä
      * visualisaation tallentamaan pelaajadataan.
      */
-};
+}
 
 function refreshBullets() {
     if (bulletTree.length > 0) {
@@ -432,7 +453,7 @@ function refreshBullets() {
             }
         }
     }
-};
+}
 
 function refreshMisc() {
     particleTree.smoke.tick(clock.getDelta());
@@ -453,12 +474,49 @@ function refreshMisc() {
             }
         }
     }
-};
+}
+
+function refreshCamera(){
+    if(cameraSettings.cameraCounter <= 0){
+        cameraSettings.cameraCounter = CAMERA_TIME;
+        if(cameraSettings.cameraMode === 3){
+            cameraSettings.cameraMode === CAMERA_MODE_FPS;
+        }
+        else{
+            cameraSettings.cameraMode ++;
+        }
+        
+        if(cameraSettings.cameraMode === CAMERA_MODE_FPS){
+            setCameraModeFPS();
+        }
+        else if(cameraSettings.cameraMode === CAMERA_MODE_EXTERNAL){
+            setCameraModeExternal();
+        }
+        else if(cameraSettings.cameraMode === CAMERA_MODE_AREA){
+            setCameraModeArea();
+        }
+    }
+    else{
+        cameraSettings.cameraCounter -= cameraClock.getDelta();
+    }
+    
+    if (cameraSettings.cameraMode === CAMERA_MODE_FPS) {
+        cameraModeFPS();
+    }
+    else if (cameraSettings.cameraMode === CAMERA_MODE_EXTERNAL) {
+        cameraModeExternal();
+    }
+    else if (cameraSettings.cameraMode === CAMERA_MODE_AREA) {
+        cameraModeArea();
+    }
+    
+}
 
 function refreshViewState() {
     refreshMisc();
     refreshPlayerData();
     refreshBullets();
+    refreshCamera();
 };
 
 

@@ -19,6 +19,15 @@ var LASER_BLAST_DURATION = 32;
 var SHADOWS = true;
 /************************/
 
+/* CAMERA CONSTANTS. */
+/* The number of seconds we wait before switching to another view. */
+var CAMERA_TIME = 60;
+var CAMERA_MODE_FPS = 0;
+var CAMERA_MODE_EXTERNAL = 1;
+var CAMERA_MODE_AREA = 2;
+var CAMERA_HEIGHT = -0.17172959582774813;
+/************************/
+
 /* ENVIRONMENT CONSTANTS. */
 var ENVIRONMENT_CAVERN = 0;
 var ENVIRONMENT_FOREST = 1;
