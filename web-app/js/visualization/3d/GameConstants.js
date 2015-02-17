@@ -5,6 +5,8 @@ var AOR = WIDTH / HEIGHT;
 var FOV = 60;
 var FAR_DISTANCE = 8000;
 var NEAR_DISTANCE = 1;
+var MAPTILES_X = 80;
+var MAPTILES_Y = 80;
 /*************************/
 
 /* RENDERING CONSTANTS. */
@@ -110,8 +112,8 @@ var TILE_WIDTH = 32;
 var TILE_HEIGHT = 32;
 var TILE_DEPTH = 32;
 
-var GROUND_X = (80 * TILE_WIDTH);
-var GROUND_Y = (80 * TILE_HEIGHT);
+var GROUND_X = (MAPTILES_X * TILE_WIDTH);
+var GROUND_Y = (MAPTILES_Y * TILE_HEIGHT);
 var GROUND_Z = 0;
 
 var GROUND_TILES = GROUND_X / 16;
