@@ -16,7 +16,6 @@ var lightTree = [];
  * */
 var laserTemplate = {};
 var explosionTemplate = {};
-var explosionTexture = [];
 var destroyedRobotTemplate = {};
 
 var BULLET_HEIGHT;
@@ -48,7 +47,6 @@ var cameraSettings = {
 var lightValue;
 var lightColor;
 
-var clock = new THREE.Clock();
 var delta;
 
 /* Player data used for visualization.

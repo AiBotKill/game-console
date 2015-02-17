@@ -5,6 +5,7 @@ var hudImage;
 var crosshair;
 var ASSETS_PATH = document.getElementById("assetsPath").innerHTML;
 var modelLoader;
+var clock;
 
 function initialization() {
     KeyboardJS.enable();
@@ -14,6 +15,7 @@ function initialization() {
     renderer = new THREE.WebGLRenderer({antialiasing: false, canvas:canvas});
     renderer.setSize(WIDTH, HEIGHT);
     modelLoader = new THREE.JSONLoader;
+    clock = new THREE.Clock();
     if(SHADOWS){
         renderer.shadowMapEnabled = true;
         renderer.shadowMapType = THREE.PCFSoftShadowMap;
