@@ -67,11 +67,6 @@ function processInput(key) {
                 playerTree.splice(0, 1);
             }
         }
-        /*
-         if(key === 'l'){
-         CURRENT_ENV.environmentGroup.remove(testPlayer);
-         }
-         */
         if (key === KEY_LEFT) {
             camera.rotation.y += 0.03;
         }

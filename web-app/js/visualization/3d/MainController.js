@@ -409,6 +409,31 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
 
+function setCameraModeFPS(){
+    camera.translateY(-0.17172959582774813);
+    isHUDDrawn = true;
+}
+
+function setCameraModeExternal(){
+    isHUDDrawn = false;
+}
+
+function setCameraModeArea(){
+    isHUDDrawn = false;
+}
+
+function cameraModeFPS(){
+    
+}
+
+function cameraModeExternal(){
+    
+}
+
+function cameraModeArea(){
+    
+}
+
 function refreshPlayerData() {
     /*
      * Käydään gamestaten pelaajadataa lävitse ja vertaillaan sitä
@@ -462,7 +487,13 @@ function refreshCamera(){
         }
         
         if(cameraSettings.cameraMode === CAMERA_MODE_FPS){
-            camera.translateY(-0.17172959582774813);
+            setCameraModeFPS();
+        }
+        else if(cameraSettings.cameraMode === CAMERA_MODE_EXTERNAL){
+            setCameraModeExternal();
+        }
+        else if(cameraSettings.cameraMode === CAMERA_MODE_AREA){
+            setCameraModeArea();
         }
     }
     else{
@@ -478,18 +509,6 @@ function refreshCamera(){
     else if (cameraSettings.cameraMode === CAMERA_MODE_AREA) {
         cameraModeArea();
     }
-    
-}
-
-function cameraModeFPS(){
-    
-}
-
-function cameraModeExternal(){
-    
-}
-
-function cameraModeArea(){
     
 }
 
