@@ -36,6 +36,7 @@ function actionPreviousPlayer(){
     cameraSettings.cameraCounter = CAMERA_TIME;
     var index = cameraSettings.playerIndex;
     var players = serverData.gamestate.players.length;
+    playerTree[index].model.remove(camera);
 
     if(index > 0){
         cameraSettings.playerIndex--;
@@ -44,20 +45,23 @@ function actionPreviousPlayer(){
         cameraSettings.playerIndex = players - 1;
     }
     setStatusMessage("Previous bot");
+    cameraSettings.cameraMode.resetCamera();
 }
 
 function actionNextPlayer(){
     cameraSettings.cameraCounter = CAMERA_TIME;
     var index = cameraSettings.playerIndex;
     var players = serverData.gamestate.players.length;
+    playerTree[index].model.remove(camera);
     
-    if(index < players){
+    if(index < players - 1){
         cameraSettings.playerIndex ++;
     }
     else{
         cameraSettings.playerIndex = 0;
     }
     setStatusMessage("Next bot");
+    cameraSettings.cameraMode.resetCamera();
 }
 
 function processInput(key) {

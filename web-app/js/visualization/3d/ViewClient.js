@@ -20,47 +20,47 @@ function synchronizeState() {
                     }
                 }],
             "players": [{
-                    "id": "",
+                    "name": "Team Silver",
                     "x": 0,
                     "y": 0
                 },
                 {
-                    "id": "",
+                    "name": "Derka Derb",
                     "x": 53,
                     "y": 30
                 },
                 {
-                    "id": "",
+                    "name": "Visual Dominatrix Matrix 4D",
                     "x": 80,
                     "y": 50
                 },
                 {
-                    "id": "",
+                    "name": "Merga Lerb",
                     "x": 120,
                     "y": 80
                 },
                 {
-                    "id": "",
+                    "name": "Team Deathmatch",
                     "x": 90,
                     "y": 160
                 },
                 {
-                    "id": "",
+                    "name": "Punishers",
                     "x": 90,
                     "y": 190
                 },
                 {
-                    "id": "",
+                    "name": "Groundhog league",
                     "x": 90,
                     "y": 220
                 },
                 {
-                    "id": "",
+                    "name": "Avengers",
                     "x": 120,
                     "y": 100
                 },
                 {
-                    "id": "",
+                    "name": "Red Menace",
                     "x": 140,
                     "y": 100
                 }]
