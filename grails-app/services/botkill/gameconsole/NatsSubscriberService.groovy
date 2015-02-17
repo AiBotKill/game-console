@@ -5,15 +5,33 @@ import nats.client.Message
 import nats.client.spring.Subscribe
 import org.codehaus.groovy.grails.web.json.JSONObject
 
+import javax.annotation.PostConstruct
+
 @Transactional
 class NatsSubscriberService {
+
+    def nats
     static lazyInit = false
 
     Map<String, Team> connectedAIs = [:]
 
+    @PostConstruct
+    def init() {
+        startPinger()
+    }
+
     @Subscribe("ping")
     def ping(Message message) {
         String test = "";
+    }
+
+    def startPinger() {
+        Thread.start {
+            while(true) {
+                nats.publish("ping", "{\"ping\":\"gameConsole\",\"time\":\"" + new Date() + "\"}")
+                sleep 5000
+            }
+        }
     }
 
     Team getConnectedAI(String connectionId) {
