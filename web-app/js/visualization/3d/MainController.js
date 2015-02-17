@@ -39,7 +39,7 @@ var playerTexture = [];
 
 var camera;
 var cameraSettings = {
-    "cameraMode": new CameraModeFPS(),
+    "cameraMode": new CameraModeFPS(0),
     "cameraCounter": CAMERA_TIME,
     "playerIndex": 0                                     
 };
@@ -446,7 +446,7 @@ function refreshMisc() {
 function refreshCamera(){
     if(cameraSettings.cameraCounter <= 0){
         cameraSettings.cameraCounter = CAMERA_TIME;
-        cameraSettings.cameraMode.refreshCameraMode();
+        cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
     }
     else{
         cameraSettings.cameraCounter -= delta;
