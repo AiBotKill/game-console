@@ -144,7 +144,6 @@ function loadParticles(){
         maxAge: 2,
         transparent: true
     });
-    console.log(particleTree.smoke);
     for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
         var fire = new SPE.Emitter({
             type: 'cube',
@@ -230,6 +229,7 @@ function loadPlayerData() {
             CURRENT_ENV.environmentGroup.add(playerObject.model);
         }
         BULLET_HEIGHT = helper.box.min.z;
+        /* We initialize the preliminary cameramode. */
         cameraSettings.cameraMode = new CameraModeFPS();
     });
 };
@@ -447,7 +447,9 @@ function refreshMisc() {
 function refreshCamera(){
     if(cameraSettings.cameraCounter <= 0){
         cameraSettings.cameraCounter = CAMERA_TIME;
-        cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
+        if(cameraSettings.cameraMode){
+            cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
+        }
     }
     else{
         cameraSettings.cameraCounter -= delta;

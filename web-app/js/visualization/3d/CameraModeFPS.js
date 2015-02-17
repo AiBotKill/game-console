@@ -11,7 +11,7 @@ function CameraModeFPS(){
         var index = cameraSettings.playerIndex;
         var players = serverData.gamestate.players.length;
         playerTree[cameraSettings.playerIndex].model.remove(camera);
-
+        console.log(index);
         if (index < players) {
             cameraSettings.playerIndex++;
         }
