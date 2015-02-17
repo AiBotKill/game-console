@@ -1,5 +1,10 @@
 var serverData = {};
 
+function initSync(){
+    var socket = new WebSocket();
+    socket.connect();
+}
+
 function synchronizeState() {
     /* TESTING HARD. */
     serverData = {
