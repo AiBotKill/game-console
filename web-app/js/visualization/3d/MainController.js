@@ -16,7 +16,6 @@ var lightTree = [];
  * */
 var laserTemplate = {};
 var explosionTemplate = {};
-var explosionTexture = [];
 var destroyedRobotTemplate = {};
 
 var BULLET_HEIGHT;
@@ -40,16 +39,15 @@ var playerTexture = [];
 
 var camera;
 var cameraSettings = {
-    "cameraMode": 0,
+    "cameraMode": "",
     "cameraCounter": CAMERA_TIME,
-    "selectedPlayerIndex": 0                                     
+    "playerIndex": 0                                     
 };
 
 var lightValue;
 var lightColor;
 
-var clock = new THREE.Clock();
-var cameraClock = new THREE.Clock();
+var delta;
 
 /* Player data used for visualization.
  Sillä syncillä kun pelaajan energiat näyttävät nollaa, niin pyöritetään räjähdys
@@ -146,7 +144,6 @@ function loadParticles(){
         maxAge: 2,
         transparent: true
     });
-    console.log(particleTree.smoke);
     for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
         var fire = new SPE.Emitter({
             type: 'cube',
@@ -232,6 +229,8 @@ function loadPlayerData() {
             CURRENT_ENV.environmentGroup.add(playerObject.model);
         }
         BULLET_HEIGHT = helper.box.min.z;
+        /* We initialize the preliminary cameramode. */
+        cameraSettings.cameraMode = new CameraModeFPS();
     });
 };
 
@@ -246,6 +245,7 @@ function createSmoke(x, y){
 }
 
 function renderHud() {
+    var playerFollowed = serverData.gamestate.players[cameraSettings.playerIndex];
     var graphics = hud.getContext("2d");
     graphics.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -264,17 +264,11 @@ function renderHud() {
 
         graphics.drawImage(crosshair, CROSSHAIR_X, CROSSHAIR_Y, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT);
 
-        graphics.drawImage(hudImage, HUD_NAME_FIELD_X,
-            HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
-        graphics.fillStyle = HUD_TEXT_COLOR;
-        graphics.fillText("Player: " + playerFollowed.name,
-            HUD_UPPER_PLAYER_NAME_X, HUD_UPPER_TEXT_Y);
-
         graphics.drawImage(hudImage, HUD_STATUS_FIELD_X,
             HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
 
-        graphics.fillText("HP: " + playerFollowed.hp, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
-        graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
+        graphics.fillText("HP: " + playerFollowed.hitpoints, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
+        graphics.fillText("Team: " + playerFollowed.name, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
 
         graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
             HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
@@ -404,34 +398,8 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
             "y": ySpeed
         }
     };
-    laserObject.model.lookAt(new THREE.Vector3(xSpeed, BULLET_HEIGHT, ySpeed));
     bulletTree.push(laserObject);
     CURRENT_ENV.environmentGroup.add(laserObject.model);
-}
-
-function setCameraModeFPS(){
-    camera.translateY(-0.17172959582774813);
-    isHUDDrawn = true;
-}
-
-function setCameraModeExternal(){
-    isHUDDrawn = false;
-}
-
-function setCameraModeArea(){
-    isHUDDrawn = false;
-}
-
-function cameraModeFPS(){
-    
-}
-
-function cameraModeExternal(){
-    
-}
-
-function cameraModeArea(){
-    
 }
 
 function refreshPlayerData() {
@@ -456,7 +424,7 @@ function refreshBullets() {
 }
 
 function refreshMisc() {
-    particleTree.smoke.tick(clock.getDelta());
+    particleTree.smoke.tick(delta);
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
@@ -479,40 +447,18 @@ function refreshMisc() {
 function refreshCamera(){
     if(cameraSettings.cameraCounter <= 0){
         cameraSettings.cameraCounter = CAMERA_TIME;
-        if(cameraSettings.cameraMode === 3){
-            cameraSettings.cameraMode === CAMERA_MODE_FPS;
-        }
-        else{
-            cameraSettings.cameraMode ++;
-        }
-        
-        if(cameraSettings.cameraMode === CAMERA_MODE_FPS){
-            setCameraModeFPS();
-        }
-        else if(cameraSettings.cameraMode === CAMERA_MODE_EXTERNAL){
-            setCameraModeExternal();
-        }
-        else if(cameraSettings.cameraMode === CAMERA_MODE_AREA){
-            setCameraModeArea();
+        if(cameraSettings.cameraMode){
+            cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
         }
     }
     else{
-        cameraSettings.cameraCounter -= cameraClock.getDelta();
-    }
-    
-    if (cameraSettings.cameraMode === CAMERA_MODE_FPS) {
-        cameraModeFPS();
-    }
-    else if (cameraSettings.cameraMode === CAMERA_MODE_EXTERNAL) {
-        cameraModeExternal();
-    }
-    else if (cameraSettings.cameraMode === CAMERA_MODE_AREA) {
-        cameraModeArea();
+        cameraSettings.cameraCounter -= delta;
     }
     
 }
 
 function refreshViewState() {
+    delta = clock.getDelta();
     refreshMisc();
     refreshPlayerData();
     refreshBullets();

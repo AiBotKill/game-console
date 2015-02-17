@@ -5,6 +5,7 @@ var hudImage;
 var crosshair;
 var ASSETS_PATH = document.getElementById("assetsPath").innerHTML;
 var modelLoader;
+var clock;
 
 function initialization() {
     KeyboardJS.enable();
@@ -14,6 +15,8 @@ function initialization() {
     renderer = new THREE.WebGLRenderer({antialiasing: false, canvas:canvas});
     renderer.setSize(WIDTH, HEIGHT);
     modelLoader = new THREE.JSONLoader;
+    clock = new THREE.Clock();
+    
     if(SHADOWS){
         renderer.shadowMapEnabled = true;
         renderer.shadowMapType = THREE.PCFSoftShadowMap;
@@ -21,12 +24,16 @@ function initialization() {
     // Initial synchronization.
     synchronizeState();
     // We initialize the world and associated controller.
+    CURRENT_ENV = new ForestController();
+    /*
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
         CURRENT_ENV = new ForestController();
     }
+    
     else if(serverData.gamestate.environment === ENVIRONMENT_CAVERN){
         CURRENT_ENV = new CavernController();
     }
+    */
     generateMisc();
     generateWorld();
     // We enter gameloop.

@@ -21,11 +21,7 @@ var SHADOWS = true;
 
 /* CAMERA CONSTANTS. */
 /* The number of seconds we wait before switching to another view. */
-var CAMERA_TIME = 60;
-var CAMERA_MODE_FPS = 0;
-var CAMERA_MODE_EXTERNAL = 1;
-var CAMERA_MODE_AREA = 2;
-var CAMERA_HEIGHT = -0.17172959582774813;
+var CAMERA_TIME = 3;
 /************************/
 
 /* ENVIRONMENT CONSTANTS. */
@@ -48,6 +44,9 @@ var DARKNESS_NIGHT_MIN = 0.66;
 
 /***********************************/
 
+/* CONTROL CONSTANTS. */
+var KEY_COOLDOWN = 10;
+/***********************************/
 
 /* TEST CONSTANTS FOR CONSOLE DEMOING. */
 var TEST_ENV = 1;
