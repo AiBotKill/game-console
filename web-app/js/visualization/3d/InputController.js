@@ -45,7 +45,7 @@ function actionPreviousPlayer(){
         cameraSettings.playerIndex = players - 1;
     }
     setStatusMessage("Previous bot");
-    cameraSettings.resetCamera();
+    cameraSettings.cameraMode.resetCamera();
 }
 
 function actionNextPlayer(){
@@ -61,7 +61,7 @@ function actionNextPlayer(){
         cameraSettings.playerIndex = 0;
     }
     setStatusMessage("Next bot");
-    cameraSettings.resetCamera();
+    cameraSettings.cameraMode.resetCamera();
 }
 
 function processInput(key) {
