@@ -60,7 +60,7 @@ class NatsSubscriberService {
     @Subscribe("unregisterAI")
     def unregisterAI(Message message) {
         JSONObject unregisterMsg = new JSONObject(message.getBody())
-        String id = unregisterMsg.getString("teamId")
+        String id = unregisterMsg.getString("botId")
         Team t = getConnectedAI(id)
         if (t) {
             println("Team ${t.name} unregistered!")
