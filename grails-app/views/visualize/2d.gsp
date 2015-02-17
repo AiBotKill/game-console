@@ -18,7 +18,7 @@
         </div>
     </div>
 </div>
-
+<div id="websocketPath" style="display:none;">${applicationContext.getServletContext().getContextPath()}/websocket/${gameInstance.id}</div>
 <g:javascript data-main="../../js/visualization/2d/app" src="lib/require.js" />
 </body>
 </html>

@@ -18,16 +18,17 @@ class MapService {
         JSONArray tilesJSON = new JSONArray(tilesString)
 
         GameMap map = new GameMap()
-        map.tiles = new ArrayList<>()
+        map.tiles = tilesString // Save as JSON String since we don't need it in model format in game-console
         map.startingPositions = new Vector2d[playerCount]
 
+        List<Tile> tileArray = new ArrayList<>()
         for (int i = 0; i < tilesJSON.length(); i++) {
             JSONObject tileJSON = tilesJSON.getJSONObject(i)
             Tile tile = new Tile(tileJSON)
-            map.tiles.add(tile)
+            tileArray.add(tile)
         }
 
-        map.gameArea = [map.tiles.last().X+1, map.tiles.last().Y+1]
+        map.gameArea = [tileArray.last().X+1, tileArray.last().Y+1]
 
         for (int i = 0; i < playerCount; i++) {
             Vector2d startingPos = new Vector2d()

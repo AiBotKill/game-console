@@ -148,7 +148,8 @@ define(["require", "./config"], function(require) {
             },
             getCurrentFrame: function() { return currentFrame; },
 
-            init: function(callback) {
+            init: function(listener) {
+                msgListener = listener;
 				ctx.canvas.addEventListener('click', function(evt) {
 					var mousePos = getMousePos(evt);
 
@@ -200,9 +201,6 @@ define(["require", "./config"], function(require) {
 					var img = {};
 					img.elem = elem;
 					textureMap[i] = img;
-                    if (i == hudItems.length-1) {
-                        img.elem.onload = callback;
-                    }
                 }
 
                 this.resize();
@@ -250,11 +248,6 @@ define(["require", "./config"], function(require) {
                 TILE_SIZE = config.getTileSize();
                 ctx.canvas.width  = window.innerWidth;
                 ctx.canvas.height = window.innerHeight;
-            },
-            // TODO: Remove when server available
-            setMockData: function(listener, d) {
-                msgListener = listener;
-                mockData = d;
             }
         }
     }

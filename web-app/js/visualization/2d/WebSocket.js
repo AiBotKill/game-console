@@ -6,17 +6,28 @@
  * To change this template use File | Settings | File Templates.
  */
 // Create our websocket object with the address to the websocket
-define(["../../js/visualization/2d/lib/socket.io.js"], function(socketio) {
+define(function() {
 
     return {
         io: undefined,
         connect: function(listener) {
             console.log("Connecting...");
 
-            var io = socketio();
-            io.on('msg', function(msg) {
-                listener.handle(msg);
-            });
+            var socketUrl = "ws://" + location.hostname+(location.port ? ':'+location.port: '');
+            socketUrl += document.getElementById("websocketPath").innerHTML;
+            var ws = new WebSocket(socketUrl);
+
+            ws.onopen = function(){
+                console.log("Socket has been opened!");
+            };
+
+            ws.onmessage = function(message) {
+                listener.handle(message.data);
+            };
+
+            ws.onerror = function(error) {
+                console.log("WebSocket error: ", error);
+            };
         }
     }
 });
