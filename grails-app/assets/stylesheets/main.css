@@ -45,12 +45,13 @@ body {
 
 #header {
 	background-color: black;
-	border-bottom: 4px solid #FFD34E;
+	border-bottom: 4px solid #EC2619;
 	padding-left: 10%;
 	position: fixed;
 	top: 0;
 	width: 100%;
 	z-index: 1000;
+    height: 80px;
 }
 
 #footer, #push {
@@ -74,6 +75,12 @@ body {
 
 #logo {
 	float: left;
+}
+
+#logo img {
+    height: 150px;
+    position: absolute;
+    top: -3px;
 }
 
 #hero {

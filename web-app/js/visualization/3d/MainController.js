@@ -210,7 +210,7 @@ function loadPlayerData() {
     var path = ASSETS_PATH + "player/";
     var player;
 
-    modelLoader.load(path + "robotti.json", function (geometry, materials) {
+    modelLoader.load(path + "robotti2.json", function (geometry, materials) {
         // SkinnedMesh tukee animaatioita.
         var playerMaterials = new THREE.MeshFaceMaterial(materials);
 

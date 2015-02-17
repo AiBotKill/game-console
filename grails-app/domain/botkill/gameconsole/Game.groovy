@@ -28,7 +28,7 @@ class Game {
 
     String publicId // Game server returns this when created
 
-    List<Tile> tiles
+    String tiles
     float[] gameArea
     Vector2d[] startingPositions
 
@@ -39,12 +39,14 @@ class Game {
         rounds min: 1, max: 10
         roundTime min: 1, max: 600
         publicId nullable: true
+        tiles nullable: true
     }
 
-    static transients = ['AICount', 'nats', 'tiles', 'gameArea', 'startingPositions']
+    static transients = ['AICount', 'nats', 'gameArea', 'startingPositions']
 
     static mapping = {
         gameTeams sort: 'id', order: 'asc'
+        tiles type: "text"
     }
 
     String toString() {
