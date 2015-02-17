@@ -432,11 +432,12 @@ function cameraModeFPS(){
 }
 
 function cameraModeExternal(){
-    isHUDDrawn = true;
+    isHUDDrawn = false;
     setStatusMessage("EXTERNAL CAMERA");
 }
 
 function cameraModeArea(){
+    isHUDDrawn = false;
     setStatusMessage("AREA CAMERA");
 }
 
