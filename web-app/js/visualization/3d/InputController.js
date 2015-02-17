@@ -106,21 +106,23 @@ function processInput(key) {
      setStatusMessage("EXTERNAL CAMERA");
      isHUDDrawn = false;
      }
-     if (key === 't') {
-     if (playerTree.length != 0) {
-     playerTree[0].model.rotation.y += 0.04;
-     }
-     }
-     if (key === 'j') {
-     if (playerTree.length != 0) {
-     playerTree[0].model.translateX(1);
-     }
-     }
-     if (key === 'k') {
-     if (playerTree.length != 0) {
-     playerTree[0].model.translateX(-1);
-     }
-     }
+    */
+    if (key === 't') {
+        if (playerTree.length != 0) {
+            playerTree[cameraSettings.playerIndex].model.rotation.y += 0.04;
+        }
+    }
+    if (key === 'j') {
+        if (playerTree.length != 0) {
+            playerTree[cameraSettings.playerIndex].model.translateX(1);
+        }
+    }
+    if (key === 'k') {
+        if (playerTree.length != 0) {
+            playerTree[cameraSettings.playerIndex].model.translateX(-1);
+        }
+    }
+     /*
      if (key === 'space') {
      if (playerTree.length != 0) {
      addBullet(
