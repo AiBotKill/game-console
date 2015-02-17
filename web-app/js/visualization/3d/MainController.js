@@ -404,7 +404,7 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
             "y": ySpeed
         }
     };
-    laserObject.model.lookAt(new THREE.Vector3(xSpeed, ySpeed, 0));
+    laserObject.model.lookAt(new THREE.Vector3(xSpeed, BULLET_HEIGHT, ySpeed));
     bulletTree.push(laserObject);
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
@@ -460,19 +460,23 @@ function refreshCamera(){
         else{
             cameraSettings.cameraMode ++;
         }
+        
+        if(cameraSettings.cameraMode === CAMERA_MODE_FPS){
+            camera.translateY(-0.17172959582774813);
+        }
     }
     else{
         cameraSettings.cameraCounter -= cameraClock.getDelta();
     }
     
     if (cameraSettings.cameraMode === CAMERA_MODE_FPS) {
-        
+        cameraModeFPS();
     }
     else if (cameraSettings.cameraMode === CAMERA_MODE_EXTERNAL) {
-
+        cameraModeExternal();
     }
     else if (cameraSettings.cameraMode === CAMERA_MODE_AREA) {
-
+        cameraModeArea();
     }
     
 }
