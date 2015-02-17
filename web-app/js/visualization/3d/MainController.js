@@ -42,7 +42,7 @@ var camera;
 var cameraSettings = {
     "cameraMode": 0,
     "cameraCounter": CAMERA_TIME,
-    "selectedPlayerIndex": 0                                     
+    "playerIndex": 0                                     
 };
 
 var lightValue;
@@ -404,14 +404,19 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
             "y": ySpeed
         }
     };
-    laserObject.model.lookAt(new THREE.Vector3(xSpeed, BULLET_HEIGHT, ySpeed));
+    laserObject.model.lookAt(new THREE.Vector3(xSpeed, ySpeed, 0));
     bulletTree.push(laserObject);
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
 
 function setCameraModeFPS(){
-    camera.translateY(-0.17172959582774813);
     isHUDDrawn = true;
+    setStatusMessage("FPS CAMERA");
+    playerTree[cameraSettings.playerIndex].model.add(camera);
+    camera.rotation.x = Math.PI * -0.5;
+    camera.rotation.y = Math.PI * -0.5;
+    camera.rotation.z = Math.PI * -0.5;
+    camera.position.set(1, 6, 0);
 }
 
 function setCameraModeExternal(){
