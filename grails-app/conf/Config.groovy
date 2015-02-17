@@ -101,6 +101,7 @@ environments {
     production {
         grails.logging.jul.usebridge = false
         grails.serverURL = "http://ai.hell.fi"
+        servlet.defaultMaxSessionIdleTimeout = 10000
     }
 }
 
