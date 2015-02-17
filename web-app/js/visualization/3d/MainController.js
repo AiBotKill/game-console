@@ -435,7 +435,6 @@ function refreshBullets() {
 };
 
 function refreshMisc() {
-    particleTree.smoke.tick(clock.getDelta());
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
