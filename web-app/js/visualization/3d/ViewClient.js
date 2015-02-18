@@ -2,24 +2,24 @@ var serverData = 0;
 /* Used to mark whether this is the first gamestate. */
 var firstSync = true;
 
-function initSync(){
+function initSync() {
     var client = new Client();
     connect(client);
 }
 
 
 /* sync gamestate. */
-function syncGamestate(data){
+function syncGamestate(data) {
     serverData = data;
 }
 
 /* Init the maptiles and size. */
-function initMap(){
-    
+function initMap() {
+
 }
 
 /* Initialize everything. TODO move map to init map. Data parameter is actually gamestate.*/
-function init(data){
+function init(data) {
     WORLD_MAP = data;
     var lastTile = WORLD_MAP.tiles[WORLD_MAP.length - 1];
     MAPTILES_X = lastTile.X;
@@ -48,7 +48,7 @@ function synchronizeState() {
                     "id": "0",
                     "x": "50",
                     "y": "50",
-                    "velocity":{
+                    "velocity": {
                         "x": 1,
                         "y": 0.5
                     }
@@ -102,21 +102,21 @@ function synchronizeState() {
     };
 }
 
-function Client(){
-    this.syncState = function(data){
+function Client() {
+    this.syncState = function (data) {
         console.log(data);
-        JSON.parse(data, function(json){
-            if (json.tiles) {
-                init(json);
-            }
-        });
-        /*
-        else if(json.gamestate){
-            // If this is the first gamestate we receive.
-            if(firstSync){
-                init(json);
-            }
+        var json = JSON.parse(data);
+        console.log("JSON: ", json);
+        if (json.tiles) {
+            init(json);
         }
-        */
+        /*
+         else if(json.gamestate){
+         // If this is the first gamestate we receive.
+         if(firstSync){
+         init(json);
+         }
+         }
+         */
     };
 }
