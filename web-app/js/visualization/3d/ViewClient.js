@@ -1,17 +1,13 @@
 var serverData = {};
 
 function initSync(){
-    /*
     var client = new Client();
-    var socket = new WebSocket();
-    socket.connect(client);
-    */
-    synchronizeState();
+    connect(client);
 }
 
 function Client(){
-    this.syncState = function(){
-        
+    this.syncState = function(data){
+        console.log(data);
     };
 }
 

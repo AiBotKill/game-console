@@ -23,6 +23,7 @@
 <g:javascript src="visualization/3d/ForestController.js"/>
 <g:javascript src="visualization/3d/MainController.js"/>
 <g:javascript src="visualization/3d/InputController.js"/>
+<g:javascript src="visualization/3d/WebSocket.js"/>
 <g:javascript src="visualization/3d/View.js"/>
 <g:javascript src="visualization/3d/ViewClient.js"/>
 <g:javascript src="visualization/3d/Main.js"/>
