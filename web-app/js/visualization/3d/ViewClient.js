@@ -22,6 +22,7 @@ function initMap(){
 function init(data){
     var lastTile;
     WORLD_MAP = data;
+    console.log(WORLD_MAP);
     lastTile = WORLD_MAP.tiles[WORLD_MAP.length - 1];
     MAPTILES_X = lastTile.X;
     MAPTILES_Y = lastTile.Y;
