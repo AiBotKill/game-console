@@ -8,7 +8,7 @@ import org.apache.log4j.Logger
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.springframework.context.ApplicationContext
-
+import org.apache.commons.logging.LogFactory
 import javax.servlet.ServletContext
 import javax.servlet.ServletContextEvent
 import javax.servlet.ServletContextListener
@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 @WebListener
 class WebSocket implements ServletContextListener {
 
-    private static final Logger log = Logger.getLogger(WebSocket.class)
+    private static final log = LogFactory.getLog(this)
     private static final Set<Session> clients = ([] as Set).asSynchronized()
     private static final Map<String, Queue<String>> states = new ConcurrentHashMap<>()
 

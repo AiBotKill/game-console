@@ -6,7 +6,7 @@ class VisualizeController {
 
     def twodimensions() {
         Game gameInstance = Game.findById(params.id)
-        log.debug("Visualize 2d fro game ${gameInstance.id}")
+        log.debug("Visualize 2d for game ${gameInstance.id}")
         if (gameInstance == null) {
             notFound()
             return

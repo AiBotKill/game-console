@@ -89,7 +89,7 @@ class TournamentService implements InitializingBean {
                     teamSize = i
                     if (teams.size() % teamSize == 0) break
                 }
-                assert teamSize > 0
+                if (teamSize == 0) teamSize = 2
             }
             // Create teams with the greatest amount of AIs per team
             Game game = createTeamGame(teams, teamSize)
