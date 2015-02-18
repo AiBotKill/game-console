@@ -39,12 +39,12 @@ class TournamentService implements InitializingBean {
                     Game game = getRandomGame(GameMode.DUEL)
 
                     GameTeam gt1 = new GameTeam()
-                    gt1.addToTeams(t1.team)
+                    gt1.team = t1.team
                     int teamColor1 = i%TeamColor.values().size()
                     gt1.color = TeamColor.values()[teamColor1]
 
                     GameTeam gt2 = new GameTeam()
-                    gt2.addToTeams(t2.team)
+                    gt2.team = t2.team
                     int teamColor2 = j%TeamColor.values().size()
                     // Don't use same color for both of the teams
                     if (teamColor1 == teamColor2) {
@@ -66,7 +66,7 @@ class TournamentService implements InitializingBean {
             TournamentTeam tt = teams[i]
 
             GameTeam gt = new GameTeam()
-            gt.addToTeams(tt.team)
+            gt.team = tt.team
             int teamColor = i % TeamColor.values().size()
             gt.color = TeamColor.values()[teamColor]
 
@@ -138,10 +138,10 @@ class TournamentService implements InitializingBean {
         Game game = getRandomGame(GameMode.TEAM)
         int overflows = 0
         for (int i = 0; i < numberOfTeams; i++) {
-            GameTeam gt = new GameTeam()
             int teamColor = i % TeamColor.values().size()
-            gt.color = TeamColor.values()[teamColor]
             for (int j = 0; j < teamSize; j++) {
+                GameTeam gt = new GameTeam()
+                gt.color = TeamColor.values()[teamColor]
                 TournamentTeam team
                 // Prevent overflow and use one team as an extra bot
                 if (i*teamSize+j > teams.size() - 1) {
@@ -150,9 +150,9 @@ class TournamentService implements InitializingBean {
                 } else {
                     team = teams[i*teamSize+j]
                 }
-                gt.addToTeams(team.team)
+                gt.team = team.team
+                game.addToGameTeams(gt)
             }
-            game.addToGameTeams(gt)
         }
 
         game.save flush:true
