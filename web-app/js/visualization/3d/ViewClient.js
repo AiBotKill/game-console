@@ -27,7 +27,7 @@ function init(data) {
     GROUND_X = (MAPTILES_X * TILE_WIDTH);
     GROUND_Y = (MAPTILES_Y * TILE_HEIGHT);
     GROUND_TILES = GROUND_X / 16;
-    WALL_TILES_COUNT = (GROUND_X + GROUND_Y) / 2;
+    WALL_TILES_COUNT = (MAPTILES_X + MAPTILES_Y) / 2;
     
     synchronizeState();
     generateMisc();
