@@ -4,7 +4,6 @@ import grails.util.Environment
 import nats.client.Message
 import nats.client.MessageHandler
 import nats.client.Nats
-import org.apache.log4j.Logger
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.springframework.context.ApplicationContext
@@ -88,6 +87,7 @@ class WebSocket implements ServletContextListener {
     @OnOpen
     public void onOpen(Session userSession, @PathParam("gameId") long gameId) {
         log.debug("Connected on game ${gameId}")
+        println("Connected on game ${gameId}")
         Game.withNewSession {
             Game game = Game.findById(gameId)
             if (game) {
