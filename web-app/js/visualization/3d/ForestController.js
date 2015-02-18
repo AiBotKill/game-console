@@ -189,11 +189,11 @@ function ForestController(){
             }));
         }
 
-        for (var i = 0; i < TEST_MAP.tiles.length; i++) {
+        for (var i = 0; i < WORLD_MAP.tiles.length; i++) {
             offsetX = 1 + (Math.random() * TILE_WIDTH / 2);
             offsetY = 1 + (Math.random() * TILE_HEIGHT / 2);
-            x = (TEST_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
-            y = (TEST_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
+            x = (WORLD_MAP.tiles[i].X * TILE_WIDTH) - (GROUND_X / 2);
+            y = (WORLD_MAP.tiles[i].Y * TILE_HEIGHT) - (GROUND_Y / 2);
             var random = (Math.random() * 2);
             if(random >= 1){
                 this.createTileBlock(x + offsetX, y - offsetY, blockMaterials[0], blockGeometry, this.treeMass2);
