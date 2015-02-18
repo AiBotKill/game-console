@@ -7,14 +7,18 @@ function initSync(){
     connect(client);
 }
 
-function Client(){
-    this.syncState = function(data){
-        if(data.tiles){
-            init(data);
-        }
-    };
+
+/* sync gamestate. */
+function syncGamestate(data){
+    serverData = data;
 }
 
+/* Init the maptiles and size. */
+function initMap(){
+    
+}
+
+/* Initialize everything. TODO move map to init map. Data parameter is actually gamestate.*/
 function init(data){
     var lastTile;
     WORLD_MAP = data;
@@ -95,6 +99,21 @@ function synchronizeState() {
                     "x": 140,
                     "y": 100
                 }]
+        }
+    };
+}
+
+function Client(){
+    this.syncState = function(data){
+        console.log(data);
+        if(data.tiles){
+            init(data);
+        }
+        else if(data.gamestate){
+            /* If this is the first gamestate we receive. */
+            if(firstSync){
+                init(data);
+            }
         }
     };
 }
