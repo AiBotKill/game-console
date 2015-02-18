@@ -147,7 +147,8 @@ function ForestController(){
      * Here we create the blocks and the walls for the world.
      */
     this.generateMapData = function (path) {
-        var wallWidth = GROUND_X;
+        var wallX = GROUND_X;
+        var wallY = GROUND_Y;
         var x;
         var y;
         var offsetX;
@@ -169,12 +170,13 @@ function ForestController(){
             side: THREE.DoubleSide
         });
 
-        var wallGeometry = new THREE.PlaneGeometry(wallWidth, WALL_HEIGHT);
+        var wallGeometryX = new THREE.PlaneGeometry(wallX, WALL_HEIGHT);
+        var wallGeometryY = new THREE.PlaneGeometry(wallY, WALL_HEIGHT);
 
-        this.createWorldWall(GROUND_X / 2 - wallWidth / 2, GROUND_Y / 2, false, wallGeometry, wallMaterial, this.wallMass);
-        this.createWorldWall(GROUND_X / 2 - wallWidth / 2, -GROUND_Y / 2, false, wallGeometry, wallMaterial, this.wallMass);
-        this.createWorldWall(GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial, this.wallMass);
-        this.createWorldWall(-GROUND_X / 2, GROUND_Y / 2 - wallWidth / 2, true, wallGeometry, wallMaterial, this.wallMass);
+        this.createWorldWall(GROUND_X / 2 - wallX / 2, GROUND_Y / 2, false, wallGeometryX, wallMaterial, this.wallMass);
+        this.createWorldWall(GROUND_X / 2 - wallX / 2, -GROUND_Y / 2, false, wallGeometryX, wallMaterial, this.wallMass);
+        this.createWorldWall(GROUND_X / 2, GROUND_Y / 2 - wallY / 2, true, wallGeometryY, wallMaterial, this.wallMass);
+        this.createWorldWall(-GROUND_X / 2, GROUND_Y / 2 - wallY / 2, true, wallGeometryY, wallMaterial, this.wallMass);
         
         var walls = new THREE.Mesh(this.wallMass, wallMaterial);
         this.environmentGroup.add(walls);
