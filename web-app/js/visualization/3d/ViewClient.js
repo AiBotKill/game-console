@@ -106,14 +106,17 @@ function synchronizeState() {
 function Client(){
     this.syncState = function(data){
         console.log(data);
-        if(data.tiles){
-            init(data);
+        var json = JSON.parse(data);
+        if(json.tiles){
+            init(json);
         }
-        else if(data.gamestate){
-            /* If this is the first gamestate we receive. */
+        /*
+        else if(json.gamestate){
+            // If this is the first gamestate we receive.
             if(firstSync){
-                init(data);
+                init(json);
             }
         }
+        */
     };
 }
