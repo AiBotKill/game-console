@@ -1,9 +1,11 @@
 var serverData = {};
 
 function initSync(){
+    /*
     var client = new Client();
     var socket = new WebSocket();
     socket.connect(client);
+    */
 }
 
 function Client(){
