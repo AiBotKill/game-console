@@ -1,5 +1,6 @@
 package botkill.gameconsole
 
+import botkill.gameconsole.enums.GameEnvironment
 import grails.plugins.rest.client.RestBuilder
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -8,7 +9,7 @@ class MapService {
 
     def rest = new RestBuilder()
 
-    def getMap(int playerCount) {
+    def getMap(int playerCount, GameEnvironment environment) {
         final float SCREEN_RATIO = 16/9
         int width = 10 * playerCount + 30
         int height = Math.floor(width/SCREEN_RATIO)
@@ -18,7 +19,6 @@ class MapService {
         JSONArray tilesJSON = new JSONObject(tilesString).getJSONArray("tiles")
 
         GameMap map = new GameMap()
-        map.tiles = tilesString // Save as JSON String since we don't need it in model format in game-console
         map.startingPositions = new Vector2d[playerCount]
 
         List<Tile> tileArray = new ArrayList<>()
@@ -30,6 +30,11 @@ class MapService {
 
         map.tileModels = tileArray
         map.gameArea = [tileArray.last().X+1, tileArray.last().Y+1]
+
+        JSONObject tilesObject = new JSONObject()
+        tilesObject.put("tiles", tileArray)
+        tilesObject.put("environemnt", environment.toString().toLowerCase())
+        map.tiles = tilesObject.toString() // Save as JSON String since we don't need it in model format in game-console
 
         for (int i = 0; i < playerCount; i++) {
             Vector2d startingPos = new Vector2d()

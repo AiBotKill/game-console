@@ -76,14 +76,7 @@ class GameController {
             return
         }
 
-        GameMap map = mapService.getMap(gameInstance.gameTeams.size())
-        gameInstance.startingPositions = map.getStartingPositions()
-        gameInstance.gameArea = map.getGameArea()
-        gameInstance.tiles = map.getTiles()
-        gameInstance.tileModels = map.getTileModels()
-
         gameInstance.save flush: true
-        long gameId = gameInstance.id
 
         log.debug("Created game ${gameInstance.id}")
 

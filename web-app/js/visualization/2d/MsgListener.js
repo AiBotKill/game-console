@@ -38,7 +38,7 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                     var lastTile = data.tiles[data.tiles.length-1];
                     config.tilesXCount = lastTile.X;
                     config.tilesYCount = lastTile.Y;
-                    terrain.setTiles(data.tiles);
+                    terrain.setTiles(data.tiles, data.environment);
                     messageHistory.push(data);
                     this.resize();
                     this.redraw(1)
@@ -56,7 +56,7 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
             draw: function(frame, moving) {
                 console.log("Draw frame " + frame);
                 var data = messageHistory[frame-1];
-                if (data.tiles != undefined && data.tiles.length > 0) {
+                if (moving || data.tiles != undefined && data.tiles.length > 0) {
                     terrain.draw();
                 }
                 if (data.players) {

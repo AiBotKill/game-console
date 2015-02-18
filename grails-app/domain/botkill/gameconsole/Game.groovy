@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit
 
 class Game {
     def nats
+    def mapService
 
     // Game may have many teams to compete against each other. Team in the same GameTeam are on the same side.
     static hasMany = ["gameTeams":GameTeam, "results": GameResult]
@@ -51,7 +52,7 @@ class Game {
         states nullable: true
     }
 
-    static transients = ['AICount', 'nats', 'gameArea', 'startingPositions', 'tileModels']
+    static transients = ['AICount', 'nats', 'gameArea', 'startingPositions', 'tileModels', 'mapService']
 
     static mapping = {
         gameTeams sort: 'id', order: 'asc'
@@ -81,6 +82,11 @@ class Game {
 
     void start() {
         state = GameState.STARTED
+        GameMap map = mapService.getMap(gameTeams.size(), environment)
+        startingPositions = map.getStartingPositions()
+        gameArea = map.getGameArea()
+        tiles = map.getTiles()
+        tileModels = map.getTileModels()
         save flush: true
 
         nats.request("startGame", (this as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {

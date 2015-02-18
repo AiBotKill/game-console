@@ -21,9 +21,9 @@ define(["require", "./config", './cave', './forest'], function(require) {
                 });
                 this.resize();
             },
-            setTiles: function(data) {
+            setTiles: function(data, environment) {
                 //TODO: Check if forest or cave
-                this.environment = "forest";
+                this.environment = environment;
 
                 this.tiles = data;
                 var lastTile = this.tiles[this.tiles.length-1];
