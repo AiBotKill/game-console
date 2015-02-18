@@ -166,9 +166,7 @@ log4j = {
         'grails.app.controllers'
 
     root {
-        error 'rollingLogger', 'stdout'
+        debug 'rollingLogger', 'stdout'
         additivity = true
     }
-
-    debug rollingLogger:"grails.app","botkill.gameconsole"
 }

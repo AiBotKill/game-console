@@ -7,6 +7,7 @@ import botkill.gameconsole.enums.TeamColor
 import grails.converters.JSON
 import nats.client.Message
 import nats.client.MessageHandler
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 import java.util.concurrent.TimeUnit
 
@@ -77,26 +78,34 @@ class Game {
     }
 
     void start() {
-        state = GameState.STARTED
-        save flush:true
-
         nats.request("${this.publicId}.start", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
-
+                JSONObject response = new JSONObject(message.getBody())
+                if (response.getString("status").equals("ok")) {
+                    state = GameState.STARTED
+                    save flush: true
+                    log.debug("Started game ${id}!")
+                } else {
+                    log.error("Failed to start game ${id}. Error: ${response.getString("error")}")
+                }
             }
         })
     }
 
-    void end(List<GameResult> results) {
-        state = GameState.FINISHED
-        this.results = results
-        save flush:true
-
+    void end(List<GameResult> res) {
         nats.request("${this.publicId}.end", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
-
+                JSONObject response = new JSONObject(message.getBody())
+                if (response.getString("status").equals("ok")) {
+                    state = GameState.FINISHED
+                    results = res
+                    save flush:true
+                    log.debug("Ended game ${id}!")
+                } else {
+                    log.error("Failed to end game ${id}. Error: ${response.getString("error")}")
+                }
             }
         })
     }
