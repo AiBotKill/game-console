@@ -157,10 +157,7 @@ log4j = {
         'grails.plugins.springsecurity',
         'groovyx.net.http'
 
-    debug 'grails.plugins.springsecurity',
-        'grails.plugin.springcache',
-        'botkill.gameconsole',
-        'org.apache.http.headers',
+    debug 'botkill.gameconsole',
         'grails.app.services',
         'grails.app.domain',
         'grails.app.controllers'

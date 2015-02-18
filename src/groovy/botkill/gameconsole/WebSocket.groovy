@@ -22,6 +22,8 @@ import javax.websocket.Session
 import javax.websocket.server.PathParam
 import javax.websocket.server.ServerContainer
 import javax.websocket.server.ServerEndpoint
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * Created by hell on 16.2.2015.
@@ -32,6 +34,7 @@ class WebSocket implements ServletContextListener {
 
     private static final Logger log = Logger.getLogger(WebSocket.class)
     private static final Set<Session> clients = ([] as Set).asSynchronized()
+    private static final Map<String, Queue<String>> states = new ConcurrentHashMap<>()
 
     @Override
     void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -60,6 +63,13 @@ class WebSocket implements ServletContextListener {
                     String gamePublicId = message.getSubject().split("\\.")[0]
                     String gameState = message.getBody()
                     sendMessage(gamePublicId, gameState)
+
+                    if (!states.containsKey(gamePublicId)) {
+                        Queue<String> stateList = new ConcurrentLinkedQueue<>()
+                        stateList.offer(gameState)
+                    } else {
+                        states.get(gamePublicId).offer(gameState)
+                    }
                 }
             });
         } catch (IOException e) {

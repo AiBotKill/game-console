@@ -35,6 +35,7 @@ class Game {
     String publicId // Game server returns this when created
 
     String tiles
+    String states
     List<Tile> tileModels
     float[] gameArea
     Vector2d[] startingPositions
@@ -47,6 +48,7 @@ class Game {
         roundTime min: 1, max: 600
         publicId nullable: true
         tiles nullable: true
+        states nullable: true
     }
 
     static transients = ['AICount', 'nats', 'gameArea', 'startingPositions', 'tileModels']
@@ -78,15 +80,20 @@ class Game {
     }
 
     void start() {
+        state = GameState.STARTED
+        save flush: true
+
         nats.request("${this.publicId}.start", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
                 JSONObject response = new JSONObject(message.getBody())
                 if (response.getString("status").equals("ok")) {
-                    state = GameState.STARTED
-                    save flush: true
                     log.debug("Started game ${id}!")
                 } else {
+                    withNewSession {
+                        state = GameState.CREATED
+                        save flush: true
+                    }
                     log.error("Failed to start game ${id}. Error: ${response.getString("error")}")
                 }
             }
@@ -94,14 +101,15 @@ class Game {
     }
 
     void end(List<GameResult> res) {
+        state = GameState.FINISHED
+        results = res
+        save flush:true
+
         nats.request("${this.publicId}.end", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
                 JSONObject response = new JSONObject(message.getBody())
                 if (response.getString("status").equals("ok")) {
-                    state = GameState.FINISHED
-                    results = res
-                    save flush:true
                     log.debug("Ended game ${id}!")
                 } else {
                     log.error("Failed to end game ${id}. Error: ${response.getString("error")}")
