@@ -10,12 +10,12 @@ function initSync(){
 function Client(){
     this.syncState = function(data){
         if(data.tiles){
-            init();
+            init(data);
         }
     };
 }
 
-function init(){
+function init(data){
     var lastTile;
     WORLD_MAP = data;
     lastTile = WORLD_MAP.tiles[WORLD_MAP.length - 1];
