@@ -109,7 +109,6 @@ function synchronizeState() {
 
 function Client() {
     this.syncState = function (data) {
-        console.log(data);
         var json = JSON.parse(data);
         console.log("JSON: ", json);
         if (json.tiles) {
