@@ -6,6 +6,7 @@ function initSync(){
     var socket = new WebSocket();
     socket.connect(client);
     */
+    synchronizeState();
 }
 
 function Client(){
