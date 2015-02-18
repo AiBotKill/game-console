@@ -3,6 +3,7 @@ var serverData = {};
 function initSync(){
     var client = new Client();
     connect(client);
+    synchronizeState();
 }
 
 function Client(){
