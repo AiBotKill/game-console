@@ -21,7 +21,7 @@ function initMap() {
 /* Initialize everything. TODO move map to init map. Data parameter is actually gamestate.*/
 function init(data) {
     WORLD_MAP = data;
-    var lastTile = WORLD_MAP.tiles[WORLD_MAP.length - 1];
+    var lastTile = WORLD_MAP.tiles[WORLD_MAP.tiles.length - 1];
     MAPTILES_X = lastTile.X;
     MAPTILES_Y = lastTile.Y;
     synchronizeState();
