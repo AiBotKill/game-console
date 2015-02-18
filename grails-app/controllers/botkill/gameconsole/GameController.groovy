@@ -85,7 +85,7 @@ class GameController {
         gameInstance.save flush: true
         long gameId = gameInstance.id
 
-        log.debug("Created game ${gameInstance.publicId}")
+        log.debug("Created game ${gameInstance.id}")
 
         nats.request("createGame", (gameInstance as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
@@ -94,6 +94,7 @@ class GameController {
                 Game.withNewSession {
                     Game g = Game.findById(gameId)
                     g.publicId = response.getString("id")
+                    log.debug("Received public id ${g.publicId} for game ${g.id}")
                     g.save flush: true
                 }
             }

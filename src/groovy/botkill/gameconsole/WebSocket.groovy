@@ -41,12 +41,8 @@ class WebSocket implements ServletContextListener {
         ServerContainer serverContainer = servletContext.getAttribute("javax.websocket.server.ServerContainer")
 
         try {
-            // This is necessary for Grails to add the endpoint in development.
-            // In production, the endpoint will be added by the @ServerEndpoint
-            // annotation.
-            if (Environment.current == Environment.DEVELOPMENT) {
-                serverContainer.addEndpoint(WebSocket)
-            }
+
+            serverContainer.addEndpoint(WebSocket)
 
             // This is mainly for demonstration of retrieving the ApplicationContext,
             // the GrailsApplication instance, and application configuration.
@@ -87,7 +83,6 @@ class WebSocket implements ServletContextListener {
     @OnOpen
     public void onOpen(Session userSession, @PathParam("gameId") long gameId) {
         log.debug("Connected on game ${gameId}")
-        println("Connected on game ${gameId}")
         Game.withNewSession {
             Game game = Game.findById(gameId)
             if (game) {
