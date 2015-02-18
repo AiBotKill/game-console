@@ -24,6 +24,10 @@ function init(data) {
     var lastTile = WORLD_MAP.tiles[WORLD_MAP.tiles.length - 1];
     MAPTILES_X = lastTile.X;
     MAPTILES_Y = lastTile.Y;
+    GROUND_X = (MAPTILES_X * TILE_WIDTH);
+    GROUND_Y = (MAPTILES_Y * TILE_HEIGHT);
+    GROUND_TILES = GROUND_X / 16;
+    WALL_TILES_COUNT = (GROUND_X + GROUND_Y) / 2;
     synchronizeState();
     generateMisc();
     generateWorld();
