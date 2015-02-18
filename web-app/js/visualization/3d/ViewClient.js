@@ -3,11 +3,12 @@ var serverData = {};
 function initSync(){
     var client = new Client();
     connect(client);
+    synchronizeState();
 }
 
 function Client(){
-    this.syncState = function(){
-        
+    this.syncState = function(data){
+        console.log(data);
     };
 }
 

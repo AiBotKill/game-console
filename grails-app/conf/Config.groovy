@@ -130,6 +130,7 @@ log4j = {
                         name: "rollingLogger",
                         file: "$logDir/error.log",
                         datePattern: "'.'yyyy-MM-dd",
+                        threshold: org.apache.log4j.Level.DEBUG,
                         layout: pattern(
                                 conversionPattern: "%d{yyyy-MM-dd HH:mm:ss} [%t] %x %-5p %c{2} - %m%n"
                         )
@@ -157,10 +158,7 @@ log4j = {
         'grails.plugins.springsecurity',
         'groovyx.net.http'
 
-    debug 'grails.plugins.springsecurity',
-        'grails.plugin.springcache',
-        'botkill.gameconsole',
-        'org.apache.http.headers',
+    debug 'botkill.gameconsole',
         'grails.app.services',
         'grails.app.domain',
         'grails.app.controllers'

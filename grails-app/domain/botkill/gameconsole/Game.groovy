@@ -4,6 +4,12 @@ import botkill.gameconsole.enums.GameEnvironment
 import botkill.gameconsole.enums.GameMode
 import botkill.gameconsole.enums.GameState
 import botkill.gameconsole.enums.TeamColor
+import grails.converters.JSON
+import nats.client.Message
+import nats.client.MessageHandler
+import org.codehaus.groovy.grails.web.json.JSONObject
+
+import java.util.concurrent.TimeUnit
 
 class Game {
     def nats
@@ -29,6 +35,7 @@ class Game {
     String publicId // Game server returns this when created
 
     String tiles
+    String states
     List<Tile> tileModels
     float[] gameArea
     Vector2d[] startingPositions
@@ -41,6 +48,7 @@ class Game {
         roundTime min: 1, max: 600
         publicId nullable: true
         tiles nullable: true
+        states nullable: true
     }
 
     static transients = ['AICount', 'nats', 'gameArea', 'startingPositions', 'tileModels']
@@ -73,16 +81,40 @@ class Game {
 
     void start() {
         state = GameState.STARTED
-        save flush:true
+        save flush: true
 
-        nats.publish("${this.publicId}.start", "{}")
+        nats.request("${this.publicId}.start", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
+            @Override
+            public void onMessage(Message message) {
+                JSONObject response = new JSONObject(message.getBody())
+                if (response.getString("status").equals("ok")) {
+                    log.debug("Started game ${id}!")
+                } else {
+                    withNewSession {
+                        state = GameState.CREATED
+                        save flush: true
+                    }
+                    log.error("Failed to start game ${id}. Error: ${response.getString("error")}")
+                }
+            }
+        })
     }
 
-    void end(List<GameResult> results) {
+    void end(List<GameResult> res) {
         state = GameState.FINISHED
-        this.results = results
+        results = res
         save flush:true
 
-        nats.publish("${this.publicId}.end", "{}")
+        nats.request("${this.publicId}.end", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
+            @Override
+            public void onMessage(Message message) {
+                JSONObject response = new JSONObject(message.getBody())
+                if (response.getString("status").equals("ok")) {
+                    log.debug("Ended game ${id}!")
+                } else {
+                    log.error("Failed to end game ${id}. Error: ${response.getString("error")}")
+                }
+            }
+        })
     }
 }

@@ -1,5 +1,6 @@
 package botkill.gameconsole
 
+import botkill.gameconsole.enums.GameState
 import botkill.gameconsole.enums.TeamColor
 import grails.converters.JSON
 import nats.client.Message
@@ -84,6 +85,8 @@ class GameController {
         gameInstance.save flush: true
         long gameId = gameInstance.id
 
+        log.debug("Created game ${gameInstance.publicId}")
+
         nats.request("createGame", (gameInstance as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
@@ -113,7 +116,6 @@ class GameController {
         }
 
         gameInstance.start()
-
         redirect controller: "game", action: "index"
     }
 
@@ -167,7 +169,13 @@ class GameController {
             return
         }
 
-        nats.publish("${gameInstance.publicId}.end", "{}")
+        if (gameInstance.state.equals(GameState.STARTED)) {
+            nats.request("${gameInstance.publicId}.end", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
+                @Override
+                public void onMessage(Message message) {
+                }
+            })
+        }
 
         gameInstance.delete flush: true
 

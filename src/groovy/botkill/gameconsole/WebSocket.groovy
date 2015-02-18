@@ -4,11 +4,10 @@ import grails.util.Environment
 import nats.client.Message
 import nats.client.MessageHandler
 import nats.client.Nats
-import org.apache.log4j.Logger
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.springframework.context.ApplicationContext
-
+import org.apache.commons.logging.LogFactory
 import javax.servlet.ServletContext
 import javax.servlet.ServletContextEvent
 import javax.servlet.ServletContextListener
@@ -22,6 +21,8 @@ import javax.websocket.Session
 import javax.websocket.server.PathParam
 import javax.websocket.server.ServerContainer
 import javax.websocket.server.ServerEndpoint
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * Created by hell on 16.2.2015.
@@ -30,8 +31,9 @@ import javax.websocket.server.ServerEndpoint
 @WebListener
 class WebSocket implements ServletContextListener {
 
-    private static final Logger log = Logger.getLogger(WebSocket.class)
+    private static final log = LogFactory.getLog(this)
     private static final Set<Session> clients = ([] as Set).asSynchronized()
+    private static final Map<String, Queue<String>> states = new ConcurrentHashMap<>()
 
     @Override
     void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -60,6 +62,13 @@ class WebSocket implements ServletContextListener {
                     String gamePublicId = message.getSubject().split("\\.")[0]
                     String gameState = message.getBody()
                     sendMessage(gamePublicId, gameState)
+
+                    if (!states.containsKey(gamePublicId)) {
+                        Queue<String> stateList = new ConcurrentLinkedQueue<>()
+                        stateList.offer(gameState)
+                    } else {
+                        states.get(gamePublicId).offer(gameState)
+                    }
                 }
             });
         } catch (IOException e) {
@@ -76,8 +85,9 @@ class WebSocket implements ServletContextListener {
      * endpoint, and adds the new user's session to our users list.
      */
     @OnOpen
-    public void onOpen(Session userSession, @PathParam("gameId") String gameId) {
+    public void onOpen(Session userSession, @PathParam("gameId") long gameId) {
         log.debug("Connected on game ${gameId}")
+        println("Connected on game ${gameId}")
         Game.withNewSession {
             Game game = Game.findById(gameId)
             if (game) {

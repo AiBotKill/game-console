@@ -44,7 +44,7 @@ class NatsSubscriberService {
         String id = registerMsg.getString("teamId")
         Team t = Team.findByBotId(id)
         if (t) {
-            println("Team ${t.name} registered!")
+            log.debug("Team ${t.name} registered!")
             String connectionId = UUID.randomUUID().toString();
             message.reply("{\"type\":\"reply\", \"status\":\"ok\", \"id\":\"${connectionId}\"}")
 
@@ -52,7 +52,7 @@ class NatsSubscriberService {
             t.connectionId = connectionId
             connectedAIs["${connectionId}"] = t
         } else {
-            println("Team not found with id ${id}")
+            log.debug("Team not found with id ${id}")
             message.reply("{\"type\":\"reply\",\"status\":\"error\", \"id\":\"${id}\", \"error\":\"Team not found\"}")
         }
     }
@@ -63,7 +63,7 @@ class NatsSubscriberService {
         String id = unregisterMsg.getString("botId")
         Team t = getConnectedAI(id)
         if (t) {
-            println("Team ${t.name} unregistered!")
+            log.debug("Team ${t.name} unregistered!")
             connectedAIs.remove(id)
         }
     }
