@@ -13,7 +13,7 @@ define(function() {
         connect: function(listener) {
             console.log("Connecting...");
 
-            var socketUrl = "ws://" + location.hostname+(location.port ? ':'+location.port: '');
+            var socketUrl = "ws://" + location.hostname+':7000';
             socketUrl += document.getElementById("websocketPath").innerHTML;
             var ws = new WebSocket(socketUrl);
 

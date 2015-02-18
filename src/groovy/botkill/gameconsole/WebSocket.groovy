@@ -13,7 +13,6 @@ import javax.servlet.ServletContextEvent
 import javax.servlet.ServletContextListener
 import javax.servlet.annotation.WebListener
 import javax.websocket.CloseReason
-import javax.websocket.DeploymentException
 import javax.websocket.OnClose
 import javax.websocket.OnError
 import javax.websocket.OnMessage
@@ -42,11 +41,11 @@ class WebSocket implements ServletContextListener {
         ServerContainer serverContainer = servletContext.getAttribute("javax.websocket.server.ServerContainer")
 
         try {
-
-            try {
-                serverContainer.addEndpoint(WebSocket.class);
-            } catch (DeploymentException e) {
-                e.printStackTrace();
+            // This is necessary for Grails to add the endpoint in development.
+            // In production, the endpoint will be added by the @ServerEndpoint
+            // annotation.
+            if (Environment.current == Environment.DEVELOPMENT) {
+                serverContainer.addEndpoint(WebSocket)
             }
 
             // This is mainly for demonstration of retrieving the ApplicationContext,
