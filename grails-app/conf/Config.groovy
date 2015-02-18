@@ -130,6 +130,7 @@ log4j = {
                         name: "rollingLogger",
                         file: "$logDir/error.log",
                         datePattern: "'.'yyyy-MM-dd",
+                        threshold: org.apache.log4j.Level.DEBUG,
                         layout: pattern(
                                 conversionPattern: "%d{yyyy-MM-dd HH:mm:ss} [%t] %x %-5p %c{2} - %m%n"
                         )
@@ -163,7 +164,7 @@ log4j = {
         'grails.app.controllers'
 
     root {
-        debug 'rollingLogger', 'stdout'
+        error 'rollingLogger', 'stdout'
         additivity = true
     }
 }

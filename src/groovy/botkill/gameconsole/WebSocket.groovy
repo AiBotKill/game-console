@@ -86,7 +86,7 @@ class WebSocket implements ServletContextListener {
      * endpoint, and adds the new user's session to our users list.
      */
     @OnOpen
-    public void onOpen(Session userSession, @PathParam("gameId") String gameId) {
+    public void onOpen(Session userSession, @PathParam("gameId") long gameId) {
         log.debug("Connected on game ${gameId}")
         Game.withNewSession {
             Game game = Game.findById(gameId)
