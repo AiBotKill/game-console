@@ -22,9 +22,9 @@ function initialization() {
         renderer.shadowMapType = THREE.PCFSoftShadowMap;
     }
     // Initial synchronization.
+    CURRENT_ENV = new ForestController();
     initSync();
     // We initialize the world and associated controller.
-    CURRENT_ENV = new ForestController();
     /*
     if(serverData.gamestate.environment === ENVIRONMENT_FOREST){
         CURRENT_ENV = new ForestController();
@@ -34,13 +34,6 @@ function initialization() {
         CURRENT_ENV = new CavernController();
     }
     */
-    generateMisc();
-    generateWorld();
-    // We enter gameloop.
-    console.log("Entering gameloop...");
-    hud = createHUDCanvas();
-    isHUDDrawn = false;
-    viewLoop();
 }
 
 function initHud(){
@@ -64,7 +57,6 @@ function createHUDCanvas(){
 
 function viewLoop(){
     requestAnimFrame(viewLoop);
-    synchronizeState();
     checkInput();
     refreshViewState();
     renderScreen();

@@ -1,21 +1,34 @@
-var serverData = {};
+var serverData = 0;
+/* Used to mark whether this is the first gamestate. */
+var firstSync = true;
 
 function initSync(){
     var client = new Client();
     connect(client);
-    synchronizeState();
 }
 
 function Client(){
     this.syncState = function(data){
         if(data.tiles){
-            var lastTile;
-            WORLD_MAP = data;
-            lastTile = WORLD_MAP.tiles[WORLD_MAP.length - 1];
-            MAPTILES_X = lastTile.X;
-            MAPTILES_Y = lastTile.Y;
+            init();
         }
     };
+}
+
+function init(){
+    var lastTile;
+    WORLD_MAP = data;
+    lastTile = WORLD_MAP.tiles[WORLD_MAP.length - 1];
+    MAPTILES_X = lastTile.X;
+    MAPTILES_Y = lastTile.Y;
+    synchronizeState();
+    generateMisc();
+    generateWorld();
+    // We enter gameloop.
+    console.log("Entering gameloop...");
+    hud = createHUDCanvas();
+    isHUDDrawn = false;
+    viewLoop();
 }
 
 function synchronizeState() {
