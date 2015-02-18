@@ -161,7 +161,7 @@ function ForestController(){
         /* Create world walls. */
         var wallTexture = THREE.ImageUtils.loadTexture(path + wallTextureName);
         wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
-        wallTexture.repeat.set(32, 1);
+        wallTexture.repeat.set(WALL_TILES_COUNT, 1);
 
         var wallMaterial = new THREE.MeshLambertMaterial({
             map: wallTexture,
