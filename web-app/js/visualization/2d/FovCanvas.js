@@ -39,10 +39,10 @@ define(["require", "./config", "./HudCanvas"], function(require) {
         function drawPlayerFov(player, x, y) {
             // Increase FOV by 50% of the player's sight. E.g. sight of 90 would increase FOV by 45 degrees.
             var FOV_RAD = (FOV + player.sight/2)*Math.PI/180;
-            var sight = player.sight/8*TILE_SIZE;
+            var sight = 100/8*TILE_SIZE;//player.sight/8*TILE_SIZE; TODO: When we know the player sight
             // Arc angle 0 points to right so calculate the angle between vectors 1,0 and player looking direction.
             var v1 = {x:1, y:0};
-            var angle = findAngle(v1, player.velocity); // TODO: Should use looking direction instead of velocity
+            var angle = findAngle(v1, player.lookingAt); // TODO: Should use looking direction instead of velocity
 
             if (!hud.isDebugMode()) {
                 // Clear all beams drawn before
@@ -140,8 +140,8 @@ define(["require", "./config", "./HudCanvas"], function(require) {
 
                 for (var i = 0; i < players.length; i++) {
                     var player = players[i];
-                    var x = player.x * TILE_SIZE + config.offset[0];
-                    var y = player.y * TILE_SIZE + config.offset[1];
+                    var x = player.position.x * TILE_SIZE + config.offset[0];
+                    var y = player.position.y * TILE_SIZE + config.offset[1];
 
                     drawPlayerFov(player, x, y);
                 }

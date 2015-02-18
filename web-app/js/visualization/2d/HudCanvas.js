@@ -9,7 +9,6 @@ define(["require", "./config"], function(require) {
         var PLAYER_SIZE = TILE_SIZE;
 
         var msgListener;
-        var mockData; // TODO: Remove when server available
 
         var debugMode = config.debugMode;
         var paused = false;
@@ -211,8 +210,8 @@ define(["require", "./config"], function(require) {
 
                 for (var i = 0; i < players.length; i++) {
                     var player = players[i];
-                    var x = player.x * TILE_SIZE + config.offset[0];
-                    var y = player.y * TILE_SIZE + config.offset[1];
+                    var x = player.position.x * TILE_SIZE + config.offset[0];
+                    var y = player.position.y * TILE_SIZE + config.offset[1];
 
 
 
@@ -223,23 +222,23 @@ define(["require", "./config"], function(require) {
 
                     // Healt bar
                     ctx.fillStyle = "black";
-                    var x1 = x - player.maxHp/2 - 1;
+                    var x1 = x - player.hitpoints/2 - 1;
                     var y1 = y - PLAYER_SIZE - 15;
-                    var width = player.maxHp + 2;
+                    var width = player.hitpoints + 2;
                     var height = 12;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "red";
-                    x1 = x - player.maxHp/2;
+                    x1 = x - player.hitpoints/2;
                     y1 = y - PLAYER_SIZE - 14;
-                    width = player.maxHp;
+                    width = player.hitpoints;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "green";
-                    x1 = x - player.maxHp/2;
+                    x1 = x - player.hitpoints/2;
                     y1 = y - PLAYER_SIZE - 14;
-                    width = player.currentHp;
+                    width = 100 - player.hitpoints; // TODO: player.initialHp;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
                 }

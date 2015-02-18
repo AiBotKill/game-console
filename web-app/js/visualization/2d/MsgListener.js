@@ -34,7 +34,7 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
             handle: function(msg) {
                 var data = JSON.parse(msg);
 
-                if (terrain.tiles.length == 0 && data.tiles) {
+                if (data.tiles && data.tiles.length > 0 && terrain.tiles.length == 0) {
                     var lastTile = data.tiles[data.tiles.length-1];
                     config.tilesXCount = lastTile.X;
                     config.tilesYCount = lastTile.Y;

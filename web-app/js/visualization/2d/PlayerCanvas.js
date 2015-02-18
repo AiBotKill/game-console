@@ -27,7 +27,7 @@ define(["require", "./HudCanvas", "./config"], function(require) {
         function drawPlayer(player, x, y) {
             // Calculate the angle between vectors 0,-1 and player velocity
             var v1 = {x:0, y:-1};
-            var angle = findAngle(v1, player.velocity); // TODO: Should use looking direction instead of velocity
+            var angle = findAngle(v1, player.lookingAt); // TODO: Should use looking direction instead of velocity
             ctx.save();
             ctx.shadowColor = '#101010';
             ctx.shadowBlur = 0;
@@ -64,10 +64,10 @@ define(["require", "./HudCanvas", "./config"], function(require) {
 
                 for (i = 0; i < players.length; i++) {
                     var player = players[i];
-                    var x = player.x * TILE_SIZE + config.offset[0];
-                    var y = player.y * TILE_SIZE + config.offset[1];
+                    var x = player.position.x * TILE_SIZE + config.offset[0];
+                    var y = player.position.y * TILE_SIZE + config.offset[1];
 
-                    drawRingOfHearing(player, x, y);
+                    //drawRingOfHearing(player, x, y);
                     drawPlayer(player, x, y);
                 }
             },
