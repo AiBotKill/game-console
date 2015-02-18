@@ -5,7 +5,7 @@
  * Time: 1:18
  * To change this template use File | Settings | File Templates.
  */
-define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './SoundCanvas', './HudCanvas'], function(terrain, players, air, fov, sound, hud) {
+define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './SoundCanvas', './HudCanvas', './config'], function(terrain, players, air, fov, sound, hud, config) {
         var messageHistory = [];
         var lastDrawn;
 
@@ -35,7 +35,14 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                 var data = JSON.parse(msg);
 
                 if (terrain.tiles.length == 0 && data.tiles) {
+                    var lastTile = data.tiles[data.tiles.length-1];
+                    config.tilesXCount = lastTile.X;
+                    config.tilesYCount = lastTile.Y;
                     terrain.setTiles(data.tiles);
+                    messageHistory.push(data);
+                    this.resize();
+                    this.redraw(1)
+                    return;
                 }
                 // Save for pause and playback
                 messageHistory.push(data);

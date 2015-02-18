@@ -87,19 +87,6 @@ class GameController {
 
         log.debug("Created game ${gameInstance.id}")
 
-        nats.request("createGame", (gameInstance as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {
-            @Override
-            public void onMessage(Message message) {
-                JSONObject response = new JSONObject(message.getBody())
-                Game.withNewSession {
-                    Game g = Game.findById(gameId)
-                    g.publicId = response.getString("id")
-                    log.debug("Received public id ${g.publicId} for game ${g.id}")
-                    g.save flush: true
-                }
-            }
-        })
-
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'game.label', default: 'Game'), gameInstance.id])

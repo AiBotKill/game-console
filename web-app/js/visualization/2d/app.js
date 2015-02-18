@@ -14,9 +14,9 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
         };
 
         hud.init(listener);
+
         listener.init(function() {
             socket.connect(listener);
-
             window.addEventListener("mousewheel", zoom);
             window.addEventListener("DOMMouseScroll", zoom);
 

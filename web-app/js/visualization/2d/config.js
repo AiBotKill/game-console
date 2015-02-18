@@ -8,10 +8,10 @@
 define("config", [], function() {
     return {
         debugMode: true,
-        tilesXCount: 79,
-        tilesYCount: 79,
+        tilesXCount: 0,
+        tilesYCount: 0,
         assetsPath: "../../images/visualization/2d/",
-        zoom: 3,
+        zoom: 1,
         offset: [0, 0],
         getTileSize : function() {
             return window.innerHeight / (this.tilesYCount) * this.zoom; // Tiles on y-axis and +1 for hud controls

@@ -117,7 +117,6 @@ class WebSocket implements ServletContextListener {
     @OnClose
     public void onClose(Session userSession, CloseReason closeReason) {
         clients.remove(userSession)
-        userSession.close()
     }
 
     @OnError
