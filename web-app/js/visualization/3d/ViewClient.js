@@ -21,8 +21,9 @@ function initMap(){
 /* Initialize everything. TODO move map to init map. Data parameter is actually gamestate.*/
 function init(data){
     WORLD_MAP = data;
-    MAPTILES_X = WORLD_MAP.tiles[WORLD_MAP.length - 1].X;
-    MAPTILES_Y = WORLD_MAP.tiles[WORLD_MAP.length - 1].Y;
+    var lastTile = WORLD_MAP.tiles[WORLD_MAP.length - 1];
+    MAPTILES_X = lastTile.X;
+    MAPTILES_Y = lastTile.Y;
     synchronizeState();
     generateMisc();
     generateWorld();
@@ -104,10 +105,11 @@ function synchronizeState() {
 function Client(){
     this.syncState = function(data){
         console.log(data);
-        var json = JSON.parse(data);
-        if(json.tiles){
-            init(json);
-        }
+        JSON.parse(data, function(json){
+            if (json.tiles) {
+                init(json);
+            }
+        });
         /*
         else if(json.gamestate){
             // If this is the first gamestate we receive.
