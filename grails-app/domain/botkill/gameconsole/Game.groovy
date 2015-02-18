@@ -83,18 +83,15 @@ class Game {
         state = GameState.STARTED
         save flush: true
 
-        long gameId = this.id
-
         nats.request("startGame", (this as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
                 JSONObject response = new JSONObject(message.getBody())
                 if (response.has("id")) {
                     withNewSession {
-                        Game g = findById(gameId)
-                        g.publicId = response.getString("id")
-                        log.debug("Received public id ${g.publicId} for game ${g.id}")
-                        g.save flush: true
+                        publicId = response.getString("id")
+                        log.debug("Received public id ${publicId} for game ${id}")
+                        save flush: true
                     }
                     log.debug("Started game ${id} with id ${publicId}!")
                 } else {
