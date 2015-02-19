@@ -207,8 +207,9 @@ define(["require", "./config"], function(require) {
             drawTimeLeft: function(timeLeft) {
                 ctx.font = 'normal 30px Arial';
                 ctx.fillStyle = 'red';
+                timeLeft = Math.floor(timeLeft);
                 var center = ctx.canvas.width / 2 - ctx.measureText(timeLeft).width/2;
-                ctx.fillText("Time left: " + Math.floor(timeLeft), center, 40);
+                ctx.fillText("Time left: " + timeLeft, center, 40);
             },
             drawPlayerData: function(players) {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -226,25 +227,27 @@ define(["require", "./config"], function(require) {
                     ctx.fillStyle = 'white';
                     ctx.fillText(player.name, x - ctx.measureText(player.name).width/2, y - PLAYER_SIZE - 20);
 
+                    var playerMaxHp = 100;
+
                     // Healt bar
                     ctx.fillStyle = "black";
                     var x1 = x - player.hitpoints/2 - 1;
                     var y1 = y - PLAYER_SIZE - 15;
-                    var width = player.hitpoints + 2;
+                    var width = playerMaxHp + 2;
                     var height = 12;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "red";
                     x1 = x - player.hitpoints/2;
                     y1 = y - PLAYER_SIZE - 14;
-                    width = player.hitpoints;
+                    width = playerMaxHp - player.hitpoints;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "green";
                     x1 = x - player.hitpoints/2;
                     y1 = y - PLAYER_SIZE - 14;
-                    width = 100 - player.hitpoints; // TODO: player.initialHp;
+                    width = player.hitpoints;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
                 }

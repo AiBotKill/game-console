@@ -139,7 +139,7 @@ class WebSocket implements ServletContextListener {
                 Thread.start {
                     // Small delay before streaming states to visualization
                     Thread.sleep(2000)
-                    int fps = 1000/30
+                    int fps = 1000/10
                     Queue<String> states = allStates[gamePublicId]
 
                     // If states are not in memory anymore, look if we have those in our game object

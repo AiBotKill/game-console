@@ -69,14 +69,14 @@
 								<a href="${g.createLink(controller: 'visualize', action: '3d', id: gameInstance.id)}">
 									<button class="btn btn-primary"><g:message code="default.view.label" default="View 3D" /></button>
 								</a>
-								<a href="${g.createLink(controller: 'game', action: 'end', id: gameInstance.id)}">
-									<button class="btn btn-danger"><g:message code="default.view.label" default="End game" /></button>
-								</a>
 							</g:elseif>
-							<g:elseif test="${gameInstance.state == GameState.FINISHED}">
+							<g:elseif test="${gameInstance.state == GameState.FINISHED && gameInstance.states}">
 								<a href="${g.createLink(controller: 'visualize', action: '2d', id: gameInstance.id)}">
 									<button class="btn btn-success"><g:message code="default.view.label" default="View 2D" /></button>
 								</a>
+                                <a href="${g.createLink(controller: 'visualize', action: '3d', id: gameInstance.id)}">
+                                    <button class="btn btn-primary"><g:message code="default.view.label" default="View 3D" /></button>
+                                </a>
 							</g:elseif>
 						</td>
 					</tr>
