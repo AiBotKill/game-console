@@ -1,6 +1,7 @@
 var scene;
 var ground;
 var isHUDDrawn;
+var orbitingCamera;
 
 /* Model trees. */
 /* bullet tree is constructed of laserObjects. Each of which have a model for graphics
@@ -312,7 +313,7 @@ function addExplosionLaser(x, y, laser) {
         light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
     }
     else{
-        light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
+        light = fetchLight(new THREE.Color("rgb(255, 0, 0)"), 2.0, 30);
     }
     
     if(light){
@@ -481,6 +482,14 @@ function refreshMisc() {
 }
 
 function refreshCamera(){
+    if (orbitingCamera) {
+        var vector = new THREE.Vector3(
+                playerTree[0].model.position.x,
+                playerTree[0].model.position.y,
+                playerTree[0].model.position.z);
+        vector = vector.normalize();
+        camera.lookAt(vector);
+    }
     if(cameraSettings.cameraCounter <= 0){
         cameraSettings.cameraCounter = CAMERA_TIME;
         if(cameraSettings.cameraMode){

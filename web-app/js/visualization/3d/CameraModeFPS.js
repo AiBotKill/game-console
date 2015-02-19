@@ -1,11 +1,13 @@
 function CameraModeFPS() {
 
     this.resetCamera = function () {
+        setStatusMessage("FPS CAMERA");
         playerTree[cameraSettings.playerIndex].model.add(camera);
         camera.rotation.x = Math.PI * -0.5;
         camera.rotation.y = Math.PI * -0.5;
         camera.rotation.z = Math.PI * -0.5;
         camera.position.set(1, 6, 0);
+        isHUDDrawn = true;
     };
 
     this.refreshCameraMode = function () {
@@ -22,8 +24,6 @@ function CameraModeFPS() {
         this.resetCamera();
     };
     
-    isHUDDrawn = true;
-    setStatusMessage("FPS CAMERA");
     this.resetCamera();
 }
 
