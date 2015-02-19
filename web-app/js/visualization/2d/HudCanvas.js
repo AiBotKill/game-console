@@ -240,7 +240,7 @@ define(["require", "./config"], function(require) {
                     ctx.fillStyle = "red";
                     x1 = x - playerMaxHp/2;
                     y1 = y - PLAYER_SIZE - 14;
-                    width = playerMaxHp - player.hitpoints;
+                    width = playerMaxHp;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
 

@@ -22,11 +22,7 @@ class BootStrap {
         }
 
         JSON.registerObjectMarshaller(GameTeam) { GameTeam gt ->
-            def result = []
-            gt.teams.each { Team t ->
-                result << ["team": gt.color.ordinal(), "botId": t.botId, "name": t.name]
-            }
-            return result
+            return ["team": gt.color.ordinal(), "botId": gt.team.botId, "name": gt.team.name]
         }
 
         JSON.registerObjectMarshaller(Game) { Game g ->
