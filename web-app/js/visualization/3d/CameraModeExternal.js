@@ -5,7 +5,6 @@ function CameraModeExternal(){
         orbitingCamera = true;
         isHUDDrawn = false;
         setStatusMessage("EXTERNAL CAMERA");
-        
     };
 
     this.refreshCameraMode = function () {
