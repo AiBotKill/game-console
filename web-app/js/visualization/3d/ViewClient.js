@@ -20,7 +20,7 @@ function initMap(data) {
 }
 
 /* Initialize everything.*/
-function init(data) {
+function init(data, callback) {
     serverData = data;
     generateMisc();
     generateWorld();
@@ -28,10 +28,15 @@ function init(data) {
     console.log("Entering gameloop...");
     hud = createHUDCanvas();
     viewLoop();
+    callback();
 }
 
 function syncState(json){
     serverData = json;
+}
+
+function firstSyncDone(){
+    firstSync = false;
 }
 
 function Client() {
@@ -43,7 +48,8 @@ function Client() {
                 initMap(json);
             }
             else if (json.type) {
-                init(json);
+                init(json, firstSyncDone);
+                
             }
         }
         else{
