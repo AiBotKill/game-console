@@ -41,10 +41,12 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                     var environment = data.environment ? data.environment : 'forest';
                     terrain.setTiles(data.tiles, environment);
                     messageHistory.push(data);
+                    hud.setCurrentFrame(messageHistory.length);
                     this.resize();
-                    this.redraw(1)
+                    this.redraw(1);
                     return;
                 }
+
                 // Save for pause and playback
                 messageHistory.push(data);
                 if (!hud.isPaused()) {

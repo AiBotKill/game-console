@@ -39,9 +39,9 @@ define(["require", "./config", "./HudCanvas"], function(require) {
             var lastTile = this.tiles[this.tiles.length-1];
 
             // Draw ground
-            for (var y = 0; y <= lastTile.Y; y++) {
-                for (var x = 0; x <= lastTile.X; x++) {
-                    var tile = this.tiles[y*lastTile.Y+x];
+            for (var x = 0; x <= lastTile.X; x++) {
+                for (var y = 0; y <= lastTile.Y; y++) {
+                    var tile = this.tiles[x*(lastTile.Y+1)+y];
                     if (hud.isDebugMode()) {
                         ctx.drawImage(
                             groundTexture,
@@ -88,20 +88,20 @@ define(["require", "./config", "./HudCanvas"], function(require) {
             imageSize = 1024;
 
             // Draw obstacles
-            for (y = 0; y <= lastTile.Y; y++) {
-                for (x = 0; x <= lastTile.X; x++) {
-                    tile = this.tiles[y * lastTile.Y + x];
+            for (x = 0; x <= lastTile.X; x++) {
+                for (y = 0; y <= lastTile.Y; y++) {
+                    tile = this.tiles[x * (lastTile.Y+1) + y];
                     if (tile.Type != 'ground') {
                         var type = 0;
                         var s = 0;
 
-                        var topCenter = this.tiles[(tile.Y - 1) * lastTile.Y + tile.X];
+                        var topCenter = this.tiles[tile.X * (lastTile.Y+1) + (tile.Y - 1)];
                         s = topCenter ? topCenter.Type != 'ground' ? TOP : 0 : TOP;
-                        var left = this.tiles[tile.Y * lastTile.Y + (tile.X - 1)];
+                        var left = this.tiles[(tile.X - 1) * (lastTile.Y+1) + tile.Y];
                         s |= left ? left.Type != 'ground' ? LEFT : 0 : LEFT;
-                        var right = this.tiles[tile.Y * lastTile.Y + (tile.X + 1)];
+                        var right = this.tiles[(tile.X + 1) * (lastTile.Y+1) + tile.Y];
                         s |= right ? right.Type != 'ground' ? RIGHT : 0 : RIGHT;
-                        var bottomCenter = this.tiles[(tile.Y + 1) * lastTile.Y + tile.X];
+                        var bottomCenter = this.tiles[tile.X * (lastTile.Y+1) + (tile.Y + 1)];
                         s |= bottomCenter ? bottomCenter.Type != 'ground' ? BOTTOM : 0 : BOTTOM;
 
                         ctx.save();
@@ -269,12 +269,12 @@ define(["require", "./config", "./HudCanvas"], function(require) {
                         }
                         ctx.restore();
                     }
-                    currentTileX += tileSize;
-                    currentTileX %= imageSize;
+                    currentTileY += tileSize;
+                    currentTileY %= imageSize;
                 }
-                currentTileX = 0;
-                currentTileY += tileSize;
-                currentTileY %= imageSize;
+                currentTileY = 0;
+                currentTileX += tileSize;
+                currentTileX %= imageSize;
             }
         },
         resize: function() {
