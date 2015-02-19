@@ -4,7 +4,7 @@ function CameraModeExternal(){
         playerTree[cameraSettings.playerIndex].model.add(camera);
         orbitingCamera = true;
         isHUDDrawn = false;
-        camera.position.set(3, 15, 0);
+        camera.position.set(6, 15, 6);
         setStatusMessage("EXTERNAL CAMERA");
     };
 
