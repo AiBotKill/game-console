@@ -38,12 +38,16 @@ class MapService {
         tilesObject.put("environment", environment.toString().toLowerCase())
         map.tiles = tilesObject.toString() // Save as JSON String since we don't need it in model format in game-console
 
-        for (int i = 0; i < startingPoints.length(); i++) {
-            JSONObject point = startingPoints.getJSONObject(i)
+        for (int i = 0; i < playerCount; i++) {
             Vector2d startingPos = new Vector2d()
-            startingPos.x = point.getInt("X")
-            startingPos.y = point.getInt("Y")
+            startingPos.x = 10
+            startingPos.y = 12 + i * 3
             map.startingPositions[i] = startingPos
+//            JSONObject point = startingPoints.getJSONObject(i)
+//            Vector2d startingPos = new Vector2d()
+//            startingPos.x = point.getInt("X")
+//            startingPos.y = point.getInt("Y")
+//            map.startingPositions[i] = startingPos
         }
 
         return map
