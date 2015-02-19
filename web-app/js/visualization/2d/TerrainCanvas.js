@@ -22,7 +22,6 @@ define(["require", "./config", './cave', './forest'], function(require) {
                 this.resize();
             },
             setTiles: function(data, environment) {
-                //TODO: Check if forest or cave
                 this.environment = environment;
 
                 this.tiles = data;
@@ -45,7 +44,7 @@ define(["require", "./config", './cave', './forest'], function(require) {
                     fullTiles[tile.X * (lastTile.Y+1) + tile.Y] = tile;
                 }
 
-                if (this.environment == 'cave') {
+                if (this.environment == 'cavern') {
                     cave.setTiles(fullTiles);
                 } else if (this.environment == 'forest') {
                     forest.setTiles(fullTiles);
@@ -60,7 +59,7 @@ define(["require", "./config", './cave', './forest'], function(require) {
                 ctx.fill();
 
                 if (this.tiles.length > 0) {
-                    if (this.environment == 'cave') {
+                    if (this.environment == 'cavern') {
                         cave.draw();
                     } else if (this.environment == 'forest') {
                         forest.draw();
@@ -71,7 +70,7 @@ define(["require", "./config", './cave', './forest'], function(require) {
                 ctx.canvas.width  = window.innerWidth;
                 ctx.canvas.height = window.innerHeight;
 
-                if (this.environment == 'cave') {
+                if (this.environment == 'cavern') {
                     cave.resize();
                 } else if (this.environment == 'forest') {
                     forest.resize();

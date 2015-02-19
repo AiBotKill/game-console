@@ -38,8 +38,8 @@ class MapService {
 
         for (int i = 0; i < playerCount; i++) {
             Vector2d startingPos = new Vector2d()
-            startingPos.x = 21 + i * 3
-            startingPos.y = 21 + i * 3
+            startingPos.x = 10
+            startingPos.y = 12 + i * 3
             map.startingPositions[i] = startingPos
         }
 

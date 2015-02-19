@@ -38,7 +38,8 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                     var lastTile = data.tiles[data.tiles.length-1];
                     config.tilesXCount = lastTile.X;
                     config.tilesYCount = lastTile.Y;
-                    terrain.setTiles(data.tiles, data.environment);
+                    var environment = data.environment ? data.environment : 'forest';
+                    terrain.setTiles(data.tiles, environment);
                     messageHistory.push(data);
                     this.resize();
                     this.redraw(1)
