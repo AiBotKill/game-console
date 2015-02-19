@@ -251,6 +251,7 @@ define(["require", "./config"], function(require) {
             },
             resize: function() {
                 TILE_SIZE = config.getTileSize();
+                PLAYER_SIZE = TILE_SIZE;
                 ctx.canvas.width  = window.innerWidth;
                 ctx.canvas.height = window.innerHeight;
             }

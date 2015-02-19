@@ -96,7 +96,26 @@ class GameController {
             return
         }
 
-        gameInstance.start()
+        // Check if a bots assigned to this game are currently playing in another game
+        def alreadyRunningBots = []
+        def games = Game.findAllByState(GameState.STARTED)
+        for (GameTeam gt : gameInstance.gameTeams) {
+            for (Game runningGame : games) {
+                for (GameTeam runningGt : runningGame.gameTeams) {
+                    if (gt.connectionId.equals(runningGt.connectionId)) {
+                        alreadyRunningBots << "${gt.team.name} - ${gt.botVersion}"
+                    }
+                }
+            }
+        }
+
+        if (alreadyRunningBots.size() > 0) {
+            flash.message = message(code: 'game.botsAlreadyRunning', default: "Couldn't start game because these bots are currently in another game: {0}", args: [alreadyRunningBots.join(",")])
+        } else {
+            gameInstance.start()
+        }
+
+
         redirect controller: "game", action: "index"
     }
 
