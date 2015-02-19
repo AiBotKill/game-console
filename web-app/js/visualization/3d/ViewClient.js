@@ -39,11 +39,13 @@ function Client() {
     this.syncState = function (data) {
         var json = JSON.parse(data);
         console.log("JSON: ", json);
-        if (json.tiles && firstSync) {
-            initMap(json);
-        }
-        else if(json.type && firstSync){
-            init(json);
+        if(firstSync){
+            if (json.tiles) {
+                initMap(json);
+            }
+            else if (json.type) {
+                init(json);
+            }
         }
         else{
             syncState(json);
