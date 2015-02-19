@@ -397,11 +397,11 @@ function addExplosionPlayer(x, y, player) {
 
 /* Explosion object used in a robot explosion. */
 /* Object is the object that this explosion is related to. */
-function Explosion(model, light, object, player) {
+function Explosion(model, light, object, isPlayer) {
     this.model = model;
     this.light = light;
     this.object = object;
-    this.isPlayer = player;
+    this.isPlayer = isPlayer;
     this.model.material.map.wrapS = this.model.material.map.wrapT = THREE.RepeatWrapping;
     this.model.material.map.repeat.set(1 / 4, 1 / 4);
     /* Overall time the animation spends before it restarts. */
@@ -469,9 +469,12 @@ function refreshPlayerData() {
             ySpeed = playerTree[i].data.velocity.y;
             x = playerTree[i].model.position.x;
             y = playerTree[i].model.position.y;
-            if(playerTree[i].data.hitpoints === 0 && !playerTree[i].destroyed){
-                addExplosionPlayer(x, y, playerTree[i].model);
-                playerTree[i].destroyed = true;
+            
+            if(playerTree[i].data.hitpoints === 0){
+                if (!playerTree[i].destroyed) {
+                    addExplosionPlayer(x, y, playerTree[i].model);
+                    playerTree[i].destroyed = true;
+                }
             }
             else{
                 playerTree[i].model.translateX(xSpeed);
