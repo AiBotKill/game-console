@@ -9,7 +9,7 @@ function CameraModeExternal(){
 
     this.refreshCameraMode = function () {
         var index = cameraSettings.playerIndex;
-        var players = serverData.players.length;
+        var players = playerTree.length;
         playerTree[cameraSettings.playerIndex].model.remove(camera);
         if (index < players - 1) {
             cameraSettings.playerIndex++;

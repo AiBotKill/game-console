@@ -442,10 +442,13 @@ function refreshPlayerData() {
     var xSpeed;
     var ySpeed;
     for(var i = 0; i < playerTree.length; i ++){
-        xSpeed = playerTree[i].data.velocity.x;
-        ySpeed = playerTree[i].data.velocity.y;
-        playerTree[i].model.translateX(xSpeed);
-        playerTree[i].model.translateY(ySpeed);
+        playerTree[i].data = serverData.players[i];
+        if(!playerTree[i].data.linkdead && playerTree[i].data.hitpoints > 0){
+            xSpeed = playerTree[i].data.velocity.x;
+            ySpeed = playerTree[i].data.velocity.y;
+            playerTree[i].model.translateX(xSpeed);
+            playerTree[i].model.translateY(ySpeed);
+        }
     }
 }
 

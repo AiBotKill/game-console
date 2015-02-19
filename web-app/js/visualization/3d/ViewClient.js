@@ -31,6 +31,10 @@ function init(data) {
     viewLoop();
 }
 
+function syncState(json){
+    serverData = json;
+}
+
 function Client() {
     this.syncState = function (data) {
         var json = JSON.parse(data);
@@ -42,7 +46,7 @@ function Client() {
             init(json);
         }
         else{
-            serverData = json;
+            syncState(json);
         }
     };
 }
