@@ -59,12 +59,13 @@ class WebSocket implements ServletContextListener {
 
             // Subscribe to game status messages in NATS
             Nats nats = ctx.nats
-            nats.subscribe("*.gameState", new MessageHandler() {
+            nats.subscribe("consoleGameState", new MessageHandler() {
                 @Override
                 public void onMessage(Message message) {
                     String gameState = message.getBody()
                     JSONObject gameStateObject = new JSONObject(gameState)
                     String gamePublicId = gameStateObject.getString("id")
+                    log.debug("Received state for game ${gamePublicId}")
 
                     if (!allStates.containsKey(gamePublicId)) {
                         Queue<String> stateList = new ConcurrentLinkedQueue<>()
@@ -75,12 +76,13 @@ class WebSocket implements ServletContextListener {
                     }
                 }
             })
-            nats.subscribe("*.gameEnd", new MessageHandler() {
+            nats.subscribe("consoleGameEnd", new MessageHandler() {
                 @Override
                 public void onMessage(Message message) {
                     String gameState = message.getBody()
                     JSONObject gameStateObject = new JSONObject(gameState)
                     String gamePublicId = gameStateObject.getString("id")
+                    log.debug("Received game end for game ${gamePublicId}")
 
                     if (!allStates.containsKey(gamePublicId)) {
                         Queue<String> stateList = new ConcurrentLinkedQueue<>()
@@ -92,6 +94,7 @@ class WebSocket implements ServletContextListener {
                     // All states received. Persist those for the game.
                     Game.withNewSession {
                         Game g = Game.findByPublicId(gamePublicId)
+                        log.debug("Ending game id ${g.id}")
                         StringBuilder statesString = new StringBuilder().append("[")
                         Iterator<String> iterator = allStates.get(gamePublicId).iterator()
                         while(iterator.hasNext()) {
@@ -168,7 +171,8 @@ class WebSocket implements ServletContextListener {
 
                                 JSONObject stateJson = new JSONObject(state)
                                 // Check if this state was the last state
-                                if (stateJson.getString("type").equals("gameEnd")) {
+                                if (stateJson.getString("state").equals("end")) {
+                                    log.debug("Reached the last frame. Ending streaming thread for game id ${gameId}")
                                     // All frames streamed to the client, we can end this thread.
                                     running = false
                                 }

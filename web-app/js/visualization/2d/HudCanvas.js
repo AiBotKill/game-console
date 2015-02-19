@@ -231,21 +231,21 @@ define(["require", "./config"], function(require) {
 
                     // Healt bar
                     ctx.fillStyle = "black";
-                    var x1 = x - player.hitpoints/2 - 1;
+                    var x1 = x - playerMaxHp/2 - 1;
                     var y1 = y - PLAYER_SIZE - 15;
                     var width = playerMaxHp + 2;
                     var height = 12;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "red";
-                    x1 = x - player.hitpoints/2;
+                    x1 = x - playerMaxHp/2;
                     y1 = y - PLAYER_SIZE - 14;
                     width = playerMaxHp - player.hitpoints;
                     height = 10;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "green";
-                    x1 = x - player.hitpoints/2;
+                    x1 = x - playerMaxHp/2;
                     y1 = y - PLAYER_SIZE - 14;
                     width = player.hitpoints;
                     height = 10;
