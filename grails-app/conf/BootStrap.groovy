@@ -24,7 +24,7 @@ class BootStrap {
         JSON.registerObjectMarshaller(GameTeam) { GameTeam gt ->
             def result = []
             gt.teams.each { Team t ->
-                result << ["team": gt.color.ordinal(), "botId": t.botId]
+                result << ["team": gt.color.ordinal(), "botId": t.botId, "name": t.name]
             }
             return result
         }

@@ -5,6 +5,8 @@ import nats.client.Message
 import nats.client.MessageHandler
 import nats.client.Nats
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.springframework.context.ApplicationContext
 import org.apache.commons.logging.LogFactory
@@ -33,7 +35,7 @@ class WebSocket implements ServletContextListener {
 
     private static final log = LogFactory.getLog(this)
     private static final Set<Session> clients = ([] as Set).asSynchronized()
-    private static final Map<String, Queue<String>> states = new ConcurrentHashMap<>()
+    private static final Map<String, Queue<String>> allStates = new ConcurrentHashMap<>()
 
     @Override
     void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -59,18 +61,53 @@ class WebSocket implements ServletContextListener {
             nats.subscribe("*.gameState", new MessageHandler() {
                 @Override
                 public void onMessage(Message message) {
-                    String gamePublicId = message.getSubject().split("\\.")[0]
                     String gameState = message.getBody()
-                    sendMessage(gamePublicId, gameState)
+                    JSONObject gameStateObject = new JSONObject(gameState)
+                    String gamePublicId = gameStateObject.getString("id")
 
-                    if (!states.containsKey(gamePublicId)) {
+                    if (!allStates.containsKey(gamePublicId)) {
+                        Queue<String> stateList = new ConcurrentLinkedQueue<>()
+                        stateList.offer(gameState)
+                        allStates.put(gamePublicId, stateList)
+                    } else {
+                        allStates.get(gamePublicId).offer(gameState)
+                    }
+                }
+            })
+            nats.subscribe("*.gameEnd", new MessageHandler() {
+                @Override
+                public void onMessage(Message message) {
+                    String gameState = message.getBody()
+                    JSONObject gameStateObject = new JSONObject(gameState)
+                    String gamePublicId = gameStateObject.getString("id")
+
+                    if (!allStates.containsKey(gamePublicId)) {
                         Queue<String> stateList = new ConcurrentLinkedQueue<>()
                         stateList.offer(gameState)
                     } else {
-                        states.get(gamePublicId).offer(gameState)
+                        allStates.get(gamePublicId).offer(gameState)
+                    }
+
+                    // All states received. Persist those for the game.
+                    Game.withNewSession {
+                        Game g = Game.findByPublicId(gamePublicId)
+                        StringBuilder statesString = new StringBuilder().append("[")
+                        Iterator<String> iterator = allStates.get(gamePublicId).iterator()
+                        while(iterator.hasNext()) {
+                            statesString.append(iterator.next())
+                            if (iterator.hasNext()) {
+                                statesString.append(",")
+                            }
+                        }
+                        statesString.append("]")
+                        g.states = statesString.toString()
+                        g.save flush:true
+
+                        // And release states from the memory
+                        allStates.remove(gamePublicId)
                     }
                 }
-            });
+            })
         } catch (IOException e) {
             log.error(e.message, e)
         }
@@ -90,10 +127,62 @@ class WebSocket implements ServletContextListener {
         Game.withNewSession {
             Game game = Game.findById(gameId)
             if (game) {
+                String gamePublicId = game.publicId
                 log.debug("Found game with id ${game.id}")
-                userSession.userProperties.put("gameId", game.publicId)
+                userSession.userProperties.put("gameId", gamePublicId)
                 clients.add(userSession)
-                sendMessage(game.publicId, "${game.tiles}")
+                userSession.basicRemote.sendText("${game.tiles}")
+
+                // Visualization client has connected here. Start a thread to stream all data for the client.
+                Thread.start {
+                    // Small delay before streaming states to visualization
+                    Thread.sleep(2000)
+                    int fps = 1000/60
+                    Queue<String> states = allStates[gamePublicId]
+
+                    // If states are not in memory anymore, look if we have those in our game object
+                    if (!states && game.states) {
+                        states = new ConcurrentLinkedQueue<>()
+                        JSONArray statesArray = new JSONArray(game.states)
+                        for (int i = 0; i < statesArray.length(); i++) {
+                            String state = statesArray.getString(i)
+                            states.add(state)
+                        }
+                    }
+
+                    final int timeout = 10000
+                    long timer = System.currentTimeMillis()
+
+                    // Loop here until game ends or timeout occurs
+                    while (!Thread.interrupted()) {
+                        // If this game has received states
+                        if (states) {
+                            // Poll (read and remove) the first state inserted into the queue
+                            String state = states.poll()
+                            if (state) {
+                                log.debug("Seding msg to gameId ${gameId}...")
+                                userSession.basicRemote.sendText(state)
+
+                                JSONObject stateJson = new JSONObject(state)
+                                // Check if this state was the last state
+                                if (stateJson.getString("type").equals("gameEnd")) {
+                                    // All frames streamed to the client, we can end this thread.
+                                    Thread.currentThread().interrupt()
+                                }
+                            }
+                        } else {
+                            // Try to read some states
+                            states = allStates[gamePublicId]
+                            if (System.currentTimeMillis() - timer > timeout) {
+                                log.error("Interrupt game streaming thread. No game states received within ${timeout/1000} seconds.")
+                                Thread.currentThread().interrupt()
+                            }
+                        }
+                        try {
+                            Thread.sleep(fps)
+                        } catch (InterruptedException ignored) {}
+                    }
+                }
             } else {
                 log.warn("Could not find game with give id.")
             }

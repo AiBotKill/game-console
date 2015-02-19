@@ -54,19 +54,4 @@ class Tournament {
             return false
         }
     }
-
-    void endCurrentGame(List<GameResult> results) {
-        currentGame.end(results)
-
-        // Calculate points
-        results.each { GameResult gr ->
-            TournamentTeam tt = teams.find { TournamentTeam tt ->
-                gr.team.id == tt.team.id
-            } as TournamentTeam
-            tt.points += gr.points
-            tt.save(flush: true)
-        }
-
-        return
-    }
 }

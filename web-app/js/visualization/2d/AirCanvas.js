@@ -30,6 +30,19 @@ define(["require", "./config"], function(require) {
 
         function drawBullets(bullets) {
             console.log("Drawing bullets...");
+            if (bullets) {
+                for (var i = 0; i < bullets.length; i++) {
+                    var bullet = bullets[i];
+                    var x = bullet.position.x * TILE_SIZE + config.offset[0];
+                    var y = bullet.position.y * TILE_SIZE + config.offset[1];
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, TILE_SIZE / 10, 0, 2 * Math.PI, false);
+                    ctx.lineWidth = 1;
+                    ctx.fillStyle = "rgba(255, 255, 0, 1)";
+                    ctx.fill();
+                }
+            }
         }
 
         return {
