@@ -111,8 +111,9 @@ function Client() {
     this.syncState = function (data) {
         var json = JSON.parse(data);
         console.log("JSON: ", json);
-        if (json.tiles) {
+        if (json.tiles && firstSync) {
             init(json);
+            firstSync = false;
         }
         /*
          else if(json.gamestate){

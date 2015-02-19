@@ -67,6 +67,8 @@ var TEST_DARKNESS = 0.2;
 /***************************************/
 var EXPLOSION_WIDTH = 32;
 var EXPLOSION_HEIGHT = 32;
+var EXPLOSION_LASER_HEIGHT = 8;
+var EXPLOSION_LASER_WIDTH = 8;
 var EXPLOSION_DURATION = 40;
 var HUD_STATUS_MESSAGE_DELAY = 100;
 

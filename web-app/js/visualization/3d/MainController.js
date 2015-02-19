@@ -181,6 +181,7 @@ function loadDestroyedRobot() {
 function loadExplosion() {
     explosionTemplate = {
         "geometry": new THREE.PlaneBufferGeometry(EXPLOSION_WIDTH, EXPLOSION_HEIGHT),
+        "geometryLaser": new THREE.PlaneBufferGeometry(EXPLOSION_LASER_WIDTH, EXPLOSION_LASER_HEIGHT),
         "texture": THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosion.png'),
         "decalMaterial": new THREE.MeshPhongMaterial({
             'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/misc/explosionDecal.png'),
@@ -304,7 +305,41 @@ function addDestroyedRobot(x, y) {
     CURRENT_ENV.environmentGroup.add(destroyed);
 }
 
-function addExplosion(x, y, player) {
+function addExplosionLaser(x, y, laser) {
+    var light;
+    var mesh;
+    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+        light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
+    }
+    else{
+        light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
+    }
+    
+    if(light){
+        light.position.set(x, y, EXPLOSION_LASER_HEIGHT / 2 - 8);
+    }
+    var cloneTexture = explosionTemplate.texture.clone();
+    cloneTexture.needsUpdate = true;
+    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+        mesh = new THREE.Mesh(explosionTemplate.geometryLaser, new THREE.MeshLambertMaterial({
+            'map': cloneTexture,
+            'alphaTest': 0.5
+        }));
+    }
+    else{
+        mesh = new THREE.Mesh(explosionTemplate.geometryLaser, new THREE.MeshBasicMaterial({
+            'map': cloneTexture,
+            'alphaTest': 0.5
+        }));
+    }
+    mesh.position.x = x;
+    mesh.position.y = y;
+    mesh.position.z = EXPLOSION_LASER_HEIGHT / 2 - 2;
+    CURRENT_ENV.environmentGroup.add(mesh);
+    explosionTree.push(new Explosion(mesh, light, laser));
+}
+
+function addExplosionPlayer(x, y, player) {
     var light;
     var mesh;
     if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
@@ -344,10 +379,11 @@ function addExplosion(x, y, player) {
 }
 
 /* Explosion object used in a robot explosion. */
-function Explosion(model, light, player) {
+ /* Object is the object that this explosion is related to. */
+function Explosion(model, light, object) {
     this.model = model;
     this.light = light;
-    this.player = player;
+    this.object = object;
     this.model.material.map.wrapS = this.model.material.map.wrapT = THREE.RepeatWrapping;
     this.model.material.map.repeat.set(1 / 4, 1 / 4);
     /* Overall time the animation spends before it restarts. */
@@ -431,10 +467,10 @@ function refreshMisc() {
                 if(explosionTree[i].light){
                     explosionTree[i].light.intensity = 0;
                 }
-                createSmoke(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
-                addDestroyedRobot(explosionTree[i].player.position.x, explosionTree[i].player.position.y);
+                createSmoke(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
+                addDestroyedRobot(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
-                CURRENT_ENV.environmentGroup.remove(explosionTree[i].player);
+                CURRENT_ENV.environmentGroup.remove(explosionTree[i].object);
                 explosionTree.splice(i, 1);
             }
             else {
