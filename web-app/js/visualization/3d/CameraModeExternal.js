@@ -5,7 +5,6 @@ function CameraModeExternal(){
         orbitingCamera = true;
         isHUDDrawn = false;
         camera.position.set(6, 15, 6);
-        setStatusMessage("EXTERNAL CAMERA");
     };
 
     this.refreshCameraMode = function () {
@@ -21,6 +20,7 @@ function CameraModeExternal(){
         setStatusMessage("NEXT BOT");
         this.resetCamera();
     };
+    setStatusMessage("EXTERNAL CAMERA");
     this.resetCamera();
 }
 

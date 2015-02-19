@@ -2,7 +2,6 @@ function CameraModeFPS() {
 
     this.resetCamera = function () {
         orbitingCamera = false;
-        setStatusMessage("FPS CAMERA");
         playerTree[cameraSettings.playerIndex].model.add(camera);
         camera.rotation.x = Math.PI * -0.5;
         camera.rotation.y = Math.PI * -0.5;
@@ -24,7 +23,7 @@ function CameraModeFPS() {
         setStatusMessage("NEXT BOT");
         this.resetCamera();
     };
-    
+    setStatusMessage("FPS CAMERA");
     this.resetCamera();
 }
 
