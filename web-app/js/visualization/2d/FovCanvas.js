@@ -143,11 +143,11 @@ define(["require", "./config", "./HudCanvas"], function(require) {
                     var x = player.position.x * TILE_SIZE + config.offset[0];
                     var y = player.position.y * TILE_SIZE + config.offset[1];
 
-                    drawPlayerFov(player, x, y);
+                    //drawPlayerFov(player, x, y);
                 }
 
                 if (!hud.isDebugMode()) {
-                    drawDarkness();
+                    //drawDarkness();
                     ctx.putImageData(lightData, 0, 0);
                 }
             },
