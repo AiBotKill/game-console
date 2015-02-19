@@ -10,7 +10,7 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
             config.zoom = Math.min(25, config.zoom);
             config.zoom = Math.max(1, config.zoom);
             listener.resize();
-            listener.draw(hud.getCurrentFrame(), false);
+            listener.draw(hud.getCurrentFrame(), true);
         };
 
         hud.init(listener);
@@ -46,7 +46,7 @@ requirejs(['./WebSocket', './MsgListener', './HudCanvas', './config'],
 
             window.addEventListener("resize", function() {
                 listener.resize();
-                listener.draw(hud.getCurrentFrame(), false);
+                listener.draw(hud.getCurrentFrame(), true);
             });
         });
     }

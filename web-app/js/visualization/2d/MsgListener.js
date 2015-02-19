@@ -44,6 +44,8 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                     hud.setCurrentFrame(messageHistory.length);
                     this.resize();
                     this.redraw(1);
+                    var mock = '{"type":"gameState","timeLeft":23,"id":"9ad26e38-534e-4344-ac72-99ffb7d91963","startTime":"2015-02-19T00:13:13.430704923Z","timeLimit":60000000000,"state":"running","gameArea":[50,28],"mode":"DEATHMATCH","environment":"","players":[{"radius":1,"position":{"x":0,"y":0},"velocity":{"x":0,"y":0},"id":"a401b51a-be99-4dfe-aa60-583f33fce546","botId":"12bede08-97c1-4e73-bea7-3c6084bad6ac","name":"","team":0,"lookingAt":{"x":0,"y":0},"hitpoints":100,"damageMade":0,"killed":null,"lastFired":"0001-01-01T00:00:00Z","linkdead":false,"action":{"type":"","direction":null}},{"radius":1,"position":{"x":0,"y":0},"velocity":{"x":0,"y":0},"id":"1e819fd6-b9fd-4cd0-ab39-f39bc14287b0","botId":"3ee5afcd-4d65-4a2a-9d25-eff9afec1665","name":"","team":1,"lookingAt":{"x":0,"y":0},"hitpoints":100,"damageMade":0,"killed":null,"lastFired":"0001-01-01T00:00:00Z","linkdead":false,"action":{"type":"","direction":null}}],"bullets":null,"collisions":null,"startingPositions":[{"x":21,"y":21},{"x":24,"y":24}]}';
+                    this.handle(mock);
                     return;
                 }
 
@@ -69,6 +71,7 @@ define(['./TerrainCanvas', './PlayerCanvas', './AirCanvas', './FovCanvas', './So
                     // Hud is on top of fov canvas so darkness won't affect on it.
                     hud.drawPlayerData(data.players);
                 }
+                hud.drawTimeLeft(data.timeLeft);
 
                 air.draw(data.items, data.bullets);
 

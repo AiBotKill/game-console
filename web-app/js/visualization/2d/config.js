@@ -14,7 +14,7 @@ define("config", [], function() {
         zoom: 1,
         offset: [0, 0],
         getTileSize : function() {
-            return window.innerHeight / (this.tilesYCount) * this.zoom; // Tiles on y-axis and +1 for hud controls
+            return window.innerHeight / (this.tilesYCount+2) * this.zoom; // Tiles on y-axis and +2 for hud controls
         }
     }
 });

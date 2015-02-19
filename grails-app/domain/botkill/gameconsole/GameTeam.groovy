@@ -13,6 +13,8 @@ class GameTeam {
 
     static constraints = {
         team nullable: false
+        connectionId nullable: true
+        botVersion nullable: true
     }
 
     String toString() {

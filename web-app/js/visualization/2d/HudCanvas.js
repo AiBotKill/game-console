@@ -204,6 +204,12 @@ define(["require", "./config"], function(require) {
 
                 this.resize();
             },
+            drawTimeLeft: function(timeLeft) {
+                ctx.font = 'normal 30px Arial';
+                ctx.fillStyle = 'red';
+                var center = ctx.canvas.width / 2 - ctx.measureText(timeLeft).width/2;
+                ctx.fillText("Time left: " + timeLeft, center, 40);
+            },
             drawPlayerData: function(players) {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 drawHud();

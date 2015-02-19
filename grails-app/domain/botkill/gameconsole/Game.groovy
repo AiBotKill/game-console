@@ -17,7 +17,7 @@ class Game {
 
     // Game may have many teams to compete against each other. Team in the same GameTeam are on the same side.
     static hasMany = ["gameTeams":GameTeam, "results": GameResult]
-    static belongsTo = [Tournament]
+    static belongsTo = ["tournament": Tournament]
 
     Date dateCreated
     Date lastUpdated
@@ -50,6 +50,7 @@ class Game {
         publicId nullable: true
         tiles nullable: true
         states nullable: true
+        tournament nullable: true
     }
 
     static transients = ['AICount', 'nats', 'gameArea', 'startingPositions', 'tileModels', 'mapService']

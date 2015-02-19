@@ -25,6 +25,7 @@ class Tournament {
 
     static mapping = {
         teams sort: 'points', order: 'desc'
+        games sort: 'id', order: 'asc'
     }
 
     String toString() {
@@ -37,10 +38,14 @@ class Tournament {
         }) as Game
     }
 
-    boolean startNextGame() {
-        Game game = games.find({ Game g ->
+    Game getNextGame() {
+        return games.find({ Game g ->
             g.state.equals(GameState.CREATED)
         }) as Game
+    }
+
+    boolean startNextGame() {
+        Game game = getNextGame()
 
         if (game) {
             game.start()

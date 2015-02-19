@@ -9,6 +9,7 @@ import grails.transaction.Transactional
 class TournamentController {
 
     def tournamentService
+    def natsSubscriberService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -30,6 +31,23 @@ class TournamentController {
         if (tournamentInstance == null) {
             notFound()
             return
+        }
+
+        // Check that all selected teams has at least one bot connected
+        // Assign connectionId for each team
+        for (Game g : tournamentInstance.games) {
+            for (GameTeam gt : g.gameTeams) {
+                def connectedAI = natsSubscriberService.connectedAIs.find { it.value.id == gt.team.id }
+                if (connectedAI) {
+                    gt.connectionId = connectedAI.key
+                    gt.botVersion = connectedAI.key.split("-")[0]
+                    gt.save()
+                } else {
+                    flash.message = message(code: 'tournament.aiNotConnected', default: 'Tournament not started. All selected teams must have an AI connected.')
+                    redirect controller: "tournament", action: "index"
+                    return
+                }
+            }
         }
 
         tournamentInstance.state = GameState.STARTED
