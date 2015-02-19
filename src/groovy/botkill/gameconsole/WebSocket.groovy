@@ -1,5 +1,6 @@
 package botkill.gameconsole
 
+import botkill.gameconsole.enums.GameState
 import grails.util.Environment
 import nats.client.Message
 import nats.client.MessageHandler
@@ -100,6 +101,7 @@ class WebSocket implements ServletContextListener {
                             }
                         }
                         statesString.append("]")
+                        g.state = GameState.FINISHED
                         g.states = statesString.toString()
                         g.save flush:true
 
@@ -175,7 +177,7 @@ class WebSocket implements ServletContextListener {
                             // Try to read some states
                             states = allStates[gamePublicId]
                             if (System.currentTimeMillis() - timer > timeout) {
-                                log.error("Interrupt game streaming thread. No game states received within ${timeout/1000} seconds.")
+                                log.error("Interrupt game streaming thread. No game states for game ${gameId} received within ${timeout/1000} seconds.")
                                 running = false
                             }
                         }

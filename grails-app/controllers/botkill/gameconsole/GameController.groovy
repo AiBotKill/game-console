@@ -110,7 +110,7 @@ class GameController {
         }
 
         if (alreadyRunningBots.size() > 0) {
-            flash.message = message(code: 'game.botsAlreadyRunning', default: "Couldn't start game because these bots are currently in another game: {0}", args: [alreadyRunningBots.join(",")])
+            flash.message = message(code: 'game.botsAlreadyRunning', default: "Couldn't start game because these bots are currently in another game: ${alreadyRunningBots.join(", ")}", args: [alreadyRunningBots.join(", ")])
         } else {
             gameInstance.start()
         }
