@@ -20,29 +20,40 @@ function initMap(data) {
 }
 
 /* Initialize everything.*/
-function init(data) {
+function init(data, callback) {
     serverData = data;
     generateMisc();
     generateWorld();
     // We enter gameloop.
     console.log("Entering gameloop...");
     hud = createHUDCanvas();
-    firstSync = false;
     viewLoop();
+    callback();
+}
+
+function syncState(json){
+    serverData = json;
+}
+
+function firstSyncDone(){
+    firstSync = false;
+    console.log("Initialization done.");
 }
 
 function Client() {
     this.syncState = function (data) {
         var json = JSON.parse(data);
         console.log("JSON: ", json);
-        if (json.tiles && firstSync) {
-            initMap(json);
-        }
-        else if(json.type && firstSync){
-            init(json);
+        if(firstSync){
+            if (!json.type) {
+                initMap(json);
+            }
+            else if (json.type) {
+                init(json, firstSyncDone);
+            }
         }
         else{
-            serverData = json;
+            syncState(json);
         }
     };
 }

@@ -214,11 +214,11 @@ function loadPlayerData() {
             player = new THREE.SkinnedMesh(geometry, playerMaterials);
             player.scale.set(3, 3, 3);
             player.rotation.x += Math.PI / 2;
-            player.position.x = serverData.players[i].position.x;
-            player.position.y = serverData.players[i].position.y;
             var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
             helper.update();
             player.position.z -= helper.box.min.z;
+            player.position.x = serverData.players[i].position.x + ((helper.box.max.x - helper.box.min.x) / 2);
+            player.position.y = serverData.players[i].position.y + ((helper.box.max.y - helper.box.min.y) / 2);
             player.castShadow = true;
             player.receiveShadow = true;
 
@@ -442,10 +442,13 @@ function refreshPlayerData() {
     var xSpeed;
     var ySpeed;
     for(var i = 0; i < playerTree.length; i ++){
-        xSpeed = playerTree[i].data.velocity.x;
-        ySpeed = playerTree[i].data.velocity.y;
-        playerTree[i].model.translateX(xSpeed);
-        playerTree[i].model.translateY(ySpeed);
+        playerTree[i].data = serverData.players[i];
+        if(!playerTree[i].data.linkdead && playerTree[i].data.hitpoints > 0){
+            xSpeed = playerTree[i].data.velocity.x;
+            ySpeed = playerTree[i].data.velocity.y;
+            playerTree[i].model.translateX(xSpeed);
+            playerTree[i].model.translateZ(ySpeed);
+        }
     }
 }
 
