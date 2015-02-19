@@ -1,11 +1,19 @@
 package botkill.gameconsole
 
+import botkill.gameconsole.enums.GameState
+
 import static org.springframework.http.HttpStatus.NOT_FOUND
 
 class VisualizeController {
 
     def twodimensions() {
         Game gameInstance = Game.findById(params.id)
+        if (gameInstance.state.equals(GameState.CREATED) || !gameInstance.publicId) {
+            gameInstance.state = GameState.CREATED
+            gameInstance.save flush:true
+            flash.message = message(code: 'game.notStarted', default: 'Game was not started successfully. Please try again.')
+            redirect(controller: "game", action: "index")
+        }
         log.debug("Visualize 2d for game ${gameInstance.id}")
         if (gameInstance == null) {
             notFound()
