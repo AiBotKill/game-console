@@ -536,9 +536,9 @@ function refreshMisc() {
 function refreshCamera() {
     if (orbitingCamera) {
         var vector = new THREE.Vector3(
-                playerTree[0].model.position.x,
-                playerTree[0].model.position.y,
-                playerTree[0].model.position.z);
+                playerTree[cameraSettings.playerIndex].model.position.x,
+                playerTree[cameraSettings.playerIndex].model.position.y,
+                playerTree[cameraSettings.playerIndex].model.position.z);
         vector = vector.normalize();
         camera.lookAt(vector);
     }
