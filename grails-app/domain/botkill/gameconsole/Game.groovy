@@ -59,6 +59,7 @@ class Game {
         sort id: "desc"
         gameTeams sort: 'id', order: 'asc'
         tiles type: "text"
+        states type: "text"
     }
 
     String toString() {
@@ -91,41 +92,28 @@ class Game {
         tileModels = map.getTileModels()
         save flush: true
 
+        long gameId = this.id
+
         nats.request("startGame", (this as JSON).toString(), 10, TimeUnit.SECONDS, new MessageHandler() {
             @Override
             public void onMessage(Message message) {
                 JSONObject response = new JSONObject(message.getBody())
-                if (response.has("id")) {
-                    withNewSession {
-                        publicId = response.getString("id")
-                        log.debug("Received public id ${publicId} for game ${id}")
-                        save flush: true
+                Game.withNewSession {
+                    Game thisGame = Game.findById(gameId)
+                    if (response.has("id")) {
+                        withNewSession {
+                            publicId = response.getString("id")
+                            log.debug("Received public id ${publicId} for game ${thisGame.id}")
+                            save flush: true
+                        }
+                        log.debug("Started game ${thisGame.id} with id ${publicId}!")
+                    } else {
+                        withNewSession {
+                            state = GameState.CREATED
+                            save flush: true
+                        }
+                        log.error("Failed to start game ${thisGame.id}. Error: ${response.getString("error")}")
                     }
-                    log.debug("Started game ${id} with id ${publicId}!")
-                } else {
-                    withNewSession {
-                        state = GameState.CREATED
-                        save flush: true
-                    }
-                    log.error("Failed to start game ${id}. Error: ${response.getString("error")}")
-                }
-            }
-        })
-    }
-
-    void end(List<GameResult> res) {
-        state = GameState.FINISHED
-        results = res
-        save flush:true
-
-        nats.request("${this.publicId}.end", "{}", 10, TimeUnit.SECONDS, new MessageHandler() {
-            @Override
-            public void onMessage(Message message) {
-                JSONObject response = new JSONObject(message.getBody())
-                if (response.getString("status").equals("ok")) {
-                    log.debug("Ended game ${id}!")
-                } else {
-                    log.error("Failed to end game ${id}. Error: ${response.getString("error")}")
                 }
             }
         })
