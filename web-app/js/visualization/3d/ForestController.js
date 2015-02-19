@@ -6,7 +6,7 @@ function ForestController(){
     
     this.generateSky = function () {
         var path;
-        if (serverData.gamestate.darkness < DARKNESS_EVENING_MIN) {
+        if (TEST_DARKNESS < DARKNESS_EVENING_MIN) {
             var skybox;
             path = ASSETS_PATH + "skybox/";
             var textures = [];
@@ -24,8 +24,8 @@ function ForestController(){
             skybox.rotation.x += Math.PI / 2;
             this.environmentGroup.add(skybox);
         }
-        else if(serverData.gamestate.darkness >= DARKNESS_EVENING_MIN &&
-                serverData.gamestate.darkness < DARKNESS_NIGHT_MIN){
+        else if(TEST_DARKNESS >= DARKNESS_EVENING_MIN &&
+                TEST_DARKNESS < DARKNESS_NIGHT_MIN){
             var skybox;
             path = ASSETS_PATH + "skybox/";
             var textures = [];
@@ -59,14 +59,14 @@ function ForestController(){
         camera.rotation.x = 1.57;
         camera.rotation.y = 2.7390000000000025;
 
-        if (serverData.gamestate.darkness >= DARKNESS_DAY_MIN &&
-                serverData.gamestate.darkness < DARKNESS_EVENING_MIN) {
+        if (TEST_DARKNESS >= DARKNESS_DAY_MIN &&
+                TEST_DARKNESS < DARKNESS_EVENING_MIN) {
             lightValue = LIGHT_VALUE_DAY;
             lightColor = LIGHT_DAY;
             lightPosition = 720;
         }
-        else if (serverData.gamestate.darkness >= DARKNESS_EVENING_MIN &&
-                serverData.gamestate.darkness < DARKNESS_NIGHT_MIN) {
+        else if (TEST_DARKNESS >= DARKNESS_EVENING_MIN &&
+                TEST_DARKNESS < DARKNESS_NIGHT_MIN) {
             lightValue = LIGHT_VALUE_EVENING;
             lightColor = LIGHT_EVENING;
             lightPosition = 480;

@@ -210,12 +210,12 @@ function loadPlayerData() {
         // SkinnedMesh tukee animaatioita.
         var playerMaterials = new THREE.MeshFaceMaterial(materials);
 
-        for (var i = 0; i < serverData.gamestate.players.length; i++) {
+        for (var i = 0; i < serverData.players.length; i++) {
             player = new THREE.SkinnedMesh(geometry, playerMaterials);
             player.scale.set(3, 3, 3);
             player.rotation.x += Math.PI / 2;
-            player.position.x = serverData.gamestate.players[i].x;
-            player.position.y = serverData.gamestate.players[i].y;
+            player.position.x = serverData.players[i].position.x;
+            player.position.y = serverData.players[i].position.y;
             var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
             helper.update();
             player.position.z -= helper.box.min.z;
@@ -224,7 +224,7 @@ function loadPlayerData() {
 
             var playerObject = {
                 "model": player,
-                "data": serverData.gamestate.players[i]
+                "data": serverData.players[i]
             };
 
             playerTree.push(playerObject);
@@ -247,7 +247,7 @@ function createSmoke(x, y){
 }
 
 function renderHud() {
-    var playerFollowed = serverData.gamestate.players[cameraSettings.playerIndex];
+    var playerFollowed = serverData.players[cameraSettings.playerIndex];
     var graphics = hud.getContext("2d");
     graphics.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -270,13 +270,12 @@ function renderHud() {
             HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
 
         graphics.fillText("HP: " + playerFollowed.hitpoints, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
-        graphics.fillText("Team: " + playerFollowed.name, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
+        graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
 
         graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
             HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
 
-        graphics.fillText("Time left: " + serverData.gamestate.timeLeft, HUD_TIME_LEFT_X, HUD_TIME_LEFT_Y);
-        graphics.fillText("Round: " + serverData.gamestate.rounds, HUD_ROUND_COUNT_X, HUD_ROUND_COUNT_Y);
+        graphics.fillText("Time left: " + serverData.timeLeft, HUD_TIME_LEFT_X, HUD_TIME_LEFT_Y);
 
         graphics.restore();
     }
@@ -309,7 +308,7 @@ function addDestroyedRobot(x, y) {
 function addExplosionLaser(x, y, laser) {
     var light;
     var mesh;
-    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+    if(TEST_DARKNESS >= DARKNESS_NIGHT_MIN){
         light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
     }
     else{
@@ -321,7 +320,7 @@ function addExplosionLaser(x, y, laser) {
     }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
-    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+    if(TEST_DARKNESS >= DARKNESS_NIGHT_MIN){
         mesh = new THREE.Mesh(explosionTemplate.geometryLaser, new THREE.MeshLambertMaterial({
             'map': cloneTexture,
             'alphaTest': 0.5
@@ -440,10 +439,14 @@ function addBullet(x, y, xSpeed, ySpeed, id) {
 }
 
 function refreshPlayerData() {
-    /*
-     * Käydään gamestaten pelaajadataa lävitse ja vertaillaan sitä
-     * visualisaation tallentamaan pelaajadataan.
-     */
+    var xSpeed;
+    var ySpeed;
+    for(var i = 0; i < playerTree.length; i ++){
+        xSpeed = playerTree[i].data.velocity.x;
+        ySpeed = playerTree[i].data.velocity.y;
+        playerTree[i].model.translateX(xSpeed);
+        playerTree[i].model.translateY(ySpeed);
+    }
 }
 
 function refreshBullets() {
