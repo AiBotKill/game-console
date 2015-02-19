@@ -469,6 +469,7 @@ function refreshPlayerData() {
             ySpeed = playerTree[i].data.velocity.y;
             x = playerTree[i].model.position.x;
             y = playerTree[i].model.position.y;
+            
             if(playerTree[i].data.hitpoints === 0){
                 if (!playerTree[i].destroyed) {
                     addExplosionPlayer(x, y, playerTree[i].model);
