@@ -37,6 +37,7 @@ function syncState(json){
 
 function firstSyncDone(){
     firstSync = false;
+    console.log("Initialization done.");
 }
 
 function Client() {
