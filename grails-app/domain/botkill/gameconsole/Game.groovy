@@ -55,6 +55,7 @@ class Game {
     static transients = ['AICount', 'nats', 'gameArea', 'startingPositions', 'tileModels', 'mapService']
 
     static mapping = {
+        sort id: "desc"
         gameTeams sort: 'id', order: 'asc'
         tiles type: "text"
     }

@@ -32,8 +32,8 @@ class MapService {
         map.gameArea = [tileArray.last().X+1, tileArray.last().Y+1]
 
         JSONObject tilesObject = new JSONObject()
-        tilesObject.put("tiles", tileArray)
-        tilesObject.put("environemnt", environment.toString().toLowerCase())
+        tilesObject.put("tiles", tilesJSON)
+        tilesObject.put("environment", environment.toString().toLowerCase())
         map.tiles = tilesObject.toString() // Save as JSON String since we don't need it in model format in game-console
 
         for (int i = 0; i < playerCount; i++) {
