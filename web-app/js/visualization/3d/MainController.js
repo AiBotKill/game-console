@@ -42,7 +42,7 @@ var camera;
 var cameraSettings = {
     "cameraMode": "",
     "cameraCounter": CAMERA_TIME,
-    "playerIndex": 0                                     
+    "playerIndex": 0
 };
 
 var lightValue;
@@ -85,9 +85,9 @@ var player = {
     }
 };
 
-function fetchLight(color, intensity, distance){
-    for(var i = 0; i < lightTree.length; i ++){
-        if(lightTree[i].intensity === 0){
+function fetchLight(color, intensity, distance) {
+    for (var i = 0; i < lightTree.length; i++) {
+        if (lightTree[i].intensity === 0) {
             lightTree[i].intensity = intensity;
             lightTree[i].distance = distance;
             lightTree[i].color = color;
@@ -105,22 +105,25 @@ function statusMessageDelay() {
         showMessage = false;
         hudStatusMessage = "";
     }
-};
+}
+;
 
 function setStatusMessage(message) {
     showMessage = true;
     hudStatusMessage = message;
     messageDelay = HUD_STATUS_MESSAGE_DELAY;
-};
+}
+;
 
 function generateMisc() {
-    loadPlayerData();
     loadLaserData();
     loadDestroyedRobot();
+    loadPlayerData();
     loadExplosion();
     loadLights();
     loadParticles();
-};
+}
+;
 
 function generateWorld() {
     scene = new THREE.Scene();
@@ -129,23 +132,24 @@ function generateWorld() {
     CURRENT_ENV.generateSky();
     CURRENT_ENV.generateMap();
     scene.add(CURRENT_ENV.environmentGroup);
-};
+}
+;
 
-function loadLights(){
+function loadLights() {
     console.log("Loading lights..");
-    for(var i = 0; i < NUMBER_OF_LIGHTS; i++){
+    for (var i = 0; i < NUMBER_OF_LIGHTS; i++) {
         lightTree[i] = new THREE.PointLight("rgb(0, 0, 0)", 0, 1);
         CURRENT_ENV.environmentGroup.add(lightTree[i]);
     }
 }
 
-function loadParticles(){
+function loadParticles() {
     particleTree.smoke = new SPE.Group({
         texture: THREE.ImageUtils.loadTexture(ASSETS_PATH + "/misc/smoketext.png"),
         maxAge: 2,
         transparent: true
     });
-    for(var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i ++){
+    for (var i = 0; i < NUMBER_OF_SMOKE_EMITTERS; i++) {
         var fire = new SPE.Emitter({
             type: 'cube',
             position: new THREE.Vector3(0, 0, 0),
@@ -177,7 +181,8 @@ function loadDestroyedRobot() {
         destroyedRobotTemplate.geometry = geometry;
         destroyedRobotTemplate.materials = new THREE.MeshFaceMaterial(materials);
     });
-};
+}
+;
 
 function loadExplosion() {
     explosionTemplate = {
@@ -190,7 +195,8 @@ function loadExplosion() {
             'alphaTest': 0.5
         })
     };
-};
+}
+;
 
 function loadLaserData() {
     var path = ASSETS_PATH + "player/";
@@ -198,47 +204,57 @@ function loadLaserData() {
         laserTemplate.geometry = geometry;
         laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
     });
-};
+}
+;
 
 function loadPlayerData() {
     console.log("Loading player graphics...");
 
     var path = ASSETS_PATH + "player/";
     var player;
+    var destroyed;
 
     modelLoader.load(path + "robotti2.json", function (geometry, materials) {
         // SkinnedMesh tukee animaatioita.
         var playerMaterials = new THREE.MeshFaceMaterial(materials);
 
         for (var i = 0; i < serverData.players.length; i++) {
-            player = new THREE.SkinnedMesh(geometry, playerMaterials);
-            player.scale.set(3, 3, 3);
-            player.rotation.x += Math.PI / 2;
-            var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
-            helper.update();
-            player.position.z -= helper.box.min.z;
-            player.position.x = serverData.players[i].position.x + ((helper.box.max.x - helper.box.min.x) / 2);
-            player.position.y = serverData.players[i].position.y + ((helper.box.max.y - helper.box.min.y) / 2);
-            player.castShadow = true;
-            player.receiveShadow = true;
+            destroyed = serverData.player[i].hitpoints === 0;
+            if(destroyed){
+                player = new THREE.SkinnedMesh(geometry, playerMaterials);
+                player.scale.set(3, 3, 3);
+                player.rotation.x += Math.PI / 2;
+                var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
+                helper.update();
+                player.position.z -= helper.box.min.z;
+                player.position.x = serverData.players[i].position.x + ((helper.box.max.x - helper.box.min.x) / 2);
+                player.position.y = serverData.players[i].position.y + ((helper.box.max.y - helper.box.min.y) / 2);
+                player.castShadow = true;
+                player.receiveShadow = true;
 
+                BULLET_HEIGHT = helper.box.min.z;
+                playerTree.push(playerObject);
+                CURRENT_ENV.environmentGroup.add(playerObject.model);
+            }
+            else{
+                /* TODO add bounding box to corpse so you can normalize coordinates. */
+                addDestroyedRobot(serverData.player[i].position.x, serverData.players[i].position.y);
+            }
             var playerObject = {
+                "destroyed": destroyed,
                 "model": player,
                 "data": serverData.players[i]
             };
-
-            playerTree.push(playerObject);
-            CURRENT_ENV.environmentGroup.add(playerObject.model);
         }
-        BULLET_HEIGHT = helper.box.min.z;
         /* We initialize the preliminary cameramode. */
         cameraSettings.cameraMode = new CameraModeFPS();
     });
-};
+}
+;
 
-function createSmoke(x, y){
-    for(var i = 0; i < particleTree.smoke.emitters.length; i ++){
-        if(particleTree.smoke.emitters[i].alive === 0){
+function createSmoke(x, y) {
+    for (var i = 0; i < particleTree.smoke.emitters.length; i++) {
+        if (particleTree.smoke.emitters[i].alive === 0) {
             particleTree.smoke.emitters[i].alive = 1;
             particleTree.smoke.emitters[i].position = new THREE.Vector3(x, y, 0);
             return;
@@ -254,7 +270,7 @@ function renderHud() {
     if (showMessage) {
         graphics.font = "20px Inconsolata";
         graphics.drawImage(hudImage, HUD_STATUS_MESSAGE_BOX_X, HUD_STATUS_MESSAGE_BOX_Y,
-            HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+                HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
         graphics.fillStyle = HUD_TEXT_COLOR;
         graphics.fillText(hudStatusMessage, HUD_STATUS_MESSAGE_X, HUD_STATUS_MESSAGE_Y);
         statusMessageDelay();
@@ -267,19 +283,20 @@ function renderHud() {
         graphics.drawImage(crosshair, CROSSHAIR_X, CROSSHAIR_Y, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT);
 
         graphics.drawImage(hudImage, HUD_STATUS_FIELD_X,
-            HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
+                HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
 
         graphics.fillText("HP: " + playerFollowed.hitpoints, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
         graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
 
         graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
-            HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+                HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
 
         graphics.fillText("Time left: " + serverData.timeLeft, HUD_TIME_LEFT_X, HUD_TIME_LEFT_Y);
 
         graphics.restore();
     }
-};
+}
+;
 
 function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.materials);
@@ -308,25 +325,25 @@ function addDestroyedRobot(x, y) {
 function addExplosionLaser(x, y, laser) {
     var light;
     var mesh;
-    if(TEST_DARKNESS >= DARKNESS_NIGHT_MIN){
+    if (TEST_DARKNESS >= DARKNESS_NIGHT_MIN) {
         light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
     }
-    else{
+    else {
         light = fetchLight(new THREE.Color("rgb(255, 0, 0)"), 2.0, 30);
     }
-    
-    if(light){
+
+    if (light) {
         light.position.set(x, y, EXPLOSION_LASER_HEIGHT / 2 - 8);
     }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
-    if(TEST_DARKNESS >= DARKNESS_NIGHT_MIN){
+    if (TEST_DARKNESS >= DARKNESS_NIGHT_MIN) {
         mesh = new THREE.Mesh(explosionTemplate.geometryLaser, new THREE.MeshLambertMaterial({
             'map': cloneTexture,
             'alphaTest': 0.5
         }));
     }
-    else{
+    else {
         mesh = new THREE.Mesh(explosionTemplate.geometryLaser, new THREE.MeshBasicMaterial({
             'map': cloneTexture,
             'alphaTest': 0.5
@@ -336,31 +353,31 @@ function addExplosionLaser(x, y, laser) {
     mesh.position.y = y;
     mesh.position.z = EXPLOSION_LASER_HEIGHT / 2 - 2;
     CURRENT_ENV.environmentGroup.add(mesh);
-    explosionTree.push(new Explosion(mesh, light, laser));
+    explosionTree.push(new Explosion(mesh, light, laser, false));
 }
 
 function addExplosionPlayer(x, y, player) {
     var light;
     var mesh;
-    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+    if (serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN) {
         light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
     }
-    else{
+    else {
         light = fetchLight(new THREE.Color("rgb(255, 171, 0)"), 2.0, 30);
     }
-    
-    if(light){
+
+    if (light) {
         light.position.set(x, y, EXPLOSION_HEIGHT / 2 - 8);
     }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
-    if(TEST_DARKNESS >= DARKNESS_NIGHT_MIN){
+    if (TEST_DARKNESS >= DARKNESS_NIGHT_MIN) {
         mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshLambertMaterial({
             'map': cloneTexture,
             'alphaTest': 0.5
         }));
     }
-    else{
+    else {
         mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshBasicMaterial({
             'map': cloneTexture,
             'alphaTest': 0.5
@@ -375,15 +392,16 @@ function addExplosionPlayer(x, y, player) {
     decal.position.z = 0.1;
     CURRENT_ENV.environmentGroup.add(decal);
     CURRENT_ENV.environmentGroup.add(mesh);
-    explosionTree.push(new Explosion(mesh, light, player));
+    explosionTree.push(new Explosion(mesh, light, player, true));
 }
 
 /* Explosion object used in a robot explosion. */
- /* Object is the object that this explosion is related to. */
-function Explosion(model, light, object) {
+/* Object is the object that this explosion is related to. */
+function Explosion(model, light, object, player) {
     this.model = model;
     this.light = light;
     this.object = object;
+    this.isPlayer = player;
     this.model.material.map.wrapS = this.model.material.map.wrapT = THREE.RepeatWrapping;
     this.model.material.map.repeat.set(1 / 4, 1 / 4);
     /* Overall time the animation spends before it restarts. */
@@ -399,7 +417,7 @@ function Explosion(model, light, object) {
 
     this.animate = function () {
         this.model.lookAt(
-            new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+                new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
         this.frameCounter--;
         if (this.frameCounter <= 0) {
             if (this.light.intensity < 1) {
@@ -425,42 +443,68 @@ function Explosion(model, light, object) {
     };
 }
 
-function addBullet(x, y, xSpeed, ySpeed, id) {
+function addBullet(x, y, xSpeed, ySpeed, bulletId) {
     var laserObject = {
         "model": createNewBullet(x, y),
-        "id": id,
+        "bulletId": bulletId,
         "velocity": {
             "x": xSpeed,
             "y": ySpeed
         }
     };
-    bulletTree.push(laserObject);
+    bulletTree[bulletId] = laserObject;
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
 
 function refreshPlayerData() {
     var xSpeed;
     var ySpeed;
-    for(var i = 0; i < playerTree.length; i ++){
+    var x;
+    var y;
+    for (var i = 0; i < playerTree.length; i++) {
         playerTree[i].data = serverData.players[i];
-        if(!playerTree[i].data.linkdead && playerTree[i].data.hitpoints > 0){
+
+        if (!playerTree[i].data.linkdead) {
             xSpeed = playerTree[i].data.velocity.x;
             ySpeed = playerTree[i].data.velocity.y;
-            playerTree[i].model.translateX(xSpeed);
-            playerTree[i].model.translateZ(ySpeed);
+            x = playerTree[i].model.position.x;
+            y = playerTree[i].model.position.y;
+            if(playerTree[i].data.hitpoints === 0 && !playerTree[i].destroyed){
+                addExplosionPlayer(x, y, playerTree[i].model);
+                playerTree[i].destroyed = true;
+            }
+            else{
+                playerTree[i].model.translateX(xSpeed);
+                playerTree[i].model.translateZ(ySpeed);
+            }
         }
     }
 }
 
 function refreshBullets() {
-    if (bulletTree.length > 0) {
-        for (var i = 0; i < bulletTree.length; i++) {
-            bulletTree[i].model.translateX(bulletTree[i].velocity.x);
-            bulletTree[i].model.translateY(bulletTree[i].velocity.y);
+    var bullets = serverData.bullets;
+    if (bullets.length > 0) {
+        var bulletId;
+        var x;
+        var y;
+        var xSpeed;
+        var ySpeed;
 
-            if (bulletTree[i].model.position.x > GROUND_X) {
-                CURRENT_ENV.environmentGroup.remove(bulletTree[i].model);
-                bulletTree.splice(i, 1);
+        for (var i = 0; i < bullets.length; i++) {
+            bulletId = bullets[i].id;
+            xSpeed = bullets[i].velocity.x;
+            ySpeed = bullets[i].velocity.y;
+
+            if (!bulletTree[bulletId]) {
+                x = bullets[i].position.x;
+                y = bullets[i].position.y;
+                xSpeed = bullets[i].velocity.x;
+                ySpeed = bullets[i].velocity.y;
+                addBullet(x, y, xSpeed, ySpeed, bulletId);
+            }
+            else {
+                bulletTree[bulletId].model.translateX(xSpeed);
+                bulletTree[bulletId].model.translateZ(ySpeed);
             }
         }
     }
@@ -471,11 +515,13 @@ function refreshMisc() {
     if (explosionTree.length > 0) {
         for (var i = 0; i < explosionTree.length; i++) {
             if (explosionTree[i].ended) {
-                if(explosionTree[i].light){
+                if (explosionTree[i].light) {
                     explosionTree[i].light.intensity = 0;
                 }
-                createSmoke(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
-                addDestroyedRobot(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
+                if(explosionTree[i].isPlayer){
+                    createSmoke(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
+                    addDestroyedRobot(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
+                }
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].model);
                 CURRENT_ENV.environmentGroup.remove(explosionTree[i].object);
                 explosionTree.splice(i, 1);
@@ -487,25 +533,25 @@ function refreshMisc() {
     }
 }
 
-function refreshCamera(){
+function refreshCamera() {
     if (orbitingCamera) {
         var vector = new THREE.Vector3(
-                playerTree[0].model.position.x,
-                playerTree[0].model.position.y,
-                playerTree[0].model.position.z);
+                playerTree[cameraSettings.playerIndex].model.position.x,
+                playerTree[cameraSettings.playerIndex].model.position.y,
+                playerTree[cameraSettings.playerIndex].model.position.z);
         vector = vector.normalize();
         camera.lookAt(vector);
     }
-    if(cameraSettings.cameraCounter <= 0){
+    if (cameraSettings.cameraCounter <= 0) {
         cameraSettings.cameraCounter = CAMERA_TIME;
-        if(cameraSettings.cameraMode){
+        if (cameraSettings.cameraMode) {
             cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
         }
     }
-    else{
+    else {
         cameraSettings.cameraCounter -= delta;
     }
-    
+
 }
 
 function refreshViewState() {
@@ -514,6 +560,7 @@ function refreshViewState() {
     refreshPlayerData();
     refreshBullets();
     refreshCamera();
-};
+}
+;
 
 
