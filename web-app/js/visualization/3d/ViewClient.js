@@ -44,12 +44,11 @@ function Client() {
         var json = JSON.parse(data);
         console.log("JSON: ", json);
         if(firstSync){
-            if (json.tiles) {
+            if (!json.type) {
                 initMap(json);
             }
             else if (json.type) {
                 init(json, firstSyncDone);
-                
             }
         }
         else{
