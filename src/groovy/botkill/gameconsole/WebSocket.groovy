@@ -137,7 +137,7 @@ class WebSocket implements ServletContextListener {
                 Thread.start {
                     // Small delay before streaming states to visualization
                     Thread.sleep(2000)
-                    int fps = 1000/60
+                    int fps = 1000/30
                     Queue<String> states = allStates[gamePublicId]
 
                     // If states are not in memory anymore, look if we have those in our game object
@@ -154,7 +154,8 @@ class WebSocket implements ServletContextListener {
                     long timer = System.currentTimeMillis()
 
                     // Loop here until game ends or timeout occurs
-                    while (!Thread.interrupted()) {
+                    boolean running = true
+                    while (running) {
                         // If this game has received states
                         if (states) {
                             // Poll (read and remove) the first state inserted into the queue
@@ -167,7 +168,7 @@ class WebSocket implements ServletContextListener {
                                 // Check if this state was the last state
                                 if (stateJson.getString("type").equals("gameEnd")) {
                                     // All frames streamed to the client, we can end this thread.
-                                    Thread.currentThread().interrupt()
+                                    running = false
                                 }
                             }
                         } else {
@@ -175,7 +176,7 @@ class WebSocket implements ServletContextListener {
                             states = allStates[gamePublicId]
                             if (System.currentTimeMillis() - timer > timeout) {
                                 log.error("Interrupt game streaming thread. No game states received within ${timeout/1000} seconds.")
-                                Thread.currentThread().interrupt()
+                                running = false
                             }
                         }
                         try {
