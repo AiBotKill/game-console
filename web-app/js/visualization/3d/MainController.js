@@ -354,7 +354,7 @@ function addExplosionPlayer(x, y, player) {
     }
     var cloneTexture = explosionTemplate.texture.clone();
     cloneTexture.needsUpdate = true;
-    if(serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN){
+    if(TEST_DARKNESS >= DARKNESS_NIGHT_MIN){
         mesh = new THREE.Mesh(explosionTemplate.geometry, new THREE.MeshLambertMaterial({
             'map': cloneTexture,
             'alphaTest': 0.5
