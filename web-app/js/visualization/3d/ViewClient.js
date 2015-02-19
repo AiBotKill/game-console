@@ -27,7 +27,6 @@ function init(data) {
     // We enter gameloop.
     console.log("Entering gameloop...");
     hud = createHUDCanvas();
-    isHUDDrawn = false;
     firstSync = false;
     viewLoop();
 }
