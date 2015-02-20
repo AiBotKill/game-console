@@ -115,6 +115,7 @@ function processInput(key) {
      isHUDDrawn = false;
      }
     */
+    /*
     if (key === 't') {
         if (playerTree.length != 0) {
             playerTree[cameraSettings.playerIndex].model.rotation.y += 0.04;
