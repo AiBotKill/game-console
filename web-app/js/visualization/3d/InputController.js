@@ -169,10 +169,10 @@ function processInput(key) {
             camera.translateY(-0.5);
         }
         if (key === KEY_LEFT) {
-            camera.rotation.x += 0.03;
+            camera.rotation.z += 0.03;
         }
         if (key === KEY_RIGHT) {
-            camera.rotation.x -= 0.03;
+            camera.rotation.z -= 0.03;
         }
     }
      /*

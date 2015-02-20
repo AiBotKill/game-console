@@ -263,7 +263,7 @@ function loadPlayerData() {
             }
             else {
                 /* TODO add bounding box to corpse so you can normalize coordinates. */
-                addDestroyedRobot(serverData.players[i].position.x, serverData.players[i].position.y);
+                addDestroyedRobot(serverData.players[i].position.x * TILE_WIDTH - (GROUND_X / 2), serverData.players[i].position.y * TILE_HEIGHT - (GROUND_Y / 2));
             }
             var playerObject = {
                 "destroyed": destroyed,
