@@ -3,7 +3,9 @@ function CameraModeExternal() {
     this.resetCamera = function () {
         //orbitingCamera = true;
         camera.position.set(0, 0, 0);
-        camera.rotation.set(0, 0, 0);
+        camera.rotation.x = 0;
+        camera.rotation.y = 0;
+        camera.rotation.z = 0;
 
         camera.lookAt(scene.position);
         camera.rotation.x += Math.PI / 2;
