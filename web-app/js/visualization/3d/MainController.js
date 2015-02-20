@@ -303,7 +303,6 @@ function createNewBullet(x, y) {
     laser.position.x = x;
     laser.position.y = y;
     laser.position.z = 4;
-    laser.lookAt(camera.position);
     return laser;
 }
 
