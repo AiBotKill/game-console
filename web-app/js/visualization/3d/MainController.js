@@ -193,10 +193,10 @@ function loadExplosion() {
 }
 
 function loadLaserData() {
-    var path = ASSETS_PATH + "player/";
-    modelLoader.load(path + "laser.json", function (geometry, materials) {
-        laserTemplate.geometry = geometry;
-        laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
+    laserTemplate.geometry = new THREE.PlaneBufferGeometry(LASER_WIDTH, LASER_HEIGHT);
+    laserTemplate.materials = new THREE.MeshPhongMaterial({
+        'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/laser3.png'),
+        'alphaTest': 0.5
     });
 }
 

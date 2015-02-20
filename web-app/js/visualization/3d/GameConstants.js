@@ -29,6 +29,8 @@ var NUMBER_OF_LIGHTS = 4;
 var NUMBER_OF_SMOKE_EMITTERS = 4;
 var SMOKE_DURATION = 32;
 var LASER_BLAST_DURATION = 32;
+var LASER_WIDTH = 8;
+var LASER_HEIGHT = 8;
 var SHADOWS = true;
 /************************/
 
