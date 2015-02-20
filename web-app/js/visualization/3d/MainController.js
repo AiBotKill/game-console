@@ -215,7 +215,7 @@ function loadPlayerData() {
             destroyed = serverData.players[i].hitpoints === 0;
             if (!destroyed) {
                 player = new THREE.SkinnedMesh(geometry, playerMaterials);
-                player.scale.set(1, 1, 1);
+                player.scale.set(3, 3, 3);
                 player.rotation.x += Math.PI / 2;
                 var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
                 helper.update();
@@ -302,7 +302,7 @@ function createNewBullet(x, y) {
 
 function addDestroyedRobot(x, y) {
     var destroyed = new THREE.Mesh(destroyedRobotTemplate.geometry, destroyedRobotTemplate.materials);
-    destroyed.scale.set(1, 1, 1);
+    destroyed.scale.set(3, 3, 3);
     destroyed.rotation.x += Math.PI / 2;
     destroyed.position.x = x;
     destroyed.position.y = y;
