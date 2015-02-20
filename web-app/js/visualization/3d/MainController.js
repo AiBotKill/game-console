@@ -208,7 +208,7 @@ function loadLaserData() {
 
     placeX = 0 + TILE_WIDTH / 2;
     placeY = 0 + TILE_HEIGHT / 2;
-    placeZ = TILE_HEIGHT / 2;
+    placeZ = 4;
 
     block = new THREE.Mesh(plane, material);
 
