@@ -327,7 +327,7 @@ function renderHud() {
 }
 
 function createNewBullet(x, y) {
-    var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.materials);
+    var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.material);
     laser.scale.set(1, 1, 1);
     laser.rotation.x += Math.PI / 2;
     laser.position.x = x;
