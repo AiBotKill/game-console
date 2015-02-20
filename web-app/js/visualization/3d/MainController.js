@@ -519,7 +519,7 @@ function refreshCollisions(){
                 var collider = collisions[i].collider;
                 if(bulletTree[collider]){
                     CURRENT_ENV.environmentGroup.remove(bulletTree[collider].model);
-                    bulletTree[collider] = null;
+                    bulletTree[collider] = undefined;
                 }
             }
         }
