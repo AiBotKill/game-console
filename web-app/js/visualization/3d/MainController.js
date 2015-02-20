@@ -493,7 +493,7 @@ function refreshBullets() {
         }
     }
 }
-
+/*
 function refreshCollisions(){
     var collisions = serverData.collisions;
     if(collisions){
@@ -508,7 +508,7 @@ function refreshCollisions(){
         }
     }
 }
-
+*/
 function refreshMisc() {
     particleTree.smoke.tick(delta);
     if (explosionTree.length > 0) {
@@ -558,7 +558,7 @@ function refreshViewState() {
     refreshPlayerData();
     refreshBullets();
     refreshCamera();
-    refreshCollisions();
+    //refreshCollisions();
 }
 
 
