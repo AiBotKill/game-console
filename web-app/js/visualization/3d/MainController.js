@@ -194,11 +194,45 @@ function loadExplosion() {
 }
 
 function loadLaserData() {
-    var path = ASSETS_PATH + "player/";
-    modelLoader.load(path + "laser.json", function (geometry, materials) {
-        laserTemplate.geometry = geometry;
-        laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
+    var geometry = new THREE.Geometry();
+    var plane = new THREE.PlaneGeometry(8, 8);
+    var material = new THREE.MeshPhongMaterial({
+        'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/laser3.png'),
+        'alphaTest': 0.5
     });
+
+    var block;
+    var placeX;
+    var placeY;
+    var placeZ;
+
+    placeX = 0 + TILE_WIDTH / 2;
+    placeY = 0 + TILE_HEIGHT / 2;
+    placeZ = TILE_HEIGHT / 2;
+
+    block = new THREE.Mesh(plane, material);
+
+    block.position.x = placeX;
+    block.position.y = placeY;
+    block.position.z = placeZ;
+    block.rotation.x += Math.PI / 2;
+    block.updateMatrix();
+    geometry.merge(block.geometry, block.matrix);
+
+    block = new THREE.Mesh(plane, material);
+
+    block.position.x = placeX;
+    block.position.y = placeY;
+    block.position.z = placeZ;
+    block.rotation.x += Math.PI / 2;
+    block.rotation.y += Math.PI / 2;
+    block.updateMatrix();
+    geometry.merge(block.geometry, block.matrix);
+
+    laserTemplate = {
+        "geometry": geometry,
+        "material": material
+    }
 }
 
 function loadPlayerData() {
