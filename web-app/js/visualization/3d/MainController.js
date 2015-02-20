@@ -220,8 +220,8 @@ function loadPlayerData() {
                 var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
                 helper.update();
                 player.position.z -= helper.box.min.z;
-                player.position.x = serverData.players[i].position.x + ((helper.box.max.x - helper.box.min.x) / 2);
-                player.position.y = serverData.players[i].position.y + ((helper.box.max.y - helper.box.min.y) / 2);
+                player.position.x = serverData.players[i].position.x;
+                player.position.y = serverData.players[i].position.y;
                 player.castShadow = true;
                 player.receiveShadow = true;
                 BULLET_HEIGHT = helper.box.min.z;
@@ -445,7 +445,7 @@ function addBullet(x, y, xSpeed, ySpeed, bulletId) {
             "y": ySpeed
         }
     };
-    bulletTree[bulletId] = laserObject;
+    bulletTree.bulletId = laserObject;
     CURRENT_ENV.environmentGroup.add(laserObject.model);
 }
 
