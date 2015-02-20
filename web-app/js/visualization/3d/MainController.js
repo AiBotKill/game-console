@@ -494,6 +494,8 @@ function refreshPlayerData() {
                 ySpeed = playerTree[i].data.velocity.y;
                 x = playerTree[i].model.position.x;
                 y = playerTree[i].model.position.y;
+                var vector = new THREE.Vector3(playerTree[i].data.lookingAt.x, playerTree[i].data.lookingAt.y, BULLET_HEIGHT);
+                playerTree[i].model.lookAt(vector);
 
                 if (playerTree[i].data.hitpoints === 0) {
                     if (!playerTree[i].destroyed) {
