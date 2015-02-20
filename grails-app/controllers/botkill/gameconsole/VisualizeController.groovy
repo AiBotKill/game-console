@@ -14,11 +14,11 @@ class VisualizeController {
             return
         }
 
-        if (gameInstance.state.equals(GameState.CREATED) || !gameInstance.publicId) {
-            gameInstance.state = GameState.CREATED
-            gameInstance.save flush:true
-            flash.message = message(code: 'game.notStarted', default: 'Game was not started successfully. Please try again.')
+        // Game must be finished before it can be viewed
+        if (!gameInstance.state.equals(GameState.FINISHED)) {
+            flash.message = message(code: 'game.notFinished', default: 'Visualization will be available when game finishes.')
             redirect(controller: "game", action: "index")
+            return
         }
 
         log.debug("Visualize 2d for game ${gameInstance.id}")
@@ -27,10 +27,19 @@ class VisualizeController {
 
     def threedimensions() {
         Game gameInstance = Game.findById(params.id)
+
         if (gameInstance == null) {
             notFound()
             return
         }
+
+        // Game must be finished before it can be viewed
+        if (!gameInstance.state.equals(GameState.FINISHED)) {
+            flash.message = message(code: 'game.notFinished', default: 'Visualization will be available when game finishes.')
+            redirect(controller: "game", action: "index")
+            return
+        }
+
         render view: '3d', model: ['gameInstance':gameInstance]
     }
 

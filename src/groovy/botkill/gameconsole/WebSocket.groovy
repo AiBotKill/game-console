@@ -106,7 +106,6 @@ class WebSocket implements ServletContextListener {
                         statesString.append("]")
 
                         // Generate results
-                        Random random = new Random()
                         List<GameResult> results = new ArrayList<>()
                         JSONArray players = gameStateObject.getJSONArray("players")
                         for (int i = 0; i < players.length(); i++) {
@@ -133,8 +132,6 @@ class WebSocket implements ServletContextListener {
                         if (t) {
                             t.calculatePoints(results)
                             t.startNextGame()
-                        } else {
-                            g.end(results)
                         }
 
                         // And release states from the memory
@@ -169,19 +166,12 @@ class WebSocket implements ServletContextListener {
 
                 // Visualization client has connected here. Start a thread to stream all data for the client.
                 Thread.start {
-                    // Small delay before streaming states to visualization
-                    Thread.sleep(2000)
-                    int fps = 1000/10
-                    Queue<String> states = allStates[gamePublicId]
-
-                    // If states are not in memory anymore, look if we have those in our game object
-                    if (!states && game.states) {
-                        states = new ConcurrentLinkedQueue<>()
-                        JSONArray statesArray = new JSONArray(game.states)
-                        for (int i = 0; i < statesArray.length(); i++) {
-                            String state = statesArray.getString(i)
-                            states.add(state)
-                        }
+                    int fps = 1000/5
+                    Queue<String> states = new ConcurrentLinkedQueue<>()
+                    JSONArray statesArray = new JSONArray(game.states)
+                    for (int i = 0; i < statesArray.length(); i++) {
+                        String state = statesArray.getString(i)
+                        states.add(state)
                     }
 
                     final int timeout = 10000
