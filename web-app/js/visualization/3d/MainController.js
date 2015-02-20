@@ -220,7 +220,7 @@ function loadPlayerData() {
 
         for (var i = 0; i < serverData.players.length; i++) {
             destroyed = serverData.players[i].hitpoints === 0;
-            if(destroyed){
+            if (destroyed) {
                 player = new THREE.SkinnedMesh(geometry, playerMaterials);
                 player.scale.set(3, 3, 3);
                 player.rotation.x += Math.PI / 2;
@@ -231,12 +231,9 @@ function loadPlayerData() {
                 player.position.y = serverData.players[i].position.y + ((helper.box.max.y - helper.box.min.y) / 2);
                 player.castShadow = true;
                 player.receiveShadow = true;
-
                 BULLET_HEIGHT = helper.box.min.z;
-                playerTree.push(playerObject);
-                CURRENT_ENV.environmentGroup.add(playerObject.model);
             }
-            else{
+            else {
                 /* TODO add bounding box to corpse so you can normalize coordinates. */
                 addDestroyedRobot(serverData.players[i].position.x, serverData.players[i].position.y);
             }
@@ -245,6 +242,9 @@ function loadPlayerData() {
                 "model": player,
                 "data": serverData.players[i]
             };
+
+            playerTree.push(playerObject);
+            CURRENT_ENV.environmentGroup.add(playerObject.model);
         }
         /* We initialize the preliminary cameramode. */
         cameraSettings.cameraMode = new CameraModeFPS();
@@ -270,7 +270,7 @@ function renderHud() {
     if (showMessage) {
         graphics.font = "20px Inconsolata";
         graphics.drawImage(hudImage, HUD_STATUS_MESSAGE_BOX_X, HUD_STATUS_MESSAGE_BOX_Y,
-                HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+            HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
         graphics.fillStyle = HUD_TEXT_COLOR;
         graphics.fillText(hudStatusMessage, HUD_STATUS_MESSAGE_X, HUD_STATUS_MESSAGE_Y);
         statusMessageDelay();
@@ -283,13 +283,13 @@ function renderHud() {
         graphics.drawImage(crosshair, CROSSHAIR_X, CROSSHAIR_Y, CROSSHAIR_WIDTH, CROSSHAIR_HEIGHT);
 
         graphics.drawImage(hudImage, HUD_STATUS_FIELD_X,
-                HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
+            HUD_STATUS_FIELD_Y, HUD_STATUS_FIELD_WIDTH, HUD_STATUS_FIELD_HEIGHT);
 
         graphics.fillText("HP: " + playerFollowed.hitpoints, HUD_HP_TEXT_X, HUD_HP_TEXT_Y);
         graphics.fillText("Team: " + playerFollowed.team, HUD_HP_TEAM_X, HUD_HP_TEAM_Y);
 
         graphics.drawImage(hudImage, WIDTH - HUD_NAME_FIELD_WIDTH,
-                HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
+            HUD_NAME_FIELD_Y, HUD_NAME_FIELD_WIDTH, HUD_NAME_FIELD_HEIGHT);
 
         graphics.fillText("Time left: " + serverData.timeLeft, HUD_TIME_LEFT_X, HUD_TIME_LEFT_Y);
 
@@ -417,7 +417,7 @@ function Explosion(model, light, object, isPlayer) {
 
     this.animate = function () {
         this.model.lookAt(
-                new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+            new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
         this.frameCounter--;
         if (this.frameCounter <= 0) {
             if (this.light.intensity < 1) {
@@ -469,14 +469,14 @@ function refreshPlayerData() {
             ySpeed = playerTree[i].data.velocity.y;
             x = playerTree[i].model.position.x;
             y = playerTree[i].model.position.y;
-            
-            if(playerTree[i].data.hitpoints === 0){
+
+            if (playerTree[i].data.hitpoints === 0) {
                 if (!playerTree[i].destroyed) {
                     addExplosionPlayer(x, y, playerTree[i].model);
                     playerTree[i].destroyed = true;
                 }
             }
-            else{
+            else {
                 playerTree[i].model.translateX(xSpeed);
                 playerTree[i].model.translateZ(ySpeed);
             }
@@ -486,7 +486,7 @@ function refreshPlayerData() {
 
 function refreshBullets() {
     var bullets = serverData.bullets;
-    if(bullets){
+    if (bullets) {
         if (bullets.length > 0) {
             var bulletId;
             var x;
@@ -523,7 +523,7 @@ function refreshMisc() {
                 if (explosionTree[i].light) {
                     explosionTree[i].light.intensity = 0;
                 }
-                if(explosionTree[i].isPlayer){
+                if (explosionTree[i].isPlayer) {
                     createSmoke(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
                     addDestroyedRobot(explosionTree[i].object.position.x, explosionTree[i].object.position.y);
                 }
@@ -539,24 +539,25 @@ function refreshMisc() {
 }
 
 function refreshCamera() {
-    if (orbitingCamera) {
-        var vector = new THREE.Vector3(
+    if (playerTree[cameraSettings.playerIndex].model) {
+        if (orbitingCamera) {
+            var vector = new THREE.Vector3(
                 playerTree[cameraSettings.playerIndex].model.position.x,
                 playerTree[cameraSettings.playerIndex].model.position.y,
                 playerTree[cameraSettings.playerIndex].model.position.z);
-        vector = vector.normalize();
-        camera.lookAt(vector);
-    }
-    if (cameraSettings.cameraCounter <= 0) {
-        cameraSettings.cameraCounter = CAMERA_TIME;
-        if (cameraSettings.cameraMode) {
-            cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
+            vector = vector.normalize();
+            camera.lookAt(vector);
+        }
+        if (cameraSettings.cameraCounter <= 0) {
+            cameraSettings.cameraCounter = CAMERA_TIME;
+            if (cameraSettings.cameraMode) {
+                cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
+            }
+        }
+        else {
+            cameraSettings.cameraCounter -= delta;
         }
     }
-    else {
-        cameraSettings.cameraCounter -= delta;
-    }
-
 }
 
 function refreshViewState() {
