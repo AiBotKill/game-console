@@ -303,7 +303,7 @@ function createNewBullet(x, y) {
     laser.position.x = x;
     laser.position.y = y;
     laser.position.z = 4;
-    laser.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
+    laser.lookAt(camera.position);
     return laser;
 }
 
