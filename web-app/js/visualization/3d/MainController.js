@@ -502,8 +502,8 @@ function refreshBullets() {
                     addBullet(x, y, xSpeed, ySpeed, bulletId);
                 }
                 else {
-                    bulletTree[bulletId].model.translateX(xSpeed);
-                    bulletTree[bulletId].model.translateY(ySpeed);
+                    bulletTree[bulletId].model.position.x += xSpeed;
+                    bulletTree[bulletId].model.position.y += ySpeed;
                 }
             }
         }
