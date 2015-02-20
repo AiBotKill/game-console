@@ -104,9 +104,38 @@ class WebSocket implements ServletContextListener {
                             }
                         }
                         statesString.append("]")
+
+                        // Generate results
+                        Random random = new Random()
+                        List<GameResult> results = new ArrayList<>()
+                        JSONArray players = gameStateObject.getJSONArray("players")
+                        for (int i = 0; i < players.length(); i++) {
+                            JSONObject player = players.getJSONObject(i)
+                            GameTeam gt = g.gameTeams.find { GameTeam gt1 -> gt1.connectionId.equals(player.getString("botId")) } as GameTeam
+                            GameResult gr = new GameResult()
+                            gr.team = gt.team
+                            gr.survived = player.getInt("hitpoints") > 0
+                            gr.kills = player.getJSONArray("kills").length()
+                            gr.damageDone = player.getInt("damageMade")
+                            results.add(gr)
+                        }
+
                         g.state = GameState.FINISHED
                         g.states = statesString.toString()
+                        g.results = results
                         g.save flush:true
+
+                        Tournament t = Tournament.createCriteria().get {
+                            games {
+                                eq('id', g.id)
+                            }
+                        }
+                        if (t) {
+                            t.calculatePoints(results)
+                            t.startNextGame()
+                        } else {
+                            g.end(results)
+                        }
 
                         // And release states from the memory
                         allStates.remove(gamePublicId)

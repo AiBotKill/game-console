@@ -220,8 +220,6 @@ define(["require", "./config"], function(require) {
                     var x = player.position.x * TILE_SIZE + config.offset[0];
                     var y = player.position.y * TILE_SIZE + config.offset[1];
 
-
-
                     // Name
                     ctx.font = 'bold 15px Courier';
                     ctx.fillStyle = 'white';

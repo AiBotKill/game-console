@@ -19,6 +19,6 @@ class GameResult {
 
     int getPoints() {
         int survivePoints = survived ? 100 : 0
-        return Math.max(damageDone + kills*10 + survivePoints, 0)
+        return Math.max(damageDone + kills*50 + survivePoints, 0)
     }
 }
