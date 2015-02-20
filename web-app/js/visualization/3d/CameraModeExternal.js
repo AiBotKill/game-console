@@ -5,6 +5,7 @@ function CameraModeExternal() {
         camera.position.x = 17.79;
         camera.position.y = 0.19;
         camera.position.z = 10;
+        camera.rotation.x += Math.PI / 2;
         isHUDDrawn = false;
         //camera.translateY(5);
     };
