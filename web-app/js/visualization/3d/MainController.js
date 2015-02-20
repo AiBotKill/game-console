@@ -193,10 +193,10 @@ function loadExplosion() {
 }
 
 function loadLaserData() {
-    laserTemplate.geometry = new THREE.PlaneBufferGeometry(LASER_WIDTH, LASER_HEIGHT);
-    laserTemplate.materials = new THREE.MeshPhongMaterial({
-        'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/laser3.png'),
-        'alphaTest': 0.5
+    var path = ASSETS_PATH + "player/";
+    modelLoader.load(path + "laser.json", function (geometry, materials) {
+        laserTemplate.geometry = geometry;
+        laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
     });
 }
 
@@ -293,6 +293,7 @@ function renderHud() {
 
 function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.materials);
+    laser.scale.set(0.5, 0.5, 0.5);
     laser.rotation.x += Math.PI / 2;
     laser.position.x = x;
     laser.position.y = y;
