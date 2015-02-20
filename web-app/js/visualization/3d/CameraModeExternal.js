@@ -3,6 +3,10 @@ function CameraModeExternal(){
     this.resetCamera = function () {
         if(!playerTree[cameraSettings.playerIndex].destroyed){
             //orbitingCamera = true;
+            camera.position.set(0, 0, 5);
+            camera.lookAt(scene.position);
+            camera.rotation.x += Math.PI / 2;
+            camera.position.z = CAMERA_PLAYER_Z;
             isHUDDrawn = false;
             //camera.translateY(5);
         }
