@@ -106,14 +106,12 @@ function statusMessageDelay() {
         hudStatusMessage = "";
     }
 }
-;
 
 function setStatusMessage(message) {
     showMessage = true;
     hudStatusMessage = message;
     messageDelay = HUD_STATUS_MESSAGE_DELAY;
 }
-;
 
 function generateMisc() {
     loadLaserData();
@@ -123,7 +121,6 @@ function generateMisc() {
     loadLights();
     loadParticles();
 }
-;
 
 function generateWorld() {
     scene = new THREE.Scene();
@@ -133,7 +130,6 @@ function generateWorld() {
     CURRENT_ENV.generateMap();
     scene.add(CURRENT_ENV.environmentGroup);
 }
-;
 
 function loadLights() {
     console.log("Loading lights..");
@@ -182,7 +178,6 @@ function loadDestroyedRobot() {
         destroyedRobotTemplate.materials = new THREE.MeshFaceMaterial(materials);
     });
 }
-;
 
 function loadExplosion() {
     explosionTemplate = {
@@ -196,7 +191,6 @@ function loadExplosion() {
         })
     };
 }
-;
 
 function loadLaserData() {
     var path = ASSETS_PATH + "player/";
@@ -205,7 +199,6 @@ function loadLaserData() {
         laserTemplate.materials = new THREE.MeshFaceMaterial(materials);
     });
 }
-;
 
 function loadPlayerData() {
     console.log("Loading player graphics...");
@@ -297,7 +290,6 @@ function renderHud() {
         graphics.restore();
     }
 }
-;
 
 function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.materials);
@@ -568,6 +560,5 @@ function refreshViewState() {
     refreshBullets();
     refreshCamera();
 }
-;
 
 
