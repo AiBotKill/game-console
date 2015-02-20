@@ -220,6 +220,14 @@ define(["require", "./config"], function(require) {
                     var x = player.position.x * TILE_SIZE + config.offset[0];
                     var y = player.position.y * TILE_SIZE + config.offset[1];
 
+                    // Points
+                    ctx.font = 'normal 15px Arial';
+                    ctx.fillStyle = 'red';
+                    var kills = player.kills ? player.kills.length() : 0;
+                    var points = player.damageMade + kills * 50;
+                    var pointsY = i * 18 + 10;
+                    ctx.fillText(player.name + ": " + points + "pts", 10, pointsY);
+
                     // Name
                     ctx.font = 'bold 15px Courier';
                     ctx.fillStyle = 'white';
@@ -232,21 +240,21 @@ define(["require", "./config"], function(require) {
                     var x1 = x - playerMaxHp/2 - 1;
                     var y1 = y - PLAYER_SIZE - 15;
                     var width = playerMaxHp + 2;
-                    var height = 12;
+                    var height = 8;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "red";
                     x1 = x - playerMaxHp/2;
                     y1 = y - PLAYER_SIZE - 14;
                     width = playerMaxHp;
-                    height = 10;
+                    height = 6;
                     ctx.fillRect(x1, y1, width, height);
 
                     ctx.fillStyle = "green";
                     x1 = x - playerMaxHp/2;
                     y1 = y - PLAYER_SIZE - 14;
                     width = player.hitpoints;
-                    height = 10;
+                    height = 6;
                     ctx.fillRect(x1, y1, width, height);
                 }
             },

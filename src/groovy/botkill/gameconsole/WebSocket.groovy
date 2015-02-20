@@ -180,30 +180,25 @@ class WebSocket implements ServletContextListener {
                     // Loop here until game ends or timeout occurs
                     boolean running = true
                     while (running) {
-                        // If this game has received states
-                        if (states) {
-                            // Poll (read and remove) the first state inserted into the queue
-                            String state = states.poll()
-                            if (state) {
-                                log.debug("Seding msg to gameId ${gameId}...")
-                                userSession.basicRemote.sendText(state)
+                        // Poll (read and remove) the first state inserted into the queue
+                        String state = states.poll()
+                        if (state) {
+                            log.debug("Seding msg to gameId ${gameId}...")
+                            userSession.basicRemote.sendText(state)
 
-                                JSONObject stateJson = new JSONObject(state)
-                                // Check if this state was the last state
-                                if (stateJson.getString("state").equals("end")) {
-                                    log.debug("Reached the last frame. Ending streaming thread for game id ${gameId}")
-                                    // All frames streamed to the client, we can end this thread.
-                                    running = false
-                                }
-                            }
-                        } else {
-                            // Try to read some states
-                            states = allStates[gamePublicId]
-                            if (System.currentTimeMillis() - timer > timeout) {
-                                log.error("Interrupt game streaming thread. No game states for game ${gameId} received within ${timeout/1000} seconds.")
+                            JSONObject stateJson = new JSONObject(state)
+                            // Check if this state was the last state
+                            if (stateJson.getString("state").equals("end")) {
+                                log.debug("Reached the last frame. Ending streaming thread for game id ${gameId}")
+                                // All frames streamed to the client, we can end this thread.
                                 running = false
                             }
+                        } else {
+                            // Last state received but it wasn't end state..
+                            log.warn("Received the last gameState but it's state wasn't end... ending game id ${gameId}")
+                            running = false
                         }
+
                         try {
                             Thread.sleep(fps)
                         } catch (InterruptedException ignored) {}

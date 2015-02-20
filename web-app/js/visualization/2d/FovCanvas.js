@@ -148,7 +148,7 @@ define(["require", "./config", "./HudCanvas"], function(require) {
 
                 if (!hud.isDebugMode()) {
                     //drawDarkness();
-                    ctx.putImageData(lightData, 0, 0);
+                    //ctx.putImageData(lightData, 0, 0);
                 }
             },
             resize: function() {
