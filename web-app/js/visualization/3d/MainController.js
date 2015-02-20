@@ -302,7 +302,7 @@ function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.material);
     laser.position.x = x;
     laser.position.y = y;
-    laser.lookAt(camera.position);
+    laser.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
     laser.position.z = BULLET_HEIGHT;
     return laser;
 }
