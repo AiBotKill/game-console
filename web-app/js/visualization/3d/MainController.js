@@ -215,7 +215,7 @@ function loadPlayerData() {
             destroyed = serverData.players[i].hitpoints === 0;
             if (!destroyed) {
                 player = new THREE.SkinnedMesh(geometry, playerMaterials);
-                player.scale.set(3, 3, 3);
+                player.scale.set(1, 1, 1);
                 player.rotation.x += Math.PI / 2;
                 var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
                 helper.update();
