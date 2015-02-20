@@ -564,6 +564,7 @@ function refreshViewState() {
     refreshPlayerData();
     refreshBullets();
     refreshCamera();
+    refreshCollisions();
 }
 
 
