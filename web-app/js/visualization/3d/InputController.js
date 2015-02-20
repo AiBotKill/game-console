@@ -35,7 +35,7 @@ function actionCameraModeArea(){
 function actionPreviousPlayer(){
     cameraSettings.cameraCounter = CAMERA_TIME;
     var index = cameraSettings.playerIndex;
-    var players = serverData.gamestate.players.length;
+    var players = serverData.players.length;
     playerTree[index].model.remove(camera);
 
     if(index > 0){
@@ -51,7 +51,7 @@ function actionPreviousPlayer(){
 function actionNextPlayer(){
     cameraSettings.cameraCounter = CAMERA_TIME;
     var index = cameraSettings.playerIndex;
-    var players = serverData.gamestate.players.length;
+    var players = serverData.players.length;
     playerTree[index].model.remove(camera);
     
     if(index < players - 1){
