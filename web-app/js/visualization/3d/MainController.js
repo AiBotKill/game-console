@@ -495,7 +495,7 @@ function refreshPlayerData() {
                 x = playerTree[i].model.position.x;
                 y = playerTree[i].model.position.y;
                 var vector = new THREE.Vector3(
-                    playerTree[i].data.lookingAt.x + TILE_WIDTH - (GROUND_X / 2), playerTree[i].model.position.z,
+                    playerTree[i].model.position.z, playerTree[i].data.lookingAt.x + TILE_WIDTH - (GROUND_X / 2),
                     playerTree[i].data.lookingAt.y + TILE_HEIGHT - (GROUND_Y / 2));
                 playerTree[i].model.lookAt(vector);
 
