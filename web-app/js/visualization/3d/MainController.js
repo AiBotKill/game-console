@@ -503,7 +503,7 @@ function refreshBullets() {
                 }
                 else {
                     bulletTree[bulletId].model.position.translateX(xSpeed);
-                    bulletTree[bulletId].model.position.translateZ(ySpeed);
+                    bulletTree[bulletId].model.position.translateY(ySpeed);
                 }
             }
         }
