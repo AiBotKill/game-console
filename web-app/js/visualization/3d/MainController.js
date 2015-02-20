@@ -512,7 +512,18 @@ function refreshBullets() {
 
 /* Make this soon. */
 function refreshCollisions(){
-
+    var collisions = serverData.collisions;
+    if(collisions){
+        if(collisions.length > 0){
+            for(var i = 0; i < collisions.length; i ++){
+                var collider = collisions[i].collider;
+                if(bulletTree[collider]){
+                    CURRENT_ENV.environmentGroup.remove(bulletTree[collider].model);
+                    bulletTree[collider] = null;
+                }
+            }
+        }
+    }
 }
 
 function refreshMisc() {
