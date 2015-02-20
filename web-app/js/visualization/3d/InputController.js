@@ -75,10 +75,12 @@ function processInput(key) {
             cooldown = KEY_COOLDOWN;
             actionCameraModeExternal();
         }
+        /*
         if(key === '3'){
             cooldown = KEY_COOLDOWN;
             actionCameraModeArea();
         }
+        */
         if(key === 'left'){
             cooldown = KEY_COOLDOWN;
             actionPreviousPlayer();
