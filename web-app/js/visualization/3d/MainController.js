@@ -9,6 +9,7 @@ var orbitingCamera;
  */
 var bulletTree = [];
 var playerTree = [];
+var bulletGroup = new THREE.Object3D();
 
 var lightTree = [];
 
@@ -437,17 +438,13 @@ function Explosion(model, light, object, isPlayer) {
     };
 }
 
-function addBullet(x, y, xSpeed, ySpeed, bulletId) {
-    var laserObject = {
-        "model": createNewBullet(x, y),
-        "bulletId": bulletId,
-        "velocity": {
-            "x": xSpeed,
-            "y": ySpeed
-        }
-    };
-    bulletTree.bulletId = laserObject;
-    CURRENT_ENV.environmentGroup.add(laserObject.model);
+function addBullet(x, y) {
+    bulletGroup.add(createNewBullet(x, y));
+}
+
+function removeBullets(){
+    scene.remove(bulletGroup);
+    bulletGroup = new THREE.Object3D();
 }
 
 function refreshPlayerData() {
@@ -487,23 +484,11 @@ function refreshBullets() {
             var bulletId;
             var x;
             var y;
-            var xSpeed;
-            var ySpeed;
-
+            removeBullets();
             for (var i = 0; i < bullets.length; i++) {
-                bulletId = bullets[i].id;
-                xSpeed = bullets[i].velocity.x;
-                ySpeed = bullets[i].velocity.y;
-
-                if (!bulletTree[bulletId]) {
-                    x = bullets[i].position.x;
-                    y = bullets[i].position.y;
-                    addBullet(x * TILE_WIDTH - (GROUND_X / 2), y * TILE_HEIGHT - (GROUND_Y / 2), xSpeed, ySpeed, bulletId);
-                }
-                else {
-                    bulletTree[bulletId].model.translateX(xSpeed);
-                    bulletTree[bulletId].model.translateZ(ySpeed);
-                }
+                x = x * TILE_WIDTH - (GROUND_X / 2);
+                y = y * TILE_HEIGHT - (GROUND_Y / 2);
+                addBullet(x, y);
             }
         }
     }
