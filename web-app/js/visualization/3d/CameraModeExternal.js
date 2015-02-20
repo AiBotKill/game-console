@@ -2,10 +2,17 @@ function CameraModeExternal() {
 
     this.resetCamera = function () {
         //orbitingCamera = true;
-        camera.position.x = 17.79;
-        camera.position.y = 0.19;
-        camera.position.z = 10;
+        camera.position.set(0, 0, 0);
+        camera.rotation.set(0, 0, 0);
+
+        camera.lookAt(scene.position);
         camera.rotation.x += Math.PI / 2;
+        camera.position.z = CAMERA_PLAYER_Z;
+
+        camera.position.x = 16;
+        camera.position.y = 10;
+        camera.rotation.x = 1.57;
+        camera.rotation.y = 2.7390000000000025;
         isHUDDrawn = false;
         //camera.translateY(5);
     };
