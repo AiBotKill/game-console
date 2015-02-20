@@ -149,10 +149,10 @@ function processInput(key) {
      }*/
 
      if (key === KEY_LEFT) {
-     camera.rotation.y += 0.03;
+     camera.rotation.x += 0.03;
      }
      if (key === KEY_RIGHT) {
-     camera.rotation.y -= 0.03;
+     camera.rotation.x -= 0.03;
      }
 
     if(!isHUDDrawn){
