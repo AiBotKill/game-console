@@ -197,7 +197,7 @@ function loadLaserData() {
     var geometry = new THREE.Geometry();
     var plane = new THREE.PlaneGeometry(8, 8);
     var material = new THREE.MeshPhongMaterial({
-        'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/laser3.png'),
+        'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/energyBall.png'),
         'alphaTest': 0.5
     });
 
