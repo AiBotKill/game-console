@@ -24,7 +24,6 @@ function initMap(data) {
 
 /* Initialize everything.*/
 function init(data, callback) {
-    gameInit = true;
     serverData = data;
     generateMisc();
     generateWorld();
@@ -53,6 +52,7 @@ function Client() {
                 initMap(json);
             }
             else if (json.type && !gameInit) {
+                gameInit = true;
                 init(json, firstSyncDone);
             }
         }
