@@ -149,6 +149,7 @@ function processInput(key) {
      if (key === KEY_RIGHT) {
      camera.rotation.y -= 0.03;
      }
+     */
      if (key === "w") {
      camera.translateZ(-1.5);
      }
@@ -161,7 +162,7 @@ function processInput(key) {
      if (key === 'd') {
      camera.translateX(1.5);
      }
-     
+
      if (key === 'y') {
      camera.translateY(0.1);
      console.log(camera.position.y);
@@ -169,7 +170,6 @@ function processInput(key) {
      if (key === 'u') {
      camera.translateY(-0.1);
      console.log(camera.position.y);
-     
      }
      /*
      if (key === 'n') {
