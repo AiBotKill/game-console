@@ -196,8 +196,7 @@ function loadExplosion() {
 function loadLaserData() {
     var plane = new THREE.BoxGeometry(4, 4, 4);
     var material = new THREE.MeshPhongMaterial({
-        'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/energyBall.png'),
-        'alphaTest': 0.5
+        'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/energyBall.png')
     });
 
     laserTemplate = {
