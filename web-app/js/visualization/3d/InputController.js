@@ -154,16 +154,16 @@ function processInput(key) {
      */
     if(!isHUDDrawn){
         if (key === "w") {
-            camera.translateZ(-1.5);
+            camera.translateZ(-0.5);
         }
         if (key === 's') {
-            camera.translateZ(1.5);
+            camera.translateZ(0.5);
         }
         if (key === 'a') {
-            camera.translateX(-1.5);
+            camera.translateX(-0.5);
         }
         if (key === 'd') {
-            camera.translateX(1.5);
+            camera.translateX(0.5);
         }
 
         if (key === 'y') {
