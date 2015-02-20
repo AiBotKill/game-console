@@ -146,33 +146,34 @@ function processInput(key) {
      addExplosion(playerTree[0].model.position.x, playerTree[0].model.position.y, playerTree[0].model);
      playerTree.splice(0, 1);
      }
-     }
+     }*/
+
      if (key === KEY_LEFT) {
      camera.rotation.y += 0.03;
      }
      if (key === KEY_RIGHT) {
      camera.rotation.y -= 0.03;
      }
-     */
+
     if(!isHUDDrawn){
         if (key === "w") {
-            camera.translateZ(-0.5);
+            camera.translateZ(-1);
         }
         if (key === 's') {
-            camera.translateZ(0.5);
+            camera.translateZ(1);
         }
         if (key === 'a') {
-            camera.translateX(-0.5);
+            camera.translateX(-1);
         }
         if (key === 'd') {
-            camera.translateX(0.5);
+            camera.translateX(1);
         }
 
         if (key === 'y') {
-            camera.translateY(0.1);
+            camera.translateY(0.5);
         }
         if (key === 'u') {
-            camera.translateY(-0.1);
+            camera.translateY(-0.5);
         }
     }
      /*
