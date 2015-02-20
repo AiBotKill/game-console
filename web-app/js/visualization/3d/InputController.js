@@ -168,11 +168,9 @@ function processInput(key) {
 
         if (key === 'y') {
             camera.translateY(0.1);
-            console.log(camera.position.y);
         }
         if (key === 'u') {
             camera.translateY(-0.1);
-            console.log(camera.position.y);
         }
     }
      /*
