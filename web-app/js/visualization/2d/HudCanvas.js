@@ -223,7 +223,7 @@ define(["require", "./config"], function(require) {
                     // Points
                     ctx.font = 'normal 15px Arial';
                     ctx.fillStyle = 'red';
-                    var kills = player.kills ? player.kills.length() : 0;
+                    var kills = player.kills ? player.kills.length : 0;
                     var points = player.damageMade + kills * 50;
                     var pointsY = i * 18 + 10;
                     ctx.fillText(player.name + ": " + points + "pts", 10, pointsY);
