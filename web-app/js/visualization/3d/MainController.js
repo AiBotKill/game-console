@@ -485,8 +485,8 @@ function refreshBullets() {
             var y;
             removeBullets();
             for (var i = 0; i < bullets.length; i++) {
-                x = x * TILE_WIDTH - (GROUND_X / 2);
-                y = y * TILE_HEIGHT - (GROUND_Y / 2);
+                x = bullets[i].position.x * TILE_WIDTH - (GROUND_X / 2);
+                y = bullets[i].position.y * TILE_HEIGHT - (GROUND_Y / 2);
                 addBullet(x, y);
             }
             scene.add(bulletGroup);
