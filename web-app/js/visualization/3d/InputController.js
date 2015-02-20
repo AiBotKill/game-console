@@ -174,6 +174,11 @@ function processInput(key) {
         if (key === KEY_RIGHT) {
             camera.rotation.x -= 0.03;
         }
+        console.log("X: ", camera.position.x);
+        console.log("Y: ", camera.position.y);
+        console.log("Z: ", camera.position.z);
+        console.log("X: ", camera.rotation.x);
+        console.log("YROT: ", camera.rotation.y);
     }
      /*
      if (key === 'n') {
