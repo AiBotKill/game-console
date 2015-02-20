@@ -206,9 +206,9 @@ function loadLaserData() {
     var placeY;
     var placeZ;
 
-    placeX = 0 + TILE_WIDTH / 2;
-    placeY = 0 + TILE_HEIGHT / 2;
-    placeZ = 4;
+    placeX = 0;
+    placeY = 0;
+    placeZ = 0;
 
     block = new THREE.Mesh(plane, material);
 
@@ -263,7 +263,8 @@ function loadPlayerData() {
             }
             else {
                 /* TODO add bounding box to corpse so you can normalize coordinates. */
-                addDestroyedRobot(serverData.players[i].position.x * TILE_WIDTH - (GROUND_X / 2), serverData.players[i].position.y * TILE_HEIGHT - (GROUND_Y / 2));
+                addDestroyedRobot(serverData.players[i].position.x * TILE_WIDTH - (GROUND_X / 2),
+                    serverData.players[i].position.y * TILE_HEIGHT - (GROUND_Y / 2));
             }
             var playerObject = {
                 "destroyed": destroyed,
@@ -527,13 +528,13 @@ function refreshBullets() {
         }
     }
 }
-/*
+
 function refreshCollisions(){
+    /*
     var collisions = serverData.collisions;
     if(collisions){
         if(collisions.length > 0){
             for(var i = 0; i < collisions.length; i ++){
-                var collider = collisions[i].collider;
                 if(bulletTree[collider]){
                     CURRENT_ENV.environmentGroup.remove(bulletTree[collider].model);
                     bulletTree[collider] = undefined;
@@ -541,8 +542,9 @@ function refreshCollisions(){
             }
         }
     }
+    */
 }
-*/
+
 function refreshMisc() {
     particleTree.smoke.tick(delta);
     if (explosionTree.length > 0) {
