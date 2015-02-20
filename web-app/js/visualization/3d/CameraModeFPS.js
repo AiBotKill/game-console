@@ -1,7 +1,7 @@
 function CameraModeFPS() {
 
     this.resetCamera = function () {
-        if(!playerTree[cameraSettings.playerIndex].destroyed){
+        if(!playerTree[cameraSettings.playerIndex].destroyed && playerTree[cameraSettings.playerIndex].model){
             orbitingCamera = false;
             playerTree[cameraSettings.playerIndex].model.add(camera);
             camera.rotation.x = Math.PI * -0.5;

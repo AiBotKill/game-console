@@ -455,7 +455,7 @@ function refreshPlayerData() {
     var x;
     var y;
     for (var i = 0; i < playerTree.length; i++) {
-        if(!playerTree[i].destroyed){
+        if(!playerTree[i].destroyed && playerTree[i].model){
             playerTree[i].data = serverData.players[i];
 
             if (!playerTree[i].data.linkdead) {
