@@ -331,7 +331,7 @@ function createNewBullet(x, y) {
     laser.rotation.x += Math.PI / 2;
     laser.position.x = x;
     laser.position.y = y;
-    laser.position.z = 4;
+    laser.position.z = 2;
     return laser;
 }
 
