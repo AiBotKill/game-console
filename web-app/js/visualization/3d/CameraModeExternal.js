@@ -3,9 +3,9 @@ function CameraModeExternal(){
     this.resetCamera = function () {
         if(!playerTree[cameraSettings.playerIndex].destroyed){
             playerTree[cameraSettings.playerIndex].model.remove(camera);
-            orbitingCamera = true;
+            //orbitingCamera = true;
             isHUDDrawn = false;
-            camera.translateY(5);
+            //camera.translateY(5);
         }
         else{
             this.refreshCameraMode();
