@@ -150,27 +150,29 @@ function processInput(key) {
      camera.rotation.y -= 0.03;
      }
      */
-     if (key === "w") {
-     camera.translateZ(-1.5);
-     }
-     if (key === 's') {
-     camera.translateZ(1.5);
-     }
-     if (key === 'a') {
-     camera.translateX(-1.5);
-     }
-     if (key === 'd') {
-     camera.translateX(1.5);
-     }
+    if(!isHUDDrawn){
+        if (key === "w") {
+            camera.translateZ(-1.5);
+        }
+        if (key === 's') {
+            camera.translateZ(1.5);
+        }
+        if (key === 'a') {
+            camera.translateX(-1.5);
+        }
+        if (key === 'd') {
+            camera.translateX(1.5);
+        }
 
-     if (key === 'y') {
-     camera.translateY(0.1);
-     console.log(camera.position.y);
-     }
-     if (key === 'u') {
-     camera.translateY(-0.1);
-     console.log(camera.position.y);
-     }
+        if (key === 'y') {
+            camera.translateY(0.1);
+            console.log(camera.position.y);
+        }
+        if (key === 'u') {
+            camera.translateY(-0.1);
+            console.log(camera.position.y);
+        }
+    }
      /*
      if (key === 'n') {
      testPlayer.rotation.y += 0.01;
