@@ -503,8 +503,8 @@ function refreshPlayerData() {
                     }
                 }
                 else {
-                    playerTree[i].model.position.x = x;
-                    playerTree[i].model.position.y = y;
+                    playerTree[i].model.position.x = playerTree[i].data.position.x * TILE_WIDTH - (GROUND_X / 2);
+                    playerTree[i].model.position.y = playerTree[i].data.position.y * TILE_HEIGHT - (GROUND_Y / 2);
                 }
             }
         }
