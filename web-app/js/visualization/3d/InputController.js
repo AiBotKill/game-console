@@ -161,7 +161,6 @@ function processInput(key) {
         if (key === 'd') {
             camera.translateX(1);
         }
-
         if (key === 'y') {
             camera.translateY(0.5);
         }
@@ -169,10 +168,10 @@ function processInput(key) {
             camera.translateY(-0.5);
         }
         if (key === KEY_LEFT) {
-            camera.rotation.z += 0.03;
+            camera.rotation.y += 0.03;
         }
         if (key === KEY_RIGHT) {
-            camera.rotation.z -= 0.03;
+            camera.rotation.y -= 0.03;
         }
     }
      /*
