@@ -194,7 +194,7 @@ function loadExplosion() {
 }
 
 function loadLaserData() {
-    var plane = new THREE.BoxGeometry(128, 128);
+    var plane = new THREE.BoxGeometry(8, 8, 8);
     var material = new THREE.MeshPhongMaterial({
         'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/energyBall.png'),
         'alphaTest': 0.5
@@ -302,7 +302,7 @@ function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.material);
     laser.position.x = x;
     laser.position.y = y;
-    laser.position.z = 8;
+    laser.position.z = 4;
     return laser;
 }
 
