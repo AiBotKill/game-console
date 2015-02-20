@@ -221,11 +221,11 @@ define(["require", "./config"], function(require) {
                     var y = player.position.y * TILE_SIZE + config.offset[1];
 
                     // Points
-                    ctx.font = 'normal 15px Arial';
+                    ctx.font = 'bold 15px Arial';
                     ctx.fillStyle = 'red';
                     var kills = player.kills ? player.kills.length : 0;
                     var points = player.damageMade + kills * 50;
-                    var pointsY = i * 18 + 10;
+                    var pointsY = i * 18 + 24;
                     ctx.fillText(player.name + ": " + points + "pts", 10, pointsY);
 
                     // Name
