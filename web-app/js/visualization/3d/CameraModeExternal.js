@@ -4,9 +4,8 @@ function CameraModeExternal() {
         //orbitingCamera = true;
         camera.rotation.x = 1.57;
         camera.rotation.y = 1.53;
-        camera.lookAt(scene.position);
         camera.rotation.x += Math.PI / 2;
-        camera.position.z = CAMERA_PLAYER_Z;
+        camera.position.z = 20;
         isHUDDrawn = false;
         //camera.translateY(5);
     };
