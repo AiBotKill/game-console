@@ -244,7 +244,7 @@ function loadPlayerData() {
             };
 
             playerTree.push(playerObject);
-            if(!playerObject.model){
+            if(playerObject.model){
                 CURRENT_ENV.environmentGroup.add(playerObject.model);
             }
         }
