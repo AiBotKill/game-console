@@ -539,24 +539,22 @@ function refreshMisc() {
 }
 
 function refreshCamera() {
-    if (playerTree[cameraSettings.playerIndex].model) {
-        if (orbitingCamera) {
-            var vector = new THREE.Vector3(
-                playerTree[cameraSettings.playerIndex].model.position.x,
-                playerTree[cameraSettings.playerIndex].model.position.y,
-                playerTree[cameraSettings.playerIndex].model.position.z);
-            vector = vector.normalize();
-            camera.lookAt(vector);
+    if (orbitingCamera) {
+        var vector = new THREE.Vector3(
+            playerTree[cameraSettings.playerIndex].model.position.x,
+            playerTree[cameraSettings.playerIndex].model.position.y,
+            playerTree[cameraSettings.playerIndex].model.position.z);
+        vector = vector.normalize();
+        camera.lookAt(vector);
+    }
+    if (cameraSettings.cameraCounter <= 0) {
+        cameraSettings.cameraCounter = CAMERA_TIME;
+        if (cameraSettings.cameraMode) {
+            cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
         }
-        if (cameraSettings.cameraCounter <= 0) {
-            cameraSettings.cameraCounter = CAMERA_TIME;
-            if (cameraSettings.cameraMode) {
-                cameraSettings.cameraMode.refreshCameraMode(cameraSettings);
-            }
-        }
-        else {
-            cameraSettings.cameraCounter -= delta;
-        }
+    }
+    else {
+        cameraSettings.cameraCounter -= delta;
     }
 }
 

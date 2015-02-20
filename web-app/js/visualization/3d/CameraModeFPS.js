@@ -2,12 +2,17 @@ function CameraModeFPS() {
 
     this.resetCamera = function () {
         orbitingCamera = false;
-        playerTree[cameraSettings.playerIndex].model.add(camera);
-        camera.rotation.x = Math.PI * -0.5;
-        camera.rotation.y = Math.PI * -0.5;
-        camera.rotation.z = Math.PI * -0.5;
-        camera.position.set(1, 6, 0);
-        isHUDDrawn = true;
+        if(!playerTree[cameraSettings.playerIndex].destroyed){
+            playerTree[cameraSettings.playerIndex].model.add(camera);
+            camera.rotation.x = Math.PI * -0.5;
+            camera.rotation.y = Math.PI * -0.5;
+            camera.rotation.z = Math.PI * -0.5;
+            camera.position.set(1, 6, 0);
+            isHUDDrawn = true;
+        }
+        else{
+            this.refreshCameraMode();
+        }
     };
 
     this.refreshCameraMode = function () {
