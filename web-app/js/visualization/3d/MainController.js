@@ -213,7 +213,7 @@ function loadPlayerData() {
 
         for (var i = 0; i < serverData.players.length; i++) {
             destroyed = serverData.players[i].hitpoints === 0;
-            if (destroyed) {
+            if (!destroyed) {
                 player = new THREE.SkinnedMesh(geometry, playerMaterials);
                 player.scale.set(3, 3, 3);
                 player.rotation.x += Math.PI / 2;
