@@ -36,7 +36,7 @@ var SHADOWS = true;
 
 /* CAMERA CONSTANTS. */
 /* The number of seconds we wait before switching to another view. */
-var CAMERA_TIME = 60;
+var CAMERA_TIME = 20;
 /************************/
 
 /* ENVIRONMENT CONSTANTS. */
