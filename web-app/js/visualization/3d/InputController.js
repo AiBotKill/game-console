@@ -148,13 +148,6 @@ function processInput(key) {
      }
      }*/
 
-     if (key === KEY_LEFT) {
-     camera.rotation.x += 0.03;
-     }
-     if (key === KEY_RIGHT) {
-     camera.rotation.x -= 0.03;
-     }
-
     if(!isHUDDrawn){
         if (key === "w") {
             camera.translateZ(-1);
@@ -174,6 +167,12 @@ function processInput(key) {
         }
         if (key === 'u') {
             camera.translateY(-0.5);
+        }
+        if (key === KEY_LEFT) {
+            camera.rotation.x += 0.03;
+        }
+        if (key === KEY_RIGHT) {
+            camera.rotation.x -= 0.03;
         }
     }
      /*
