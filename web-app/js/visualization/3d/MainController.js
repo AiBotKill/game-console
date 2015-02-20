@@ -486,28 +486,30 @@ function refreshPlayerData() {
 
 function refreshBullets() {
     var bullets = serverData.bullets;
-    if (bullets.length > 0) {
-        var bulletId;
-        var x;
-        var y;
-        var xSpeed;
-        var ySpeed;
+    if(bullets){
+        if (bullets.length > 0) {
+            var bulletId;
+            var x;
+            var y;
+            var xSpeed;
+            var ySpeed;
 
-        for (var i = 0; i < bullets.length; i++) {
-            bulletId = bullets[i].id;
-            xSpeed = bullets[i].velocity.x;
-            ySpeed = bullets[i].velocity.y;
-
-            if (!bulletTree[bulletId]) {
-                x = bullets[i].position.x;
-                y = bullets[i].position.y;
+            for (var i = 0; i < bullets.length; i++) {
+                bulletId = bullets[i].id;
                 xSpeed = bullets[i].velocity.x;
                 ySpeed = bullets[i].velocity.y;
-                addBullet(x, y, xSpeed, ySpeed, bulletId);
-            }
-            else {
-                bulletTree[bulletId].model.translateX(xSpeed);
-                bulletTree[bulletId].model.translateZ(ySpeed);
+
+                if (!bulletTree[bulletId]) {
+                    x = bullets[i].position.x;
+                    y = bullets[i].position.y;
+                    xSpeed = bullets[i].velocity.x;
+                    ySpeed = bullets[i].velocity.y;
+                    addBullet(x, y, xSpeed, ySpeed, bulletId);
+                }
+                else {
+                    bulletTree[bulletId].model.translateX(xSpeed);
+                    bulletTree[bulletId].model.translateZ(ySpeed);
+                }
             }
         }
     }
