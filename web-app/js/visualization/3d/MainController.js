@@ -225,7 +225,7 @@ function loadLaserData() {
     block.position.y = placeY;
     block.position.z = placeZ;
     block.rotation.x += Math.PI / 2;
-    block.rotation.y += Math.PI / 2;
+    block.rotation.z += Math.PI / 2;
     block.updateMatrix();
     geometry.merge(block.geometry, block.matrix);
 
@@ -331,7 +331,7 @@ function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.material);
     laser.position.x = x;
     laser.position.y = y;
-    laser.position.z = 4;
+    laser.position.z = BULLET_HEIGHT;
     return laser;
 }
 
