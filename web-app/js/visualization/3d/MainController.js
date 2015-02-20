@@ -303,7 +303,7 @@ function createNewBullet(x, y) {
     laser.position.x = x;
     laser.position.y = y;
     laser.lookAt(new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z));
-    laser.position.z = BULLET_HEIGHT;
+    laser.position.z = 4;
     return laser;
 }
 
