@@ -24,6 +24,7 @@ function initMap(data) {
 
 /* Initialize everything.*/
 function init(data, callback) {
+    gameInit = true;
     serverData = data;
     generateMisc();
     generateWorld();
@@ -39,7 +40,6 @@ function syncState(json){
 }
 
 function firstSyncDone(){
-    gameInit = true;
     initDone = true;
     console.log("Initialization done.");
 }
