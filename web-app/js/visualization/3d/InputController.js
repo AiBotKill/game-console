@@ -81,13 +81,15 @@ function processInput(key) {
             actionCameraModeArea();
         }
         */
-        if(key === 'left'){
-            cooldown = KEY_COOLDOWN;
-            actionPreviousPlayer();
-        }
-        if(key === 'right'){
-            cooldown = KEY_COOLDOWN;
-            actionNextPlayer();
+        if(isHUDDrawn){
+            if(key === 'left'){
+                cooldown = KEY_COOLDOWN;
+                actionPreviousPlayer();
+            }
+            if(key === 'right'){
+                cooldown = KEY_COOLDOWN;
+                actionNextPlayer();
+            }
         }
     }
     

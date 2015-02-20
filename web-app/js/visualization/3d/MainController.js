@@ -567,6 +567,7 @@ function refreshMisc() {
 }
 
 function refreshCamera() {
+    /*
     if (orbitingCamera) {
         var vector = new THREE.Vector3(
             playerTree[cameraSettings.playerIndex].model.position.x,
@@ -575,6 +576,7 @@ function refreshCamera() {
         vector = vector.normalize();
         camera.lookAt(vector);
     }
+    */
     if (cameraSettings.cameraCounter <= 0) {
         cameraSettings.cameraCounter = CAMERA_TIME;
         if (cameraSettings.cameraMode) {
