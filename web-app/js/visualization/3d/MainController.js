@@ -503,8 +503,8 @@ function refreshPlayerData() {
                     }
                 }
                 else {
-                    playerTree[i].model.translateX(xSpeed);
-                    playerTree[i].model.translateZ(ySpeed);
+                    playerTree[i].model.position.x += xSpeed;
+                    playerTree[i].model.position.y += ySpeed;
                 }
             }
         }
