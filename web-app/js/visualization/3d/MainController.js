@@ -354,7 +354,7 @@ function addExplosionLaser(x, y, laser) {
 function addExplosionPlayer(x, y, player) {
     var light;
     var mesh;
-    if (serverData.gamestate.darkness >= DARKNESS_NIGHT_MIN) {
+    if (TEST_DARKNESS >= DARKNESS_NIGHT_MIN) {
         light = fetchLight(new THREE.Color("rgb(191, 255, 201)"), 2.0, 30);
     }
     else {
