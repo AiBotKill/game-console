@@ -510,7 +510,6 @@ function refreshBullets() {
     }
 }
 
-/* Make this soon. */
 function refreshCollisions(){
     var collisions = serverData.collisions;
     if(collisions){
