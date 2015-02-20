@@ -18,7 +18,9 @@ function CameraModeFPS() {
     this.refreshCameraMode = function () {
         var index = cameraSettings.playerIndex;
         var players = playerTree.length;
-        playerTree[cameraSettings.playerIndex].model.remove(camera);
+        if(playerTree[cameraSettings.playerIndex].model){
+            playerTree[cameraSettings.playerIndex].model.remove(camera);
+        }
         if (index < players - 1) {
             cameraSettings.playerIndex++;
         }
