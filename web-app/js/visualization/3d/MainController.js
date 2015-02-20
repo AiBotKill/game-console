@@ -194,43 +194,14 @@ function loadExplosion() {
 }
 
 function loadLaserData() {
-    var geometry = new THREE.Geometry();
     var plane = new THREE.PlaneGeometry(8, 8);
     var material = new THREE.MeshPhongMaterial({
         'map': THREE.ImageUtils.loadTexture(ASSETS_PATH + '/player/energyBall.png'),
         'alphaTest': 0.5
     });
 
-    var block;
-    var placeX;
-    var placeY;
-    var placeZ;
-
-    placeX = 0;
-    placeY = 0;
-    placeZ = 0;
-
-    block = new THREE.Mesh(plane, material);
-
-    block.position.x = placeX;
-    block.position.y = placeY;
-    block.position.z = placeZ;
-    block.rotation.x += Math.PI / 2;
-    block.updateMatrix();
-    geometry.merge(block.geometry, block.matrix);
-
-    block = new THREE.Mesh(plane, material);
-
-    block.position.x = placeX;
-    block.position.y = placeY;
-    block.position.z = placeZ;
-    block.rotation.x += Math.PI / 2;
-    block.rotation.z += Math.PI / 2;
-    block.updateMatrix();
-    geometry.merge(block.geometry, block.matrix);
-
     laserTemplate = {
-        "geometry": geometry,
+        "geometry": plane,
         "material": material
     }
 }
@@ -331,6 +302,7 @@ function createNewBullet(x, y) {
     var laser = new THREE.Mesh(laserTemplate.geometry, laserTemplate.material);
     laser.position.x = x;
     laser.position.y = y;
+    laser.lookAt(camera.position);
     laser.position.z = BULLET_HEIGHT;
     return laser;
 }
