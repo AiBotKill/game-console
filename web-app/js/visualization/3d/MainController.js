@@ -510,6 +510,11 @@ function refreshBullets() {
     }
 }
 
+/* Make this soon. */
+function refreshCollisions(){
+
+}
+
 function refreshMisc() {
     particleTree.smoke.tick(delta);
     if (explosionTree.length > 0) {
