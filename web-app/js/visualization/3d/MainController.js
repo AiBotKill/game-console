@@ -495,7 +495,7 @@ function refreshPlayerData() {
                 x = playerTree[i].model.position.x;
                 y = playerTree[i].model.position.y;
                 var radian = Math.atan2(playerTree[i].data.lookAt.y, playerTree[i].data.lookAt.x);
-                playerTree[i].model.rotation.x = radian;
+                playerTree[i].model.rotation.y = radian;
                 if (playerTree[i].data.hitpoints === 0) {
                     if (!playerTree[i].destroyed) {
                         addExplosionPlayer(x, y, playerTree[i].model);
