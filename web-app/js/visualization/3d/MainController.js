@@ -502,8 +502,8 @@ function refreshBullets() {
                     addBullet(x * TILE_WIDTH - (GROUND_X / 2), y * TILE_HEIGHT - (GROUND_Y / 2), xSpeed, ySpeed, bulletId);
                 }
                 else {
-                    bulletTree[bulletId].model.position.x += xSpeed;
-                    bulletTree[bulletId].model.position.y += ySpeed;
+                    bulletTree[bulletId].model.position.translateX(xSpeed);
+                    bulletTree[bulletId].model.position.translateZ(ySpeed);
                 }
             }
         }
