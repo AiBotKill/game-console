@@ -499,7 +499,7 @@ function refreshBullets() {
                     y = bullets[i].position.y;
                     xSpeed = bullets[i].velocity.x;
                     ySpeed = bullets[i].velocity.y;
-                    addBullet(x, y, xSpeed, ySpeed, bulletId);
+                    addBullet(x * TILE_WIDTH - (GROUND_X / 2), y * TILE_HEIGHT - (GROUND_Y / 2), xSpeed, ySpeed, bulletId);
                 }
                 else {
                     bulletTree[bulletId].model.position.x += xSpeed;
