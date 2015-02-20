@@ -7,7 +7,7 @@ function CameraModeExternal() {
 
         camera.lookAt(scene.position);
         camera.rotation.x += Math.PI / 2;
-        camera.position.z = CAMERA_PLAYER_Z;
+        camera.position.z = 10;
 
         camera.position.x = 16;
         camera.position.y = 10;
