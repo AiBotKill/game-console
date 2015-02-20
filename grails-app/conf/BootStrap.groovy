@@ -22,7 +22,7 @@ class BootStrap {
         }
 
         JSON.registerObjectMarshaller(GameTeam) { GameTeam gt ->
-            return ["team": gt.color.ordinal(), "botId": gt.team.connectionId, "name": gt.team.name]
+            return ["team": gt.color.ordinal(), "botId": gt.connectionId, "name": gt.team.name]
         }
 
         JSON.registerObjectMarshaller(Game) { Game g ->
