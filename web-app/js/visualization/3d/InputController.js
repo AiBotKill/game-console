@@ -120,12 +120,12 @@ function processInput(key) {
     }
     if (key === 'j') {
         if (playerTree.length != 0) {
-            playerTree[cameraSettings.playerIndex].model.translateX(1);
+            playerTree[cameraSettings.playerIndex].model.position.x += 1;
         }
     }
     if (key === 'k') {
         if (playerTree.length != 0) {
-            playerTree[cameraSettings.playerIndex].model.translateX(-1);
+            playerTree[cameraSettings.playerIndex].model.position.x += -1;
         }
     }
      /*
