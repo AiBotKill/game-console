@@ -481,7 +481,6 @@ function refreshBullets() {
     var bullets = serverData.bullets;
     if (bullets) {
         if (bullets.length > 0) {
-            var bulletId;
             var x;
             var y;
             removeBullets();
@@ -490,6 +489,7 @@ function refreshBullets() {
                 y = y * TILE_HEIGHT - (GROUND_Y / 2);
                 addBullet(x, y);
             }
+            scene.add(bulletGroup);
         }
     }
 }
