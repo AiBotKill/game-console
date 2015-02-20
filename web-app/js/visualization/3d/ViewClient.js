@@ -1,6 +1,8 @@
 var serverData = 0;
 /* Used to mark whether this is the first gamestate. */
-var firstSync = true;
+var initDone = false;
+var mapLoaded = false;
+var gameInit = false;
 
 function initSync() {
     var client = new Client();
@@ -17,6 +19,7 @@ function initMap(data) {
     GROUND_Y = (MAPTILES_Y * TILE_HEIGHT);
     GROUND_TILES = GROUND_X / 16;
     WALL_TILES_COUNT = (MAPTILES_X + MAPTILES_Y) / 2;
+    mapLoaded = true;
 }
 
 /* Initialize everything.*/
@@ -36,7 +39,8 @@ function syncState(json){
 }
 
 function firstSyncDone(){
-    firstSync = false;
+    gameInit = true;
+    initDone = true;
     console.log("Initialization done.");
 }
 
@@ -44,11 +48,11 @@ function Client() {
     this.syncState = function (data) {
         var json = JSON.parse(data);
         console.log("JSON: ", json);
-        if(firstSync){
-            if (!json.type) {
+        if(!initDone){
+            if (!json.type && !mapLoaded) {
                 initMap(json);
             }
-            else if (json.type) {
+            else if (json.type && !gameInit) {
                 init(json, firstSyncDone);
             }
         }
