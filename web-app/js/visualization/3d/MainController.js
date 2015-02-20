@@ -219,7 +219,7 @@ function loadPlayerData() {
         var playerMaterials = new THREE.MeshFaceMaterial(materials);
 
         for (var i = 0; i < serverData.players.length; i++) {
-            destroyed = serverData.player[i].hitpoints === 0;
+            destroyed = serverData.players[i].hitpoints === 0;
             if(destroyed){
                 player = new THREE.SkinnedMesh(geometry, playerMaterials);
                 player.scale.set(3, 3, 3);
