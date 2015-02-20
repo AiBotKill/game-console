@@ -220,8 +220,8 @@ function loadPlayerData() {
                 var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
                 helper.update();
                 player.position.z -= helper.box.min.z;
-                player.position.x = serverData.players[i].position.x;
-                player.position.y = serverData.players[i].position.y;
+                player.position.x = serverData.players[i].position.x * TILE_WIDTH;
+                player.position.y = serverData.players[i].position.y * TILE_WIDTH;
                 player.castShadow = true;
                 player.receiveShadow = true;
                 BULLET_HEIGHT = helper.box.min.z;
