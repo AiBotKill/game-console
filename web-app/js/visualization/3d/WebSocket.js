@@ -1,7 +1,7 @@
 function connect(listener) {
     console.log("Connecting...");
 
-    var socketUrl = "ws://" + location.hostname + ':7000';
+    var socketUrl = "ws://" + location.hostname+ (location.port ? ':' + location.port : ':7000');
     socketUrl += document.getElementById("websocketPath").innerHTML;
     var ws = new WebSocket(socketUrl);
 
