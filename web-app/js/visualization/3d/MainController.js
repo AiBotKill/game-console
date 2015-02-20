@@ -250,7 +250,6 @@ function loadPlayerData() {
         cameraSettings.cameraMode = new CameraModeFPS();
     });
 }
-;
 
 function createSmoke(x, y) {
     for (var i = 0; i < particleTree.smoke.emitters.length; i++) {
@@ -462,23 +461,25 @@ function refreshPlayerData() {
     var x;
     var y;
     for (var i = 0; i < playerTree.length; i++) {
-        playerTree[i].data = serverData.players[i];
+        if(!playerTree[i].destroyed){
+            playerTree[i].data = serverData.players[i];
 
-        if (!playerTree[i].data.linkdead) {
-            xSpeed = playerTree[i].data.velocity.x;
-            ySpeed = playerTree[i].data.velocity.y;
-            x = playerTree[i].model.position.x;
-            y = playerTree[i].model.position.y;
+            if (!playerTree[i].data.linkdead) {
+                xSpeed = playerTree[i].data.velocity.x;
+                ySpeed = playerTree[i].data.velocity.y;
+                x = playerTree[i].model.position.x;
+                y = playerTree[i].model.position.y;
 
-            if (playerTree[i].data.hitpoints === 0) {
-                if (!playerTree[i].destroyed) {
-                    addExplosionPlayer(x, y, playerTree[i].model);
-                    playerTree[i].destroyed = true;
+                if (playerTree[i].data.hitpoints === 0) {
+                    if (!playerTree[i].destroyed) {
+                        addExplosionPlayer(x, y, playerTree[i].model);
+                        playerTree[i].destroyed = true;
+                    }
                 }
-            }
-            else {
-                playerTree[i].model.translateX(xSpeed);
-                playerTree[i].model.translateZ(ySpeed);
+                else {
+                    playerTree[i].model.translateX(xSpeed);
+                    playerTree[i].model.translateZ(ySpeed);
+                }
             }
         }
     }
