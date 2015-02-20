@@ -9,11 +9,11 @@ function CameraModeExternal() {
 
         camera.lookAt(scene.position);
         camera.rotation.x += Math.PI / 2;
-        camera.position.z = 10;
+        camera.position.z = 122.76917439842951;
 
-        camera.position.x = 16;
-        camera.position.y = 10;
-        camera.rotation.x = 1.57;
+        camera.position.x = 361.71279298511456;
+        camera.position.y = 481.7027766598378;
+        camera.rotation.x = 1.6900000000000002;
         camera.rotation.y = 2.7390000000000025;
         isHUDDrawn = false;
         //camera.translateY(5);
