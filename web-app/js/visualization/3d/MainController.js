@@ -220,8 +220,8 @@ function loadPlayerData() {
                 var helper = new THREE.BoundingBoxHelper(player, 0xff0000);
                 helper.update();
                 player.position.z -= helper.box.min.z;
-                player.position.x = serverData.players[i].position.x;
-                player.position.y = serverData.players[i].position.y;
+                player.position.x = serverData.players[i].position.x + ((helper.box.max.x - helper.box.min.x) / 2);
+                player.position.y = serverData.players[i].position.y + ((helper.box.max.y - helper.box.min.y) / 2);
                 player.castShadow = true;
                 player.receiveShadow = true;
                 BULLET_HEIGHT = helper.box.min.z;
@@ -302,7 +302,7 @@ function createNewBullet(x, y) {
 
 function addDestroyedRobot(x, y) {
     var destroyed = new THREE.Mesh(destroyedRobotTemplate.geometry, destroyedRobotTemplate.materials);
-    destroyed.scale.set(3, 3, 3);
+    destroyed.scale.set(1, 1, 1);
     destroyed.rotation.x += Math.PI / 2;
     destroyed.position.x = x;
     destroyed.position.y = y;
