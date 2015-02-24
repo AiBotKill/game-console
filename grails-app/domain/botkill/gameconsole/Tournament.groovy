@@ -1,8 +1,11 @@
 package botkill.gameconsole
 
 import botkill.gameconsole.enums.GameState
+import botkill.gameconsole.enums.TournamentState
 
 class Tournament {
+
+    def tournamentService
 
     // Tournament has many games to be played and teams that participate in this tournament
     static hasMany = ["games":Game, "teams":TournamentTeam]
@@ -14,6 +17,7 @@ class Tournament {
     List teams = new ArrayList()
     String name
     GameState state = GameState.CREATED
+    TournamentState tournamentState = TournamentState.QUALIFIERS
     Game currentGame
 
     static constraints = {
@@ -21,7 +25,7 @@ class Tournament {
         teams nullable: false, minSize: 4
     }
 
-    static transients = ['currentGame']
+    static transients = ['currentGame', 'tournamentService']
 
     static mapping = {
         teams sort: 'points', order: 'desc'
@@ -51,6 +55,12 @@ class Tournament {
             game.start()
             return true
         } else {
+            // No more games in qualifiers, generate semifinals but don't start them
+            if (tournamentState.equals(TournamentState.QUALIFIERS)) {
+                tournamentService.generateSemifinalGamesFor(this)
+            } else if (tournamentState.equals(TournamentState.SEMIFINAL)) {
+                tournamentService.generateSemifinalGamesFor(this)
+            }
             return false
         }
     }

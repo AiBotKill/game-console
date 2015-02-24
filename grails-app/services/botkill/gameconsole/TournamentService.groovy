@@ -3,6 +3,7 @@ package botkill.gameconsole
 import botkill.gameconsole.enums.GameEnvironment
 import botkill.gameconsole.enums.GameMode
 import botkill.gameconsole.enums.TeamColor
+import botkill.gameconsole.enums.TournamentState
 import grails.transaction.Transactional
 import org.springframework.beans.factory.InitializingBean
 
@@ -29,36 +30,36 @@ class TournamentService implements InitializingBean {
         Collections.shuffle(teams, random)
 
         // Duels
-        for (int i = 0; i < teams.size(); i++) {
-            TournamentTeam t1 = teams[i]
-            for (int j = i; j < teams.size(); j++) {
-                TournamentTeam t2 = teams[j]
-
-                // Don't play against yourself
-                if (!t1.equals(t2)) {
-                    Game game = getRandomGame(GameMode.DUEL)
-
-                    GameTeam gt1 = new GameTeam()
-                    gt1.team = t1.team
-                    int teamColor1 = i%TeamColor.values().size()
-                    gt1.color = TeamColor.values()[teamColor1]
-
-                    GameTeam gt2 = new GameTeam()
-                    gt2.team = t2.team
-                    int teamColor2 = j%TeamColor.values().size()
-                    // Don't use same color for both of the teams
-                    if (teamColor1 == teamColor2) {
-                        teamColor2++
-                        teamColor2 = teamColor2%TeamColor.values().size()
-                    }
-                    gt2.color = TeamColor.values()[teamColor2]
-
-                    game.addToGameTeams(gt1).addToGameTeams(gt2)
-                    game.save flush:true
-                    games.add(game)
-                }
-            }
-        }
+//        for (int i = 0; i < teams.size(); i++) {
+//            TournamentTeam t1 = teams[i]
+//            for (int j = i; j < teams.size(); j++) {
+//                TournamentTeam t2 = teams[j]
+//
+//                // Don't play against yourself
+//                if (!t1.equals(t2)) {
+//                    Game game = getRandomGame(GameMode.DUEL)
+//
+//                    GameTeam gt1 = new GameTeam()
+//                    gt1.team = t1.team
+//                    int teamColor1 = i%TeamColor.values().size()
+//                    gt1.color = TeamColor.values()[teamColor1]
+//
+//                    GameTeam gt2 = new GameTeam()
+//                    gt2.team = t2.team
+//                    int teamColor2 = j%TeamColor.values().size()
+//                    // Don't use same color for both of the teams
+//                    if (teamColor1 == teamColor2) {
+//                        teamColor2++
+//                        teamColor2 = teamColor2%TeamColor.values().size()
+//                    }
+//                    gt2.color = TeamColor.values()[teamColor2]
+//
+//                    game.addToGameTeams(gt1).addToGameTeams(gt2)
+//                    game.save flush:true
+//                    games.add(game)
+//                }
+//            }
+//        }
 
         // Deathmatches with all the players against each other
         Game deathmatch = getRandomGame(GameMode.DEATHMATCH)
@@ -75,61 +76,159 @@ class TournamentService implements InitializingBean {
         deathmatch.save flush:true
         games.add(deathmatch)
 
-        // Team matches. Possible only with >= 4 teams. Which is constrained in the domain class also.
-        if (teams.size() >= 4) {
-            int teamSize = 0
-            // Check if we have undividable amount of teams
-            if (isPrime(teams.size())) {
-                // One player have to duplicate the bot
-                // Set team size so that only one team is missing 1 AIs
-                teamSize = (teams.size() + 1) / 2
-            } else {
-                // Find the greatest team size
-                for (int i = teams.size() / 2; i >= 3; i--) {
-                    teamSize = i
-                    if (teams.size() % teamSize == 0) break
-                }
-                if (teamSize == 0) teamSize = 2
-            }
-            // Create teams with the greatest amount of AIs per team
-            Game game = createTeamGame(teams, teamSize)
-            games.add(game)
+        Game deathmatch2 = getRandomGame(GameMode.DEATHMATCH)
+        for (int i = 0; i < teams.size(); i++) {
+            TournamentTeam tt = teams[i]
 
-            // Shuffle teams
-            Collections.shuffle(teams, random)
+            GameTeam gt = new GameTeam()
+            gt.team = tt.team
+            int teamColor = i % TeamColor.values().size()
+            gt.color = TeamColor.values()[teamColor]
 
-            // Create another game with the same team size but shuffled teams
-            game = createTeamGame(teams, teamSize)
-            games.add(game)
-
-            // Shuffle again
-            Collections.shuffle(teams, random)
-
-            // Find the smallest team size
-            if (isPrime(teams.size())) {
-                teamSize = 2
-            } else{
-                // Find the smallest team size
-                for (int i = 2; i < teams.size()/2; i++) {
-                    teamSize = i
-                    if (teams.size() % teamSize == 0) break
-                }
-                assert teamSize > 0
-            }
-
-            // Create teams with the smallest amount of AIs per team
-            game = createTeamGame(teams, teamSize)
-            games.add(game)
-
-            // Shuffle teams
-            Collections.shuffle(teams, random)
-
-            // Create another game with the same team size but shuffled teams
-            game = createTeamGame(teams, teamSize)
-            games.add(game)
+            deathmatch2.addToGameTeams(gt)
         }
+        deathmatch2.save flush:true
+        games.add(deathmatch2)
+
+        Game deathmatch3 = getRandomGame(GameMode.DEATHMATCH)
+        for (int i = 0; i < teams.size(); i++) {
+            TournamentTeam tt = teams[i]
+
+            GameTeam gt = new GameTeam()
+            gt.team = tt.team
+            int teamColor = i % TeamColor.values().size()
+            gt.color = TeamColor.values()[teamColor]
+
+            deathmatch3.addToGameTeams(gt)
+        }
+        deathmatch3.save flush:true
+        games.add(deathmatch3)
+
+        // Team matches. Possible only with >= 4 teams. Which is constrained in the domain class also.
+//        if (teams.size() >= 4) {
+//            int teamSize = 0
+//            // Check if we have undividable amount of teams
+//            if (isPrime(teams.size())) {
+//                // One player have to duplicate the bot
+//                // Set team size so that only one team is missing 1 AIs
+//                teamSize = (teams.size() + 1) / 2
+//            } else {
+//                // Find the greatest team size
+//                for (int i = teams.size() / 2; i >= 3; i--) {
+//                    teamSize = i
+//                    if (teams.size() % teamSize == 0) break
+//                }
+//                if (teamSize == 0) teamSize = 2
+//            }
+//            // Create teams with the greatest amount of AIs per team
+//            Game game = createTeamGame(teams, teamSize)
+//            games.add(game)
+//
+//            // Shuffle teams
+//            Collections.shuffle(teams, random)
+//
+//            // Create another game with the same team size but shuffled teams
+//            game = createTeamGame(teams, teamSize)
+//            games.add(game)
+//
+//            // Shuffle again
+//            Collections.shuffle(teams, random)
+//
+//            // Find the smallest team size
+//            if (isPrime(teams.size())) {
+//                teamSize = 2
+//            } else{
+//                // Find the smallest team size
+//                for (int i = 2; i < teams.size()/2; i++) {
+//                    teamSize = i
+//                    if (teams.size() % teamSize == 0) break
+//                }
+//                assert teamSize > 0
+//            }
+//
+//            // Create teams with the smallest amount of AIs per team
+//            game = createTeamGame(teams, teamSize)
+//            games.add(game)
+//
+//            // Shuffle teams
+//            Collections.shuffle(teams, random)
+//
+//            // Create another game with the same team size but shuffled teams
+//            game = createTeamGame(teams, teamSize)
+//            games.add(game)
+//        }
 
         return games
+    }
+
+    public void generateSemifinalGamesFor(Tournament tournament) {
+        // Take 4 best teams
+        // Nr 1 plays against nr 4 and nr 2 plays agains nr 3
+        def orderedTeams = tournament.teams.sort { it.points }
+        TournamentTeam t1 = orderedTeams[0]
+        TournamentTeam t2 = orderedTeams[1]
+        TournamentTeam t3 = orderedTeams[2]
+        TournamentTeam t4 = orderedTeams[3]
+
+        // First game
+        Game game1 = getRandomGame(GameMode.DUEL)
+        GameTeam gt1 = new GameTeam()
+        gt1.team = t1.team
+        gt1.color = TeamColor.values()[0]
+        GameTeam gt2 = new GameTeam()
+        gt2.team = t4.team
+        gt2.color = TeamColor.values()[1]
+        game1.addToGameTeams(gt1).addToGameTeams(gt2)
+        game1.save flush:true
+
+        // Second game
+        Game game2 = getRandomGame(GameMode.DUEL)
+        gt1 = new GameTeam()
+        gt1.team = t2.team
+        gt1.color = TeamColor.values()[0]
+        gt2 = new GameTeam()
+        gt2.team = t3.team
+        gt2.color = TeamColor.values()[1]
+        game2.addToGameTeams(gt1).addToGameTeams(gt2)
+        game2.save flush:true
+
+        tournament.tournamentState = TournamentState.SEMIFINAL
+        tournament.addToGames(game1).addToGames(game2).save(flush: true)
+    }
+
+    public void generateFinalGamesFor(Tournament tournament) {
+        // Take 4 best teams
+        // Nr 1 plays against nr 2 and nr 3 plays agains nr 4
+        def orderedTeams = tournament.teams.sort { it.points }
+        TournamentTeam t1 = orderedTeams[0]
+        TournamentTeam t2 = orderedTeams[1]
+        TournamentTeam t3 = orderedTeams[2]
+        TournamentTeam t4 = orderedTeams[3]
+
+        // First game
+        Game game1 = getRandomGame(GameMode.DUEL)
+        GameTeam gt1 = new GameTeam()
+        gt1.team = t3.team
+        gt1.color = TeamColor.values()[0]
+        GameTeam gt2 = new GameTeam()
+        gt2.team = t4.team
+        gt2.color = TeamColor.values()[1]
+        game1.addToGameTeams(gt1).addToGameTeams(gt2)
+        game1.save flush:true
+
+        // Second game
+        Game game2 = getRandomGame(GameMode.DUEL)
+        gt1 = new GameTeam()
+        gt1.team = t1.team
+        gt1.color = TeamColor.values()[0]
+        gt2 = new GameTeam()
+        gt2.team = t2.team
+        gt2.color = TeamColor.values()[1]
+        game2.addToGameTeams(gt1).addToGameTeams(gt2)
+        game2.save flush:true
+
+        tournament.tournamentState = TournamentState.FINAL
+        tournament.addToGames(game1).addToGames(game2).save(flush: true)
     }
 
     private Game createTeamGame(List<TournamentTeam> teams, int teamSize) {
@@ -170,7 +269,7 @@ class TournamentService implements InitializingBean {
         game.darkness = random.nextInt(MAX_DARKNESS)
         game.rain = random.nextInt(MAX_RAIN)
         game.rounds = 3
-        game.roundTime = 300 // 5 mins
+        game.roundTime = 120 // 5 mins
 
         // Cavern is darker and there's no rain
         if (game.environment == GameEnvironment.CAVERN) {

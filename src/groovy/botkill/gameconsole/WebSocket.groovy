@@ -184,7 +184,12 @@ class WebSocket implements ServletContextListener {
                         String state = states.poll()
                         if (state) {
                             log.debug("Seding msg to gameId ${gameId}...")
-                            userSession.basicRemote.sendText(state)
+
+                            if (userSession.isOpen()) {
+                                userSession.basicRemote.sendText(state)
+                            } else {
+                                running = false
+                            }
 
                             JSONObject stateJson = new JSONObject(state)
                             // Check if this state was the last state

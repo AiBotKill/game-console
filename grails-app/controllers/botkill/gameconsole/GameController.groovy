@@ -42,9 +42,10 @@ class GameController {
         }
 
         int maxTeams = TeamColor.values().size();
-        params.list("teamAssignments").each {
-            if (!it.equals("") && it.toString().contains(":")) {
-                def connectionIdAndTeamNumber = it.split(":")
+        for (int i = 0; i <  params.list("teamAssignments").size(); i++) {
+            def teamAssignment = params.list("teamAssignments").get(i)
+            if (!teamAssignment.equals("") && teamAssignment.toString().contains(":")) {
+                def connectionIdAndTeamNumber = teamAssignment.split(":")
                 def connectionId = connectionIdAndTeamNumber[0] as String
                 def team = (connectionIdAndTeamNumber[1] as int) - 1
 
@@ -52,6 +53,14 @@ class GameController {
                 gameTeam.color = TeamColor.values()[team%maxTeams]
                 gameTeam.game = gameInstance
                 Team connectedTeam = natsSubscriberService.getConnectedAI(connectionId)
+
+                // If the assigned team is not connected anymore
+                if (!connectedTeam) {
+                    flash.message = message(code: 'game.botNotConnected', default: "Couldn't save game because one of the selected bots is not connected anymore: ${connectionId}", args: [connectionId])
+                    redirect(controller: "game", action: "index")
+                    return
+                }
+
                 Team t = Team.findById(connectedTeam.id)
                 gameTeam.botVersion = connectedTeam.botVersion
                 gameTeam.team = t
@@ -87,6 +96,10 @@ class GameController {
             }
             '*' { respond gameInstance, [status: CREATED] }
         }
+    }
+
+    def flushConnectedAIs() {
+        natsSubscriberService.connectedAIs = [:]
     }
 
     @Transactional
